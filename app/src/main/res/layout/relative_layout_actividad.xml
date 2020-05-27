@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:paddingStart="@dimen/padding_horizontal_informacion_actividad"
+    android:paddingEnd="@dimen/padding_horizontal_informacion_actividad"
+    >
+
+    <RelativeLayout
+        android:id="@+id/layoutInformacionActividad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/padding_horizontal_cardview"
+        android:paddingEnd="@dimen/padding_horizontal_cardview"
+        android:layout_marginBottom="@dimen/margin_bottom_relative_layout_informacion"
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/circleImagePerfilActividad"
+            android:layout_width="@dimen/height_width_image_circle_actividad"
+            android:layout_height="@dimen/height_width_image_circle_actividad"
+            android:layout_marginEnd="@dimen/margin_end_imagen_perfil"
+            android:src="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/textViewNombreUsuarioActividad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/circleImagePerfilActividad"
+            android:text="Juan Perez"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/nombre_usuario_text_size_actividad"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewNombreUsuarioActividad"
+            android:layout_toEndOf="@id/circleImagePerfilActividad"
+            android:text="hace 13 minutos"
+            android:textSize="@dimen/text_size_fecha_publicacion" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textViewNombreActividad"
+        android:layout_below="@id/layoutInformacionActividad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre actividad"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size_nombre_actividad"
+        />
+
+    <TextView
+        android:id="@+id/textViewDescripcionActividad"
+        android:layout_below="@id/textViewNombreActividad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lorem"
+        />
+
+</RelativeLayout>

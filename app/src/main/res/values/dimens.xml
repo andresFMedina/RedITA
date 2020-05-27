@@ -11,4 +11,7 @@
     <dimen name="height_comentario_cardview">150dp</dimen>
     <dimen name="padding_top_layout_informacion_comentario">5dp</dimen>
     <dimen name="padding_top_textview_comentario">5dp</dimen>
+    <dimen name="text_size_nombre_actividad">20sp</dimen>
+    <dimen name="padding_horizontal_informacion_actividad">10dp</dimen>
+    <dimen name="margin_top_multimedia_layout">10dp</dimen>
 </resources>
