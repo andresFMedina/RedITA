@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="5dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/padding_horizontal_cardview"
+        android:paddingEnd="@dimen/padding_horizontal_cardview">
+
+        <RelativeLayout
+            android:id="@+id/layoutInformacionActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_horizontal_cardview"
+            android:paddingEnd="@dimen/padding_horizontal_cardview"
+            android:layout_marginBottom="@dimen/margin_bottom_relative_layout_informacion"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/circleImagePerfilActividad"
+                android:layout_width="@dimen/height_width_image_circle_actividad"
+                android:layout_height="@dimen/height_width_image_circle_actividad"
+                android:layout_marginEnd="@dimen/margin_end_imagen_perfil"
+                android:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:id="@+id/textViewNombreUsuarioActividad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/circleImagePerfilActividad"
+                android:text="Juan Perez"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/nombre_usuario_text_size_actividad"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewNombreUsuarioActividad"
+                android:layout_toEndOf="@id/circleImagePerfilActividad"
+                android:text="hace 13 minutos"
+                android:textSize="@dimen/text_size_fecha_publicacion" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textViewDescripcionActividad"
+            android:layout_below="@id/layoutInformacionActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+            />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imagenActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewDescripcionActividad"
+            android:src="@drawable/ic_launcher_background"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutReacciones"
+            android:layout_below="@id/imagenActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            >
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_thumb_up_black_18dp"
+                />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_thumb_down_black_18dp"
+                />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_mode_comment_black_18dp"
+                />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearLayoutReacciones"
+            tools:listitem="@layout/cardview_comentario"
+            tools:itemCount="2"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

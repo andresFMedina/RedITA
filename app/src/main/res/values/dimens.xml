@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_horizontal_cardview">10dp</dimen>
+    <dimen name="height_width_image_circle_actividad">70dp</dimen>
+    <dimen name="nombre_usuario_text_size_actividad">25sp</dimen>
+    <dimen name="text_size_fecha_publicacion">15sp</dimen>
+    <dimen name="margin_end_imagen_perfil">20dp</dimen>
+    <dimen name="height_width_image_circle_comentario">50dp</dimen>
+    <dimen name="nombre_usuario_text_size_comentario">20sp</dimen>
+    <dimen name="margin_bottom_relative_layout_informacion">10dp</dimen>
+    <dimen name="height_comentario_cardview">150dp</dimen>
+    <dimen name="padding_top_layout_informacion_comentario">5dp</dimen>
+    <dimen name="padding_top_textview_comentario">5dp</dimen>
+</resources>

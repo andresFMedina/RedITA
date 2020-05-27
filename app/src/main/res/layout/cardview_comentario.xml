@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_comentario_cardview"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    card_view:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/backgroundGray"
+    android:layout_marginBottom="10dp"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/padding_horizontal_cardview"
+        android:paddingEnd="@dimen/padding_horizontal_cardview"
+        android:layout_marginTop="@dimen/padding_top_layout_informacion_comentario"
+        >
+
+        <RelativeLayout
+            android:id="@+id/layoutInformacionComentario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_horizontal_cardview"
+            android:paddingEnd="@dimen/padding_horizontal_cardview"
+            android:layout_marginBottom="@dimen/margin_bottom_relative_layout_informacion"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/cicleImagePerfilComentario"
+                android:layout_width="@dimen/height_width_image_circle_comentario"
+                android:layout_height="@dimen/height_width_image_circle_comentario"
+                android:layout_marginEnd="@dimen/margin_end_imagen_perfil"
+                android:src="@drawable/ic_launcher_background" />
+
+            <TextView
+                android:id="@+id/textViewNombreUsuarioComentario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/cicleImagePerfilComentario"
+                android:text="Pedro Suarez"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/nombre_usuario_text_size_comentario"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textViewFechaComentario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewNombreUsuarioComentario"
+                android:layout_toEndOf="@id/cicleImagePerfilComentario"
+                android:text="hace 2 minutos" />
+        </RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layoutInformacionComentario"
+            android:layout_marginBottom="@dimen/padding_top_textview_comentario"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
