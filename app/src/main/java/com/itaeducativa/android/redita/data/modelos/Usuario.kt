@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.modelos
+package com.itaeducativa.android.redita.data.modelos
 
 data class Usuario (
     val uid: String,
