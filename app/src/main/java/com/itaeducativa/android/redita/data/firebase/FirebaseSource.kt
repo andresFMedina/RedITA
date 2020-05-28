@@ -1,12 +1,17 @@
 package com.itaeducativa.android.redita.data.firebase
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import io.reactivex.Completable
 
 class FirebaseSource {
 
     private val firebaseAuth: FirebaseAuth by lazy {
         FirebaseAuth.getInstance()
+    }
+
+    val firestoreDB: FirebaseFirestore by lazy {
+        FirebaseFirestore.getInstance()
     }
 
     fun login(email: String, password: String) = Completable.create { emitter ->
