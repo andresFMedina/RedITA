@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.login
+package com.itaeducativa.android.redita.network
 
 interface AutenticacionListener {
     fun onStarted()

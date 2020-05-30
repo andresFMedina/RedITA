@@ -4,7 +4,7 @@ data class Actividad(
     val nombre: String,
     val descripcion: String,
     val autor: Usuario,
-    val fechaCreacion: String,
+    val fechaCreacionTimeStamp: String,
     val tipoActividad: String,
     val archivos: List<String>?,
     val reacciones: List<Reaccion>?,

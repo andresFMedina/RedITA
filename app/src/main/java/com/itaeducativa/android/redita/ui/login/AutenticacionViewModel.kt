@@ -2,6 +2,7 @@ package com.itaeducativa.android.redita.ui.login
 
 import androidx.lifecycle.ViewModel
 import com.itaeducativa.android.redita.data.repositorios.RepositorioAutenticacion
+import com.itaeducativa.android.redita.network.AutenticacionListener
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

@@ -1,43 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="5dp"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <data>
+        <variable
+            name="viewModel"
+            type="com.itaeducativa.android.redita.ui.actividad.ActividadViewModel" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="@dimen/padding_horizontal_cardview"
-        android:paddingEnd="@dimen/padding_horizontal_cardview">
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp">
 
-        <include
-            android:id="@+id/layoutActividad"
-            layout="@layout/relative_layout_actividad"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imagenActividad"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layoutActividad"
-            android:src="@drawable/ic_launcher_background"/>
+            android:layout_height="match_parent"
+            android:paddingStart="@dimen/padding_horizontal_cardview"
+            android:paddingEnd="@dimen/padding_horizontal_cardview">
 
-        <include
-            android:id="@+id/layoutReacciones"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/linearlayout_reacciones"
-            android:layout_below="@id/imagenActividad"
-            />
+            <include
+                android:id="@+id/layoutActividad"
+                bind:viewModel="@{viewModel}"
+                layout="@layout/relative_layout_actividad" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layoutReacciones"
-            tools:listitem="@layout/cardview_comentario"
-            tools:itemCount="2"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imagenActividad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutActividad"
+                android:src="@drawable/ic_launcher_background" />
 
-    </RelativeLayout>
+            <include
+                android:id="@+id/layoutReacciones"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/linearlayout_reacciones"
+                android:layout_below="@id/imagenActividad" />
 
-</androidx.cardview.widget.CardView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutReacciones"
+                tools:listitem="@layout/cardview_comentario"
+                tools:itemCount="2" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
