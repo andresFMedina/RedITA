@@ -6,26 +6,24 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
-import com.itaeducativa.android.redita.databinding.ActivityLoginBinding
 import com.itaeducativa.android.redita.databinding.CardviewActividadBinding
+
 
 class ListaActividadesAdapter : RecyclerView.Adapter<ListaActividadesAdapter.ViewHolder>() {
     private lateinit var listaActividades: List<Actividad>
 
+
     class ViewHolder(private val binding: CardviewActividadBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val viewModel = ActividadViewModel()
+        private val viewModelActividad = ActividadViewModel()
 
         fun bind(actividad: Actividad) {
-            viewModel.bind(actividad)
-            binding.viewModel = viewModel
+            viewModelActividad.bind(actividad)
+            binding.viewModelActividad = viewModelActividad
         }
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ListaActividadesAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: CardviewActividadBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.cardview_actividad,

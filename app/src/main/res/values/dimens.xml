@@ -14,4 +14,6 @@
     <dimen name="text_size_nombre_actividad">20sp</dimen>
     <dimen name="padding_horizontal_informacion_actividad">10dp</dimen>
     <dimen name="margin_top_multimedia_layout">10dp</dimen>
+    <dimen name="padding_horizontal_actividad">16dp</dimen>
+    <dimen name="padding_top_actividad">10dp</dimen>
 </resources>
