@@ -90,11 +90,11 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
             }
     }
 
-    override fun onSuccess() {
+    override fun onSuccessRequest() {
         progressBarListaActividades.visibility = View.GONE
     }
 
-    override fun onFailure(message: String) {
+    override fun onFailureRequest(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 

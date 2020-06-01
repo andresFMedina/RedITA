@@ -48,11 +48,11 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
 
     }
 
-    override fun onSuccess() {
+    override fun onSuccessRequest() {
 
     }
 
-    override fun onFailure(message: String) {
+    override fun onFailureRequest(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

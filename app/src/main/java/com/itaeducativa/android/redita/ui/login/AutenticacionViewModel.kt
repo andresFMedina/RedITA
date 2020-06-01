@@ -1,8 +1,12 @@
 package com.itaeducativa.android.redita.ui.login
 
+import android.content.Context
+import android.view.View
 import androidx.lifecycle.ViewModel
 import com.itaeducativa.android.redita.data.repositorios.RepositorioAutenticacion
 import com.itaeducativa.android.redita.network.AutenticacionListener
+import com.itaeducativa.android.redita.util.startLoginActivity
+import com.itaeducativa.android.redita.util.startSingUpActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -54,6 +58,13 @@ class AutenticacionViewModel(private val repositorio: RepositorioAutenticacion) 
             })
 
         disposables.add(disposable)
+    }
+
+
+
+    fun logout(context: Context) {
+        repositorio.logout()
+        context.startLoginActivity()
     }
 
     override fun onCleared() {

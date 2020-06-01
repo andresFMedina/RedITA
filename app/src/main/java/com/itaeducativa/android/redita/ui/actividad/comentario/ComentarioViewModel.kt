@@ -29,13 +29,13 @@ class ComentarioViewModel : ViewModel() {
         referenciaUsuario!!.addSnapshotListener { value, exception ->
             requestListener?.onStartRequest()
             if (exception != null) {
-                requestListener?.onFailure(exception.message!!)
+                requestListener?.onFailureRequest(exception.message!!)
                 return@addSnapshotListener
             }
 
             objetoComentario.value!!.usuario = value!!.toObject(Usuario::class.java)
             objetoComentario.value!!.referenciaUsuario = null
-            requestListener?.onSuccess()
+            requestListener?.onSuccessRequest()
         }
     }
 }

@@ -7,6 +7,8 @@ import android.util.Log
 import com.itaeducativa.android.redita.MainActivity
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.ui.actividad.ActividadActivity
+import com.itaeducativa.android.redita.ui.login.LoginActivity
+import com.itaeducativa.android.redita.ui.login.SingUpActivity
 
 fun Context.startMainActivity() =
     Intent(this, MainActivity::class.java).also {
@@ -28,3 +30,13 @@ fun Context.startActividadActivity(actividad: Actividad) =
         it.putExtras(bundle)
         startActivity(it)
     }
+
+fun Context.startLoginActivity() = Intent(this, LoginActivity::class.java).also {
+    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    startActivity(it)
+}
+
+fun Context.startSingUpActivity() = Intent(this, SingUpActivity::class.java).also {
+    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    startActivity(it)
+}

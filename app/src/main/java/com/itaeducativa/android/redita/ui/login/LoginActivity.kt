@@ -10,6 +10,7 @@ import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.databinding.ActivityLoginBinding
 import com.itaeducativa.android.redita.network.AutenticacionListener
 import com.itaeducativa.android.redita.util.startMainActivity
+import com.itaeducativa.android.redita.util.startSingUpActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -54,5 +55,9 @@ class LoginActivity : AppCompatActivity(),
         viewModel.usuario?.let {
             startMainActivity()
         }
+    }
+
+    fun goToSignUpActivity(view: View){
+        this.startSingUpActivity()
     }
 }

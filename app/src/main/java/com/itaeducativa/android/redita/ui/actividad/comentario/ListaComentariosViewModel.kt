@@ -23,7 +23,7 @@ class ListaComentariosViewModel(private val repositorioComentario: RepositorioCo
             .addSnapshotListener(EventListener { value, e ->
                 if (e != null) {
                     listaComentarios.value = null
-                    requestListener?.onFailure(e.message!!)
+                    requestListener?.onFailureRequest(e.message!!)
                     return@EventListener
                 }
 
@@ -38,7 +38,7 @@ class ListaComentariosViewModel(private val repositorioComentario: RepositorioCo
                     comentarios.add(comentario)
                 }
                 listaComentarios.value = comentarios
-                requestListener?.onSuccess()
+                requestListener?.onSuccessRequest()
                 listaComentariosAdapter.actualizarComentarios(listaComentarios.value as MutableList<Comentario>)
             })
     }

@@ -12,4 +12,10 @@
         android:icon="@drawable/ic_account_box_white_18dp"
         android:title="@string/perfil"
         />
+    <item
+        android:id="@+id/logout"
+        android:enabled="true"
+        android:icon="@drawable/ic_account_box_white_18dp"
+        android:title="Logout"
+        />
 </menu>

@@ -36,14 +36,14 @@ class ActividadViewModel : ViewModel() {
         referenciaAutor?.addSnapshotListener { value, exception ->
             requestListener?.onStartRequest()
             if (exception != null) {
-                requestListener?.onFailure(exception.message!!)
+                requestListener?.onFailureRequest(exception.message!!)
                 return@addSnapshotListener
             }
             actividad.value!!.autor = value?.toObject(Usuario::class.java)!!
             autor.value = actividad.value!!.autor!!.nombreCompleto
             actividad.value!!.referenciaAutor = null
             Log.d("Actividad", actividad.value?.autor?.nombreCompleto!!)
-            requestListener?.onSuccess()
+            requestListener?.onSuccessRequest()
         }
     }
 

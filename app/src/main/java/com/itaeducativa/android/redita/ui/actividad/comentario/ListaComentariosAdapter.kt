@@ -53,11 +53,11 @@ class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.Vie
 
     }
 
-    override fun onSuccess() {
+    override fun onSuccessRequest() {
         notifyDataSetChanged()
     }
 
-    override fun onFailure(message: String) {
+    override fun onFailureRequest(message: String) {
         Log.e("Error", message)
     }
 }

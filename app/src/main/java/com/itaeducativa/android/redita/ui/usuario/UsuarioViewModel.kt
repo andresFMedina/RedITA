@@ -10,13 +10,28 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
+import com.itaeducativa.android.redita.network.RequestListener
 
 class UsuarioViewModel(private val repositorioUsuario: RepositorioUsuario): ViewModel() {
 
     val usuario : MutableLiveData<Usuario> = MutableLiveData()
+    var email: String? = null
+    var nombreCompleto: String? = null
+    var telefono:String? = null
 
-    fun guardarUsuario(usuario: Usuario) =
-        repositorioUsuario.guardarUsuario(usuario)
+    var requestListener: RequestListener? = null
+
+    fun guardarUsuario(email: String, uid: String) {
+        usuario.value!!.email = email
+        usuario.value!!.uid = uid
+        requestListener?.onStartRequest()
+        repositorioUsuario.guardarUsuario(usuario.value!!).addOnSuccessListener {
+           requestListener?.onSuccessRequest()
+        }.addOnFailureListener { exception ->
+           requestListener?.onFailureRequest(exception.message!!)
+        }
+
+    }
 
     fun getUsuarioByUid(uid: String): LiveData<Usuario> {
         repositorioUsuario.getUsuarioByUid(uid)

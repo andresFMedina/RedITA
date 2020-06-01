@@ -3,9 +3,7 @@ package com.itaeducativa.android.redita.ui.actividad
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.EventListener
 import com.itaeducativa.android.redita.data.modelos.Actividad
-import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.data.repositorios.RepositorioActividad
 import com.itaeducativa.android.redita.network.RequestListener
 
@@ -21,9 +19,9 @@ class ListaActividadesViewModel(
     fun guardarActividadEnFirestore(actividad: Actividad) {
         requestListener?.onStartRequest()
         repositorioActividad.guardarActividadEnFirestore(actividad).addOnFailureListener {
-            requestListener?.onFailure(it.message!!)
+            requestListener?.onFailureRequest(it.message!!)
         }
-        requestListener?.onSuccess()
+        requestListener?.onSuccessRequest()
     }
 
     fun getListaActividades() {
@@ -32,7 +30,7 @@ class ListaActividadesViewModel(
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     listaActividades.value = null
-                    requestListener?.onFailure(e.message!!)
+                    requestListener?.onFailureRequest(e.message!!)
                     return@addSnapshotListener
                 }
 
@@ -49,7 +47,7 @@ class ListaActividadesViewModel(
                     actividades.add(actividad)
                 }
                 listaActividades.value = actividades
-                requestListener?.onSuccess()
+                requestListener?.onSuccessRequest()
                 listaActividadesAdapter.actualizarActividades(listaActividades.value as MutableList<Actividad>)
             }
 

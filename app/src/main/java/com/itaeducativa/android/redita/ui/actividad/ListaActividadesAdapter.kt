@@ -60,11 +60,11 @@ class ListaActividadesAdapter : RecyclerView.Adapter<ListaActividadesAdapter.Vie
 
     }
 
-    override fun onSuccess() {
+    override fun onSuccessRequest() {
         notifyDataSetChanged()
     }
 
-    override fun onFailure(message: String) {
+    override fun onFailureRequest(message: String) {
         Log.e("error", message)
     }
 }
