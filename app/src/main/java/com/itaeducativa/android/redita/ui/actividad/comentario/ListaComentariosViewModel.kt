@@ -1,5 +1,6 @@
 package com.itaeducativa.android.redita.ui.actividad.comentario
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.EventListener
@@ -28,7 +29,12 @@ class ListaComentariosViewModel(private val repositorioComentario: RepositorioCo
 
                 val comentarios: MutableList<Comentario> = mutableListOf()
                 for (doc in value!!) {
-                    val comentario = doc.toObject(Comentario::class.java)
+                    val comentario = Comentario(
+                        comentario = doc.getString("comentario")!!,
+                        fecha = doc.getTimestamp("fecha")!!
+                    )
+                    comentario.referenciaUsuario = doc.getDocumentReference("usuario")
+                    Log.d("Comentario",comentario.toString())
                     comentarios.add(comentario)
                 }
                 listaComentarios.value = comentarios

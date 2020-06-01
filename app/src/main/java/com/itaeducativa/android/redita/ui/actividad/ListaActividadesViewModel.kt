@@ -1,5 +1,6 @@
 package com.itaeducativa.android.redita.ui.actividad
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.EventListener
@@ -28,31 +29,29 @@ class ListaActividadesViewModel(
     fun getListaActividades() {
         requestListener?.onStartRequest()
         repositorioActividad.getActividades()
-            .addSnapshotListener(EventListener { value, e ->
+            .addSnapshotListener { value, e ->
                 if (e != null) {
                     listaActividades.value = null
                     requestListener?.onFailure(e.message!!)
-                    return@EventListener
+                    return@addSnapshotListener
                 }
 
                 val actividades: MutableList<Actividad> = mutableListOf()
                 for (doc in value!!) {
+                    Log.d("Documento", doc.data.toString())
                     val actividad = Actividad(
                         nombre=doc.getString("nombre")!!,
                         descripcion = doc.getString("descripcion")!!,
                         fechaCreacionTimeStamp = doc.getTimestamp("fechaCreacionTimeStamp")!!,
                         tipoActividad = doc.getString("tipoActividad")!!
                     )
-                    doc.getDocumentReference("autor")?.addSnapshotListener {response, exc ->
-                        val usuario = response?.toObject(Usuario::class.java)
-                        actividad.autor = usuario!!
-                    }
+                    actividad.referenciaAutor = doc.getDocumentReference("autor")!!
                     actividades.add(actividad)
                 }
                 listaActividades.value = actividades
                 requestListener?.onSuccess()
                 listaActividadesAdapter.actualizarActividades(listaActividades.value as MutableList<Actividad>)
-            })
+            }
 
 
     }

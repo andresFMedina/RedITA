@@ -2,6 +2,7 @@ package com.itaeducativa.android.redita.ui.actividad
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.Timestamp
@@ -39,17 +40,19 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
 
         viewModelComentario.requestListener = this
 
+        viewModelComentario.getComentariosEnFirestorePorActividad(actividad.fechaCreacionTimeStamp!!.seconds.toString())
+
     }
 
     override fun onStartRequest() {
-        TODO("Not yet implemented")
+
     }
 
     override fun onSuccess() {
-        TODO("Not yet implemented")
+
     }
 
     override fun onFailure(message: String) {
-        TODO("Not yet implemented")
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

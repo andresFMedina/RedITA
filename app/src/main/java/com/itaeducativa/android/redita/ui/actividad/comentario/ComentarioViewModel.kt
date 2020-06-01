@@ -2,16 +2,40 @@ package com.itaeducativa.android.redita.ui.actividad.comentario
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.DocumentReference
 import com.itaeducativa.android.redita.data.modelos.Comentario
+import com.itaeducativa.android.redita.data.modelos.Usuario
+import com.itaeducativa.android.redita.network.RequestListener
 
-class ComentarioViewModel: ViewModel() {
+class ComentarioViewModel : ViewModel() {
     val comentario = MutableLiveData<String>()
     val fecha = MutableLiveData<String>()
     val usuario = MutableLiveData<String>()
+    val objetoComentario = MutableLiveData<Comentario>()
+
+    var requestListener: RequestListener? = null
 
     fun bind(comentario: Comentario) {
         this.comentario.value = comentario.comentario
         fecha.value = comentario.fecha.toDate().toString()
-        usuario.value = comentario.usuario.nombreCompleto
+        objetoComentario.value = comentario
+        if (comentario.referenciaUsuario != null)
+            bindUsuario(comentario.referenciaUsuario)
+        else
+            usuario.value = comentario.usuario!!.nombreCompleto
+    }
+
+    private fun bindUsuario(referenciaUsuario: DocumentReference?) {
+        referenciaUsuario!!.addSnapshotListener { value, exception ->
+            requestListener?.onStartRequest()
+            if (exception != null) {
+                requestListener?.onFailure(exception.message!!)
+                return@addSnapshotListener
+            }
+
+            objetoComentario.value!!.usuario = value!!.toObject(Usuario::class.java)
+            objetoComentario.value!!.referenciaUsuario = null
+            requestListener?.onSuccess()
+        }
     }
 }

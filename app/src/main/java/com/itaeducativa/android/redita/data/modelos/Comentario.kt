@@ -1,13 +1,17 @@
 package com.itaeducativa.android.redita.data.modelos
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentReference
 import java.io.Serializable
 import java.util.*
 
 data class Comentario (
-    val comentario: String,
-    val fecha: Timestamp,
-    val usuario: Usuario
+    var comentario: String,
+    var fecha: Timestamp
+
 ): Serializable {
-    constructor():this("", Timestamp(Date()), Usuario())
+    constructor():this("", Timestamp(Date()))
+
+    var usuario: Usuario? = null
+    var referenciaUsuario: DocumentReference? = null
 }
