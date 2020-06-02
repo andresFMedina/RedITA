@@ -11,6 +11,9 @@
         <variable
             name="viewModelComentario"
             type="com.itaeducativa.android.redita.ui.actividad.comentario.ListaComentariosViewModel" />
+        <variable
+            name="textoComentario"
+            type="String" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -61,14 +64,24 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextComentario"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_gravity="bottom"
+            android:layout_height="wrap_content"
             android:background="@android:color/white"
-            android:hint="@string/escribe_tu_comentario"
-            android:importantForAutofill="no"
-            android:inputType="text" />
+            app:endIconMode="custom"
+            app:endIconDrawable="@drawable/ic_thumb_up_black_18dp"
+            app:endIconContentDescription="Enviar"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:hint="@string/escribe_tu_comentario"
+                android:importantForAutofill="no"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.network.RequestListener
+import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionListener
 import com.itaeducativa.android.redita.util.startActividadActivity
 
 class ActividadViewModel : ViewModel() {
@@ -17,6 +18,9 @@ class ActividadViewModel : ViewModel() {
     val fechaCreacionTimeStamp = MutableLiveData<String>()
     val tipoActividad = MutableLiveData<String>()
     val actividad = MutableLiveData<Actividad>()
+    val meGusta = MutableLiveData<String>()
+    val noMeGusta = MutableLiveData<String>()
+    val comentarios = MutableLiveData<String>()
 
     var requestListener: RequestListener? = null
 
@@ -26,6 +30,9 @@ class ActividadViewModel : ViewModel() {
         fechaCreacionTimeStamp.value = actividad.fechaCreacionTimeStamp?.toDate().toString()
         tipoActividad.value = actividad.tipoActividad
         this.actividad.value = actividad
+        meGusta.value = actividad.meGusta.toString()
+        noMeGusta.value = actividad.noMeGusta.toString()
+        comentarios.value = actividad.comentarios.toString()
         if (actividad.autor == null)
             bindAutor(actividad.referenciaAutor)
         else
@@ -46,6 +53,7 @@ class ActividadViewModel : ViewModel() {
             requestListener?.onSuccessRequest()
         }
     }
+
 
     fun verActividad(view: View) {
         view.context.startActividadActivity(actividad.value!!)

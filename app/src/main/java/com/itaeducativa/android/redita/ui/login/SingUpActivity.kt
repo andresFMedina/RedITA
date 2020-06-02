@@ -56,7 +56,6 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
     override fun onSuccess() {
         progressBarSingUp.visibility = View.GONE
         val uid = autenticacionViewModel.usuario!!.uid
-        Log.d("Email", autenticacionViewModel.email)
         usuarioViewModel.guardarUsuario(autenticacionViewModel.email!!, uid)
     }
 

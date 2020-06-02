@@ -3,12 +3,17 @@ package com.itaeducativa.android.redita.ui.actividad.comentario
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.EventListener
 import com.itaeducativa.android.redita.data.modelos.Comentario
 import com.itaeducativa.android.redita.data.repositorios.RepositorioComentario
+import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
 import com.itaeducativa.android.redita.network.RequestListener
 
-class ListaComentariosViewModel(private val repositorioComentario: RepositorioComentario) :
+class ListaComentariosViewModel(
+    private val repositorioComentario: RepositorioComentario,
+    private val repositorioUsuario: RepositorioUsuario
+) :
     ViewModel() {
 
     val listaComentarios: MutableLiveData<List<Comentario>> = MutableLiveData()
@@ -16,6 +21,24 @@ class ListaComentariosViewModel(private val repositorioComentario: RepositorioCo
     val listaComentariosAdapter: ListaComentariosAdapter = ListaComentariosAdapter()
 
     var requestListener: RequestListener? = null
+
+    fun agregarComentariosEnFirestorePorActividad(
+        referenciaDocumentoActividad: String,
+        comentario: Comentario,
+        uid: String
+    ) {
+        val usuarioReference: DocumentReference = repositorioUsuario.getUsuarioByUid(uid)
+        comentario.referenciaUsuario = usuarioReference
+        requestListener?.onStartRequest()
+        repositorioComentario.agregarComentarioEnFirestorePorActividad(
+            referenciaDocumentoActividad,
+            comentario
+        ).addOnFailureListener {
+            requestListener?.onFailureRequest(it.message!!)
+        }.addOnSuccessListener {
+            requestListener?.onSuccessRequest()
+        }
+    }
 
     fun getComentariosEnFirestorePorActividad(referenciaDocumentoActividad: String) {
         requestListener?.onStartRequest()
@@ -33,8 +56,8 @@ class ListaComentariosViewModel(private val repositorioComentario: RepositorioCo
                         comentario = doc.getString("comentario")!!,
                         fecha = doc.getTimestamp("fecha")!!
                     )
-                    comentario.referenciaUsuario = doc.getDocumentReference("usuario")
-                    Log.d("Comentario",comentario.toString())
+                    comentario.referenciaUsuario = doc.getDocumentReference("referenciaUsuario")
+                    Log.d("Comentario", comentario.toString())
                     comentarios.add(comentario)
                 }
                 listaComentarios.value = comentarios

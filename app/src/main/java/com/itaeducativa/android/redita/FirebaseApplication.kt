@@ -32,7 +32,7 @@ class FirebaseApplication : Application(), KodeinAware {
         bind() from singleton { RepositorioActividad(instance()) }
         bind() from provider { ListaActividadesViewModelFactory(instance()) }
         bind() from singleton { RepositorioComentario(instance()) }
-        bind() from provider { ListaComentariosViewModelFactory(instance()) }
+        bind() from provider { ListaComentariosViewModelFactory(instance(), instance()) }
     }
 
 }

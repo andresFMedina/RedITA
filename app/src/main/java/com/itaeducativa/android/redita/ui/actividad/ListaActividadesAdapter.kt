@@ -3,26 +3,38 @@ package com.itaeducativa.android.redita.ui.actividad
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.databinding.CardviewActividadBinding
 import com.itaeducativa.android.redita.network.RequestListener
+import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionListener
+import com.itaeducativa.android.redita.util.startActividadActivity
 
 
-class ListaActividadesAdapter : RecyclerView.Adapter<ListaActividadesAdapter.ViewHolder>(),
+class ListaActividadesAdapter(
+    listaActividadesViewModel: ListaActividadesViewModel
+) : RecyclerView.Adapter<ListaActividadesAdapter.ViewHolder>(),
     RequestListener {
     private lateinit var listaActividades: List<Actividad>
+
+    private var reaccionListener: ReaccionListener = listaActividadesViewModel
 
 
     class ViewHolder(
         private val binding: CardviewActividadBinding,
         private val adapter: ListaActividadesAdapter
+
     ) :
         RecyclerView.ViewHolder(binding.root) {
         private val viewModelActividad = ActividadViewModel()
+        val layout = binding.layoutReacciones
+        val imageButtonMeGusta: ImageButton = binding.layoutReacciones.imageButtonMeGusta
+        val imageButtonNoMeGusta: ImageButton = binding.layoutReacciones.imageButtonNoMeGusta
+        val imageButtonComentarios: ImageButton = binding.layoutReacciones.imageButtonComentarios
 
 
         fun bind(actividad: Actividad) {
@@ -31,6 +43,7 @@ class ListaActividadesAdapter : RecyclerView.Adapter<ListaActividadesAdapter.Vie
             binding.viewModelActividad = viewModelActividad
 
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -49,6 +62,17 @@ class ListaActividadesAdapter : RecyclerView.Adapter<ListaActividadesAdapter.Vie
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(listaActividades[position])
+        holder.imageButtonMeGusta.setOnClickListener {
+            reaccionListener.onMeGusta(listaActividades[position])
+            holder.imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_36dp)
+        }
+        holder.imageButtonNoMeGusta.setOnClickListener {
+            reaccionListener.onNoMeGusta(listaActividades[position])
+            holder.imageButtonNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_36dp)
+        }
+        holder.imageButtonComentarios.setOnClickListener {
+            it.context.startActividadActivity(listaActividades[position])
+        }
     }
 
     fun actualizarActividades(actividades: List<Actividad>) {
