@@ -21,14 +21,14 @@
             android:layout_marginEnd="@dimen/margin_end_image_button_reacciones"
             android:background="@android:color/white"
             android:contentDescription="@string/me_gusta"
-            android:src="@drawable/ic_thumb_up_black_36dp"
+            android:src="@drawable/ic_thumb_up_black_24dp"
             android:tint="@color/colorPrimaryDark"
             />
 
         <TextView
             android:layout_width="wrap_content"
-            android:textSize="30sp"
-            android:layout_height="36dp"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_end_textview_reacciones"
             android:text="@={viewModelActividad.meGusta}" />
 
@@ -39,13 +39,13 @@
             android:layout_marginEnd="@dimen/margin_end_image_button_reacciones"
             android:background="@android:color/white"
             android:contentDescription="@string/no_me_gusta"
-            android:src="@drawable/ic_thumb_down_black_36dp"
+            android:src="@drawable/ic_thumb_down_black_24dp"
             android:tint="@color/colorPrimaryDark" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:textSize="30sp"
-            android:layout_height="36dp"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_end_textview_reacciones"
             android:text="@={viewModelActividad.noMeGusta}" />
 
@@ -56,13 +56,13 @@
             android:layout_marginEnd="@dimen/margin_end_image_button_reacciones"
             android:background="@android:color/white"
             android:contentDescription="@string/comentar"
-            android:src="@drawable/ic_mode_comment_black_36dp"
+            android:src="@drawable/ic_mode_comment_black_24dp"
             android:tint="@color/colorPrimaryDark" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:textSize="30sp"
-            android:layout_height="36dp"
-            android:text="@={viewModelActividad.comentarios}" />
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:text="@={viewModelActividad.noMeGusta}" />
     </LinearLayout>
 </layout>

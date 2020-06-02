@@ -73,4 +73,6 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
     override fun onFailureRequest(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
+
 }
