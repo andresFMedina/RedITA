@@ -5,9 +5,11 @@ import java.io.Serializable
 data class Usuario (
     val nombreCompleto: String,
     val rol: String,
-    val telefono: String
+    val telefono: String,
+    var email: String,
+    val uid: String
 ): Serializable {
-    lateinit var email: String
-    lateinit var uid: String
-    constructor():this("","","")
+
+
+    constructor():this("","","","","")
 }

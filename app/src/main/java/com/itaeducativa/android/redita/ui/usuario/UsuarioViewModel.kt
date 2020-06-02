@@ -22,8 +22,13 @@ class UsuarioViewModel(private val repositorioUsuario: RepositorioUsuario): View
     var requestListener: RequestListener? = null
 
     fun guardarUsuario(email: String, uid: String) {
-        usuario.value!!.email = email
-        usuario.value!!.uid = uid
+        usuario.value = Usuario(
+            nombreCompleto = nombreCompleto!!,
+            email = email,
+            rol = "",
+            telefono = telefono!!,
+            uid = uid
+        )
         requestListener?.onStartRequest()
         repositorioUsuario.guardarUsuario(usuario.value!!).addOnSuccessListener {
            requestListener?.onSuccessRequest()

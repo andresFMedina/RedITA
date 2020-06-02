@@ -37,7 +37,9 @@ class LoginActivity : AppCompatActivity(),
     }
 
     override fun onStarted() {
+        buttonIngresar.isEnabled = false
         progressBarLogin.visibility = View.VISIBLE
+        layoutLogin.visibility = View.GONE
     }
 
     override fun onSuccess() {
@@ -47,7 +49,9 @@ class LoginActivity : AppCompatActivity(),
 
     override fun onFailure(mensaje: String) {
         progressBarLogin.visibility = View.GONE
+        buttonIngresar.isEnabled = true
         Toast.makeText(this,mensaje,Toast.LENGTH_SHORT).show()
+        layoutLogin.visibility = View.VISIBLE
     }
 
     override fun onStart() {

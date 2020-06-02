@@ -1,6 +1,7 @@
 package com.itaeducativa.android.redita.ui.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,7 @@ import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModel
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
 import com.itaeducativa.android.redita.util.startLoginActivity
+import com.itaeducativa.android.redita.util.startMainActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sing_up.*
 import org.kodein.di.Kodein
@@ -39,36 +41,47 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
         usuarioViewModel =
             ViewModelProviders.of(this, usuarioFactory).get(UsuarioViewModel::class.java)
         binding.usuarioViewModel = usuarioViewModel
+
+        autenticacionViewModel.autenticacionListener = this
+        usuarioViewModel.requestListener = this
     }
 
     override fun onStarted() {
+        buttonRegistarse.isEnabled = false
         progressBarSingUp.visibility = View.VISIBLE
+        layoutSignUp.visibility = View.GONE
+
     }
 
     override fun onSuccess() {
         progressBarSingUp.visibility = View.GONE
         val uid = autenticacionViewModel.usuario!!.uid
+        Log.d("Email", autenticacionViewModel.email)
         usuarioViewModel.guardarUsuario(autenticacionViewModel.email!!, uid)
     }
 
     override fun onFailure(mensaje: String) {
-        progressBarLogin.visibility = View.GONE
+        progressBarSingUp.visibility = View.GONE
+        buttonRegistarse.isEnabled = true
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show()
+        layoutSignUp.visibility = View.VISIBLE
     }
 
     override fun onStartRequest() {
-        progressBarLogin
+        progressBarSingUp.visibility = View.VISIBLE
     }
 
     override fun onSuccessRequest() {
-
+        this.startMainActivity()
     }
 
     override fun onFailureRequest(message: String) {
-
+        buttonRegistarse.isEnabled = true
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     fun goToLoginActivity(view: View) {
         this.startLoginActivity()
     }
+
 }
