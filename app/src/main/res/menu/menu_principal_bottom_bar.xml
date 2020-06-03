@@ -18,4 +18,10 @@
         android:icon="@drawable/ic_account_box_white_18dp"
         android:title="Logout"
         />
+    <item
+        android:id="@+id/menuMisActividades"
+        android:enabled="true"
+        android:title="@string/mis_actividades"
+        android:icon="@drawable/ic_dynamic_feed_black_18dp"
+        />
 </menu>

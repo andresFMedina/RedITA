@@ -7,11 +7,11 @@
     <data>
         <variable
             name="viewModelActividad"
-            type="com.itaeducativa.android.redita.ui.actividad.ActividadViewModel" />
+            type="com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel" />
 
         <variable
             name="viewModelComentario"
-            type="com.itaeducativa.android.redita.ui.actividad.comentario.ListaComentariosViewModel" />
+            type="com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModel" />
 
     </data>
 

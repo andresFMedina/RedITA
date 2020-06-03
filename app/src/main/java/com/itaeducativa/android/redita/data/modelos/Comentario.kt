@@ -7,11 +7,13 @@ import java.util.*
 
 data class Comentario (
     var comentario: String,
-    var fecha: Timestamp
-
+    var fecha: Timestamp,
+    var usuarioUid: String,
+    var actividadId: String
 ): Serializable {
-    constructor():this("", Timestamp(Date()))
+    constructor():this("", Timestamp(Date()),"","")
 
     var usuario: Usuario? = null
-    var referenciaUsuario: DocumentReference? = null
+    var usuarioReference: DocumentReference? = null
+
 }

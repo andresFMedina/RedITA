@@ -71,7 +71,7 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
     }
 
     override fun onSuccessRequest() {
-        this.startMainActivity()
+        this.startMainActivity(usuarioViewModel.usuario.value!!)
     }
 
     override fun onFailureRequest(message: String) {

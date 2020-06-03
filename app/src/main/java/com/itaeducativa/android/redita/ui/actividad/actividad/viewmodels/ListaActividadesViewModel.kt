@@ -1,21 +1,34 @@
-package com.itaeducativa.android.redita.ui.actividad
+package com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.repositorios.RepositorioActividad
+import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
 import com.itaeducativa.android.redita.network.RequestListener
+import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.ListaActividadesAdapter
+import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.MisActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionListener
 
 class ListaActividadesViewModel(
-    private val repositorioActividad: RepositorioActividad
+    private val repositorioActividad: RepositorioActividad,
+    private val repositorioUsuario: RepositorioUsuario
 ) : ViewModel(), ReaccionListener {
 
     private val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
 
     var requestListener: RequestListener? = null
-    val listaActividadesAdapter = ListaActividadesAdapter(this)
+    val listaActividadesAdapter by lazy {
+        ListaActividadesAdapter(
+            this
+        )
+    }
+
+    val misActividadesAdapter: MisActividadesAdapter by lazy {
+        MisActividadesAdapter()
+    }
+
 
     fun guardarActividadEnFirestore(actividad: Actividad) {
         requestListener?.onStartRequest()
@@ -50,15 +63,52 @@ class ListaActividadesViewModel(
                         comentarios = if (doc.getLong("comentarios") != null) doc.getLong("comentarios")
                             ?.toInt()!! else 0
                     )
-                    actividad.referenciaAutor = doc.getDocumentReference("autor")!!
+                    val autorUid = doc.getString("autorUid")!!
+                    actividad.autorUid = autorUid
+
+                    val referenciaAutor = repositorioUsuario.getUsuarioByUid(autorUid)
+                    actividad.referenciaAutor = referenciaAutor
                     actividades.add(actividad)
                 }
                 listaActividades.value = actividades
                 requestListener?.onSuccessRequest()
                 listaActividadesAdapter.actualizarActividades(listaActividades.value as MutableList<Actividad>)
             }
+    }
 
+    fun getActividadesByAutorUid(uid: String) {
+        requestListener?.onStartRequest()
+        repositorioActividad.getActividadesByAutorUid(uid)
+            .addSnapshotListener { value, e ->
+                if (e != null) {
+                    listaActividades.value = null
+                    requestListener?.onFailureRequest(e.message!!)
+                    return@addSnapshotListener
+                }
+                Log.d("Query usuario", value.toString())
+                val actividades: MutableList<Actividad> = mutableListOf()
+                for (doc in value!!) {
+                    val actividad = Actividad(
+                        nombre = doc.getString("nombre")!!,
+                        descripcion = doc.getString("descripcion")!!,
+                        fechaCreacionTimeStamp = doc.getTimestamp("fechaCreacionTimeStamp")!!,
+                        tipoActividad = doc.getString("tipoActividad")!!,
+                        meGusta = if (doc.getLong("meGusta") != null) doc.getLong("meGusta")
+                            ?.toInt()!! else 0,
+                        noMeGusta = if (doc.getLong("noMeGusta") != null) doc.getLong("noMeGusta")
+                            ?.toInt()!! else 0,
+                        comentarios = if (doc.getLong("comentarios") != null) doc.getLong("comentarios")
+                            ?.toInt()!! else 0
+                    )
+                    val autorUid = doc.getString("autorUid")!!
+                    actividad.autorUid = autorUid
 
+                    actividades.add(actividad)
+                }
+                listaActividades.value = actividades
+                requestListener?.onSuccessRequest()
+                misActividadesAdapter.actualizarActividades(listaActividades.value as MutableList<Actividad>)
+            }
     }
 
     fun agregarReaccion(actividad: Actividad, reaccion: String) {

@@ -1,16 +1,17 @@
-package com.itaeducativa.android.redita.ui.actividad
+package com.itaeducativa.android.redita.ui.actividad.actividad.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.databinding.CardviewActividadBinding
 import com.itaeducativa.android.redita.network.RequestListener
+import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel
+import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
 import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionListener
 import com.itaeducativa.android.redita.util.startActividadActivity
 
@@ -30,7 +31,8 @@ class ListaActividadesAdapter(
 
     ) :
         RecyclerView.ViewHolder(binding.root) {
-        private val viewModelActividad = ActividadViewModel()
+        private val viewModelActividad =
+            ActividadViewModel()
         val layout = binding.layoutReacciones
         val imageButtonMeGusta: ImageButton = binding.layoutReacciones.imageButtonMeGusta
         val imageButtonNoMeGusta: ImageButton = binding.layoutReacciones.imageButtonNoMeGusta
@@ -53,7 +55,10 @@ class ListaActividadesAdapter(
             parent,
             false
         )
-        return ViewHolder(binding, this)
+        return ViewHolder(
+            binding,
+            this
+        )
     }
 
     override fun getItemCount(): Int {
@@ -64,11 +69,11 @@ class ListaActividadesAdapter(
         holder.bind(listaActividades[position])
         holder.imageButtonMeGusta.setOnClickListener {
             reaccionListener.onMeGusta(listaActividades[position])
-            holder.imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_36dp)
+            holder.imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp)
         }
         holder.imageButtonNoMeGusta.setOnClickListener {
             reaccionListener.onNoMeGusta(listaActividades[position])
-            holder.imageButtonNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_36dp)
+            holder.imageButtonNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp)
         }
         holder.imageButtonComentarios.setOnClickListener {
             it.context.startActividadActivity(listaActividades[position])

@@ -6,21 +6,19 @@
     <data>
         <variable
             name="viewModel"
-            type="com.itaeducativa.android.redita.ui.actividad.ListaActividadesViewModel" />
+            type="com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.actividad.MisActividadesActivity">
-
-        <include layout="@layout/app_bar_layout" />
+        tools:context=".ui.actividad.actividad.ui.MisActividadesFragment">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_marginTop="?attr/actionBarSize">
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
@@ -35,8 +33,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
+            android:layout_marginStart="@dimen/fab_margin"
+            android:layout_marginEnd="@dimen/fab_margin"
             android:onClick="goToCrearActivity"
+            android:layout_marginBottom="70dp"
             android:src="@drawable/ic_post_add_white_36dp" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.comentario
+package com.itaeducativa.android.redita.ui.actividad.comentario.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Comentario
 import com.itaeducativa.android.redita.databinding.CardviewComentarioBinding
 import com.itaeducativa.android.redita.network.RequestListener
+import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ComentarioViewModel
 
 class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.ViewHolder>(), RequestListener {
     private lateinit var listaComentarios: List<Comentario>
@@ -16,7 +17,8 @@ class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.Vie
     class ViewHolder(private val binding: CardviewComentarioBinding, private val adapter: ListaComentariosAdapter) :
         RecyclerView.ViewHolder(binding.root) {
 
-        private val viewModel = ComentarioViewModel()
+        private val viewModel =
+            ComentarioViewModel()
 
         fun bind(comentario: Comentario) {
             viewModel.requestListener = adapter
@@ -33,7 +35,10 @@ class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.Vie
             parent,
             false
         )
-        return ViewHolder(binding, this)
+        return ViewHolder(
+            binding,
+            this
+        )
     }
 
     override fun getItemCount(): Int {

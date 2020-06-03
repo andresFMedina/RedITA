@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad
+package com.itaeducativa.android.redita.ui.actividad.actividad.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

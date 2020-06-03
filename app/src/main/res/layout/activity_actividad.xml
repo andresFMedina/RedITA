@@ -7,10 +7,10 @@
     <data>
         <variable
             name="viewModelActividad"
-            type="com.itaeducativa.android.redita.ui.actividad.ActividadViewModel" />
+            type="com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel" />
         <variable
             name="viewModelComentario"
-            type="com.itaeducativa.android.redita.ui.actividad.comentario.ListaComentariosViewModel" />
+            type="com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModel" />
         <variable
             name="textoComentario"
             type="String" />
@@ -19,7 +19,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.actividad.ActividadActivity">
+        tools:context=".ui.actividad.actividad.ui.ActividadActivity">
 
         <include
             layout="@layout/app_bar_layout"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_thumb_up_black_18dp"
+            app:endIconDrawable="@drawable/ic_send_black_24dp"
             app:endIconContentDescription="Enviar"
             >
             <com.google.android.material.textfield.TextInputEditText
@@ -79,6 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:hint="@string/escribe_tu_comentario"
+                android:text="@={textoComentario}"
                 android:importantForAutofill="no"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>

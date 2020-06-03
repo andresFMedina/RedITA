@@ -5,13 +5,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.itaeducativa.android.redita.ui.actividad.ActividadViewModel" />
+            type="com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.actividad.CrearActividadActivity">
+        tools:context=".ui.actividad.actividad.ui.CrearActividadActivity">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

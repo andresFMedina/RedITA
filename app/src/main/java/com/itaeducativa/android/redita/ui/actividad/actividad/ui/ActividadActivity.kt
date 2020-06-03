@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad
+package com.itaeducativa.android.redita.ui.actividad.actividad.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,14 +6,14 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FieldValue
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Comentario
 import com.itaeducativa.android.redita.databinding.ActivityActividadBinding
 import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.ui.actividad.comentario.ListaComentariosViewModel
-import com.itaeducativa.android.redita.ui.actividad.comentario.ListaComentariosViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel
+import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModel
+import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import kotlinx.android.synthetic.main.activity_actividad.*
@@ -54,10 +54,10 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
         viewModelComentario.getComentariosEnFirestorePorActividad(actividad.fechaCreacionTimeStamp!!.seconds.toString())
 
         editTextComentario.setEndIconOnClickListener {
-            val comentario = Comentario(textoComentario, Timestamp(Date()))
             val uid: String = autenticacionViewModel.usuario!!.uid
             val timestamp = actividad.fechaCreacionTimeStamp!!.seconds.toString()
-            viewModelComentario.agregarComentariosEnFirestorePorActividad(timestamp, comentario, uid)
+            val comentario = Comentario(textoComentario, Timestamp(Date()),uid, timestamp)
+            viewModelComentario.agregarComentariosEnFirestorePorActividad(comentario)
         }
 
     }

@@ -73,12 +73,28 @@
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBarLogin"
+        <RelativeLayout
+            android:id="@+id/layoutEstadoLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone" />
+            android:visibility="gone"
+            >
+
+            <ProgressBar
+                android:id="@+id/progressBarLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"                />
+
+            <TextView
+                android:id="@+id/textViewEstadoLogin"
+                android:layout_below="@id/progressBarLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

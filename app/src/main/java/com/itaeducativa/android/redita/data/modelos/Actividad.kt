@@ -15,6 +15,7 @@ class Actividad(
     var comentarios: Int
 ) : Serializable {
     var autor: Usuario? = null
+    var autorUid: String? = null
     var referenciaAutor: DocumentReference? = null
     var archivos: List<String>? = null
 

@@ -3,17 +3,19 @@ package com.itaeducativa.android.redita.data.repositorios
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Actividad
-import com.itaeducativa.android.redita.data.modelos.Reaccion
+
+private const val AUTOR_UID = "autorUid"
+private const val ACTIVIDADES = "actividades"
 
 class RepositorioActividad(private val firebase: FirebaseSource) {
     private val firestoreDB: FirebaseFirestore by lazy {
         firebase.firestoreDB
     }
 
-    private val ACTIVIDADES = "actividades"
+
 
     fun guardarActividadEnFirestore(actividad: Actividad): Task<Void> {
         val documentReference =
@@ -24,6 +26,9 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
 
     fun getActividades(): CollectionReference =
         firestoreDB.collection(ACTIVIDADES)
+
+    fun getActividadesByAutorUid(uid: String): Query =
+        firestoreDB.collection(ACTIVIDADES).whereEqualTo(AUTOR_UID, uid)
 
     fun eliminarActividad(actividad: Actividad): Task<Void> {
         val documentReference =

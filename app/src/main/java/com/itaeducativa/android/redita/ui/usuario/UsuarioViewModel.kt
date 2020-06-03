@@ -38,18 +38,19 @@ class UsuarioViewModel(private val repositorioUsuario: RepositorioUsuario): View
 
     }
 
-    fun getUsuarioByUid(uid: String): LiveData<Usuario> {
+    fun getUsuarioByUid(uid: String) {
         repositorioUsuario.getUsuarioByUid(uid)
             .addSnapshotListener(EventListener { value, e ->
+                requestListener?.onStartRequest()
                 if (e != null) {
                     usuario.value = null
+                    requestListener?.onFailureRequest(e.message!!)
                     return@EventListener
                 }
                 usuario.value = value!!.toObject(Usuario::class.java)
+                requestListener?.onSuccessRequest()
 
             })
-
-        return usuario
     }
 
 

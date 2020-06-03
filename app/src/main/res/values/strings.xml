@@ -26,4 +26,8 @@
     <string name="no_me_gusta">No me gusta</string>
     <string name="me_gusta">Me gusta</string>
     <string name="comentar">Comentar</string>
+    <string name="autenticando">Autenticando...</string>
+    <string name="error_encontrado">Error encontrado</string>
+    <string name="cargando_informacion">Cargando información...</string>
+    <string name="mis_actividades">Mis Actividades</string>
 </resources>

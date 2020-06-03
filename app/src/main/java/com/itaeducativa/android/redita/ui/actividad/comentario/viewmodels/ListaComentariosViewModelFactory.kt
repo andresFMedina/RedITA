@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.comentario
+package com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +12,9 @@ class ListaComentariosViewModelFactory(
 ): ViewModelProvider.NewInstanceFactory(){
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return ListaComentariosViewModel(repositorioComentario, repositorioUsuario) as T
+        return ListaComentariosViewModel(
+            repositorioComentario,
+            repositorioUsuario
+        ) as T
     }
 }

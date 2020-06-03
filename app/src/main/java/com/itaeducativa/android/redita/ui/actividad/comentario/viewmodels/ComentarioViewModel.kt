@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.comentario
+package com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,8 +19,8 @@ class ComentarioViewModel : ViewModel() {
         this.comentario.value = comentario.comentario
         fecha.value = comentario.fecha.toDate().toString()
         objetoComentario.value = comentario
-        if (comentario.referenciaUsuario != null)
-            bindUsuario(comentario.referenciaUsuario)
+        if (comentario.usuarioReference != null)
+            bindUsuario(comentario.usuarioReference)
         else
             usuario.value = comentario.usuario!!.nombreCompleto
     }
@@ -34,7 +34,7 @@ class ComentarioViewModel : ViewModel() {
             }
 
             objetoComentario.value!!.usuario = value!!.toObject(Usuario::class.java)
-            objetoComentario.value!!.referenciaUsuario = null
+            objetoComentario.value!!.usuarioReference = null
             requestListener?.onSuccessRequest()
         }
     }

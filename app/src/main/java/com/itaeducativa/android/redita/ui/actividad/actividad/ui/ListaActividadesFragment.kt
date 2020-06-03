@@ -1,36 +1,25 @@
-package com.itaeducativa.android.redita.ui.actividad
+package com.itaeducativa.android.redita.ui.actividad.actividad.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.itaeducativa.android.redita.R
-import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.databinding.FragmentListaActividadesBinding
 import com.itaeducativa.android.redita.network.RequestListener
+import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
+import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
 import kotlinx.android.synthetic.main.fragment_lista_actividades.*
 import org.kodein.di.Kodein
-import org.kodein.di.android.x.kodein
 import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ListaActividadesFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
     override val kodein: Kodein by kodein()
@@ -45,10 +34,6 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -81,13 +66,8 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListaActividadesFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance() =
+            ListaActividadesFragment()
     }
 
     override fun onSuccessRequest() {

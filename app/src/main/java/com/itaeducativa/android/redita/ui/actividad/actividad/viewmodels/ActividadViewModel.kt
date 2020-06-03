@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad
+package com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels
 
 import android.util.Log
 import android.view.View
@@ -8,7 +8,6 @@ import com.google.firebase.firestore.DocumentReference
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionListener
 import com.itaeducativa.android.redita.util.startActividadActivity
 
 class ActividadViewModel : ViewModel() {
