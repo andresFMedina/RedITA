@@ -29,7 +29,7 @@ fun Context.startActividadActivity(actividad: Actividad) =
         bundle.putSerializable("actividad", actividad)
         bundle.putLong("seconds", seconds!!)
         bundle.putInt("nanoseconds", nanoseconds!!)
-        it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         it.putExtras(bundle)
         startActivity(it)
     }
@@ -45,6 +45,6 @@ fun Context.startSingUpActivity() = Intent(this, SingUpActivity::class.java).als
 }
 
 fun Context.startCrearActividadActivity() = Intent(this, CrearActividadActivity::class.java).also {
-    it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
     startActivity(it)
 }

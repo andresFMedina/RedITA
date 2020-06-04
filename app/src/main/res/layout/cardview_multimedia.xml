@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_top_multimedia_layout"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
-        android:layout_width="189dp"
-        android:layout_gravity="center"
+    <data>
+        <variable
+            name="imagen"
+            type="String" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/imagenes"
-        android:src="@drawable/ic_launcher_background" />
+        android:layout_marginTop="@dimen/margin_top_multimedia_layout">
 
-    <VideoView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        />
+        <ImageView
+            android:layout_width="189dp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            app:imageUrl="@{imagen}"
+            android:contentDescription="@string/imagenes"
+            />
 
-</androidx.cardview.widget.CardView>
+        <VideoView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+    </androidx.cardview.widget.CardView>
+</layout>

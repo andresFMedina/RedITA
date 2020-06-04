@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.network.RequestListener
+import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.ImagenesAdapter
 import com.itaeducativa.android.redita.util.startActividadActivity
 
 class ActividadViewModel : ViewModel() {
@@ -24,6 +25,10 @@ class ActividadViewModel : ViewModel() {
     val imagenes = MutableLiveData<List<String>>()
 
     var requestListener: RequestListener? = null
+
+    val imagenesAdapter by lazy {
+        ImagenesAdapter(imagenes.value)
+    }
 
     fun bind(actividad: Actividad) {
         nombre.value = actividad.nombre

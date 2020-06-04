@@ -50,6 +50,7 @@
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    app:setAdapter="@{viewModelActividad.imagenesAdapter}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/cardview_multimedia"
                     tools:itemCount="6" />
