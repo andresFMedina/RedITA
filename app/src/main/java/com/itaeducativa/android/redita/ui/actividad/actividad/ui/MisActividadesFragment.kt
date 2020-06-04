@@ -15,6 +15,8 @@ import com.itaeducativa.android.redita.databinding.FragmentMisActividadesBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
+import com.itaeducativa.android.redita.util.startCrearActividadActivity
+import kotlinx.android.synthetic.main.fragment_mis_actividades.*
 import org.kodein.di.Kodein
 import org.kodein.di.android.x.kodein
 import org.kodein.di.KodeinAware
@@ -43,15 +45,19 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding: FragmentMisActividadesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_mis_actividades, container, false)
+        val binding: FragmentMisActividadesBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_mis_actividades, container, false)
         viewModel = ViewModelProviders.of(this, factory).get(ListaActividadesViewModel::class.java)
 
         binding.viewModel = viewModel
-        viewModel.requestListener = this
-
         viewModel.getActividadesByAutorUid(usuario!!.uid)
 
+        viewModel.requestListener = this
         return binding.root
+    }
+
+    fun goToCrearActivity(view: View) {
+        context!!.startCrearActividadActivity()
     }
 
     companion object {
@@ -67,10 +73,10 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
         fun newInstance(usuario: Usuario) =
             MisActividadesFragment()
                 .apply {
-                arguments = Bundle().apply {
-                    putSerializable(ARG_USUARIO, usuario)
+                    arguments = Bundle().apply {
+                        putSerializable(ARG_USUARIO, usuario)
+                    }
                 }
-            }
     }
 
     override fun onStartRequest() {
@@ -84,4 +90,6 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
     override fun onFailureRequest(message: String) {
         Log.e("error", message)
     }
+
+
 }

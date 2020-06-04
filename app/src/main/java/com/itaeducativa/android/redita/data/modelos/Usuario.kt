@@ -6,10 +6,11 @@ data class Usuario (
     val nombreCompleto: String,
     val rol: String,
     val telefono: String,
+    val imagenPerfilUrl: String,
     var email: String,
     val uid: String
 ): Serializable {
 
 
-    constructor():this("","","","","")
+    constructor():this("","","","","","")
 }

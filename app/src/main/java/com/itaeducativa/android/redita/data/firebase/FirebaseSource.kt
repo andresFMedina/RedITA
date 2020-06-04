@@ -2,7 +2,7 @@ package com.itaeducativa.android.redita.data.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import io.reactivex.Completable
+import com.google.firebase.storage.FirebaseStorage
 
 class FirebaseSource {
 
@@ -14,27 +14,15 @@ class FirebaseSource {
         FirebaseFirestore.getInstance()
     }
 
-    fun login(email: String, password: String) = Completable.create { emitter ->
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
-            if(!emitter.isDisposed) {
-                if (it.isSuccessful)
-                    emitter.onComplete()
-                else
-                    emitter.onError(it.exception!!)
-            }
-        }
+    val firebaseStorage: FirebaseStorage by lazy {
+        FirebaseStorage.getInstance()
     }
 
-    fun register(email: String, password: String) = Completable.create { emitter ->
-        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-            if(!emitter.isDisposed) {
-                if (it.isSuccessful)
-                    emitter.onComplete()
-                else
-                    emitter.onError(it.exception!!)
-            }
-        }
-    }
+    fun login(email: String, password: String) =
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+
+    fun register(email: String, password: String) =
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
 
     fun logout() = firebaseAuth.signOut()
 

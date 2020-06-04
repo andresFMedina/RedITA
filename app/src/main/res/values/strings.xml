@@ -30,4 +30,8 @@
     <string name="error_encontrado">Error encontrado</string>
     <string name="cargando_informacion">Cargando información...</string>
     <string name="mis_actividades">Mis Actividades</string>
+    <string name="crear_nueva_activivdad">Crear nueva activivdad</string>
+    <string name="creando">Creando...</string>
+    <string name="imagen_actividad">Imagen actividad</string>
+    <string name="imagenes">imagenes</string>
 </resources>

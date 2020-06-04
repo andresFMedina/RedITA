@@ -11,6 +11,7 @@ class ComentarioViewModel : ViewModel() {
     val comentario = MutableLiveData<String>()
     val fecha = MutableLiveData<String>()
     val usuario = MutableLiveData<String>()
+    val imagenPerfilUrl = MutableLiveData<String>()
     val objetoComentario = MutableLiveData<Comentario>()
 
     var requestListener: RequestListener? = null
@@ -19,10 +20,13 @@ class ComentarioViewModel : ViewModel() {
         this.comentario.value = comentario.comentario
         fecha.value = comentario.fecha.toDate().toString()
         objetoComentario.value = comentario
-        if (comentario.usuarioReference != null)
+        if (comentario.usuarioReference != null) {
             bindUsuario(comentario.usuarioReference)
-        else
+            imagenPerfilUrl.value = "gs://redita.appspot.com/img_profile.png"
+        } else {
             usuario.value = comentario.usuario!!.nombreCompleto
+            imagenPerfilUrl.value = comentario.usuario!!.imagenPerfilUrl
+        }
     }
 
     private fun bindUsuario(referenciaUsuario: DocumentReference?) {

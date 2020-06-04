@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -30,14 +30,15 @@
         </androidx.core.widget.NestedScrollView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabNuevaActividad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_marginStart="@dimen/fab_margin"
             android:layout_marginEnd="@dimen/fab_margin"
-            android:onClick="goToCrearActivity"
+            android:onClick="@{(v) -> viewModel.goToCrearActividad(v)}"
             android:layout_marginBottom="70dp"
-            android:src="@drawable/ic_post_add_white_36dp" />
+            app:srcCompat="@drawable/ic_post_add_white_36dp" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

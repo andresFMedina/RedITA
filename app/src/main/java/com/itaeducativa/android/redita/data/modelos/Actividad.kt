@@ -17,7 +17,7 @@ class Actividad(
     var autor: Usuario? = null
     var autorUid: String? = null
     var referenciaAutor: DocumentReference? = null
-    var archivos: List<String>? = null
+    var imagenes: List<String>? = null
 
 
     constructor():this("","", Timestamp(Date()),"",0,0,0)

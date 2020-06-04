@@ -9,6 +9,7 @@
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/layoutCrearActividad"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.actividad.actividad.ui.CrearActividadActivity">
@@ -33,6 +34,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/nombre_de_la_actividad"
+                        android:text="@={viewModel.nombre}"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,6 +46,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="text"
+                        android:text="@={viewModel.descripcion}"
                         android:lines="3"
                         android:hint="@string/descripcion" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -56,15 +59,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/tipo_de_actividad"
+                        android:text="@={viewModel.tipoActividad}"
                         android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
+                    android:id="@+id/buttonCrearActividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:onClick="crearActividad"
                     android:background="@color/colorPrimaryDark"
-                    android:text="@string/registrarse"
+                    android:text="@string/crear_nueva_activivdad"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>

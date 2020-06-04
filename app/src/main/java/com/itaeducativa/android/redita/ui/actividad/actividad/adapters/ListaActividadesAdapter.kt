@@ -2,8 +2,10 @@ package com.itaeducativa.android.redita.ui.actividad.actividad.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.itaeducativa.android.redita.R
@@ -37,9 +39,12 @@ class ListaActividadesAdapter(
         val imageButtonMeGusta: ImageButton = binding.layoutReacciones.imageButtonMeGusta
         val imageButtonNoMeGusta: ImageButton = binding.layoutReacciones.imageButtonNoMeGusta
         val imageButtonComentarios: ImageButton = binding.layoutReacciones.imageButtonComentarios
+        val imageViewActividad: ImageView = binding.imagenActividad
 
 
         fun bind(actividad: Actividad) {
+            if(actividad.imagenes == null || actividad.imagenes!!.size == 0)
+                imageViewActividad.visibility = View.GONE
             viewModelActividad.requestListener = adapter
             viewModelActividad.bind(actividad)
             binding.viewModelActividad = viewModelActividad

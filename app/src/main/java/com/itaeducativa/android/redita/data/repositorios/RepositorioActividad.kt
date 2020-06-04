@@ -20,7 +20,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     fun guardarActividadEnFirestore(actividad: Actividad): Task<Void> {
         val documentReference =
             firestoreDB.collection(ACTIVIDADES)
-                .document(actividad.fechaCreacionTimeStamp.toString())
+                .document(actividad.fechaCreacionTimeStamp!!.seconds.toString())
         return documentReference.set(actividad)
     }
 

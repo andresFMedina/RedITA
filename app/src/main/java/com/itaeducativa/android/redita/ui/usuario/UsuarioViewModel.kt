@@ -27,7 +27,8 @@ class UsuarioViewModel(private val repositorioUsuario: RepositorioUsuario): View
             email = email,
             rol = "",
             telefono = telefono!!,
-            uid = uid
+            uid = uid,
+            imagenPerfilUrl = ""
         )
         requestListener?.onStartRequest()
         repositorioUsuario.guardarUsuario(usuario.value!!).addOnSuccessListener {

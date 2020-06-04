@@ -1,15 +1,10 @@
 package com.itaeducativa.android.redita.ui.login
 
 import android.content.Context
-import android.view.View
 import androidx.lifecycle.ViewModel
 import com.itaeducativa.android.redita.data.repositorios.RepositorioAutenticacion
 import com.itaeducativa.android.redita.network.AutenticacionListener
 import com.itaeducativa.android.redita.util.startLoginActivity
-import com.itaeducativa.android.redita.util.startSingUpActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 class AutenticacionViewModel(private val repositorio: RepositorioAutenticacion) : ViewModel() {
     var email: String? = null
@@ -17,11 +12,9 @@ class AutenticacionViewModel(private val repositorio: RepositorioAutenticacion) 
 
     var autenticacionListener: AutenticacionListener? = null
 
-    private val disposables = CompositeDisposable()
 
-    val usuario by lazy {
-        repositorio.currentUser()
-    }
+    var usuario = repositorio.currentUser()
+
 
     fun login() {
         if(email.isNullOrEmpty() || password.isNullOrEmpty()){
@@ -31,15 +24,14 @@ class AutenticacionViewModel(private val repositorio: RepositorioAutenticacion) 
 
         autenticacionListener?.onStarted()
 
-        val disposable = repositorio.login(email!!, password!!)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({
-                autenticacionListener?.onSuccess()
-            },{
-                autenticacionListener?.onFailure(it.message!!)
-            })
-        disposables.add(disposable)
+        repositorio.login(email!!, password!!).addOnSuccessListener {
+            usuario = it.user
+            autenticacionListener?.onSuccess()
+
+        }.addOnFailureListener {
+            autenticacionListener?.onFailure(it.message!!)
+        }
+
     }
 
     fun singUp() {
@@ -48,16 +40,12 @@ class AutenticacionViewModel(private val repositorio: RepositorioAutenticacion) 
             return
         }
         autenticacionListener?.onStarted()
-        val disposable = repositorio.register(email!!, password!!)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                autenticacionListener?.onSuccess()
-            },{
-                autenticacionListener?.onFailure(it.message!!)
-            })
-
-        disposables.add(disposable)
+        repositorio.register(email!!, password!!).addOnSuccessListener {
+            usuario = it.user
+            autenticacionListener?.onSuccess()
+        }.addOnFailureListener {
+            autenticacionListener?.onFailure(it.message!!)
+        }
     }
 
 
@@ -67,8 +55,4 @@ class AutenticacionViewModel(private val repositorio: RepositorioAutenticacion) 
         context.startLoginActivity()
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        disposables.dispose()
-    }
 }

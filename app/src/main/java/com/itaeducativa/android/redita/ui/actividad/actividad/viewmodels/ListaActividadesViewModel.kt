@@ -1,6 +1,7 @@
 package com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels
 
 import android.util.Log
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.itaeducativa.android.redita.data.modelos.Actividad
@@ -10,7 +11,9 @@ import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.ListaActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.MisActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionListener
+import com.itaeducativa.android.redita.util.startCrearActividadActivity
 
+@Suppress("UNCHECKED_CAST")
 class ListaActividadesViewModel(
     private val repositorioActividad: RepositorioActividad,
     private val repositorioUsuario: RepositorioUsuario
@@ -34,8 +37,9 @@ class ListaActividadesViewModel(
         requestListener?.onStartRequest()
         repositorioActividad.guardarActividadEnFirestore(actividad).addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
+        }. addOnSuccessListener {
+            requestListener?.onSuccessRequest()
         }
-        requestListener?.onSuccessRequest()
     }
 
     fun getListaActividades() {
@@ -65,6 +69,7 @@ class ListaActividadesViewModel(
                     )
                     val autorUid = doc.getString("autorUid")!!
                     actividad.autorUid = autorUid
+                    actividad.imagenes = doc.get("imagenes") as List<String>?
 
                     val referenciaAutor = repositorioUsuario.getUsuarioByUid(autorUid)
                     actividad.referenciaAutor = referenciaAutor
@@ -128,5 +133,9 @@ class ListaActividadesViewModel(
 
     override fun onNoMeGusta(actividad: Actividad) {
         agregarReaccion(actividad, "noMeGusta")
+    }
+
+    fun goToCrearActividad(view: View) {
+        view.context.startCrearActividadActivity()
     }
 }

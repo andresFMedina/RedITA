@@ -20,6 +20,8 @@ class ActividadViewModel : ViewModel() {
     val meGusta = MutableLiveData<String>()
     val noMeGusta = MutableLiveData<String>()
     val comentarios = MutableLiveData<String>()
+    val imagenPerfilUrl = MutableLiveData<String>()
+    val imagenes = MutableLiveData<List<String>>()
 
     var requestListener: RequestListener? = null
 
@@ -32,10 +34,15 @@ class ActividadViewModel : ViewModel() {
         meGusta.value = actividad.meGusta.toString()
         noMeGusta.value = actividad.noMeGusta.toString()
         comentarios.value = actividad.comentarios.toString()
-        if (actividad.autor == null)
+        imagenes.value = actividad.imagenes
+        if (actividad.autor == null) {
             bindAutor(actividad.referenciaAutor)
-        else
+            imagenPerfilUrl.value = "gs://redita.appspot.com/img_profile.png"
+        } else {
             autor.value = actividad.autor!!.nombreCompleto
+
+            imagenPerfilUrl.value = actividad.autor!!.imagenPerfilUrl
+        }
     }
 
     fun bindAutor(referenciaAutor: DocumentReference?) {
@@ -48,7 +55,7 @@ class ActividadViewModel : ViewModel() {
             actividad.value!!.autor = value?.toObject(Usuario::class.java)!!
             autor.value = actividad.value!!.autor!!.nombreCompleto
             actividad.value!!.referenciaAutor = null
-            Log.d("Actividad", actividad.value?.autor?.nombreCompleto!!)
+            imagenPerfilUrl.value = actividad.value!!.autor!!.imagenPerfilUrl
             requestListener?.onSuccessRequest()
         }
     }

@@ -47,11 +47,20 @@
                     android:layout_height="wrap_content" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/cardview_multimedia"
                     tools:itemCount="6" />
+
+                <include
+                    android:id="@+id/layoutReacciones"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/linearlayout_reacciones"
+                    bind:viewModelActividad="@{viewModelActividad}"
+                    />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
