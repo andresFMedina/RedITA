@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.EventListener
 import com.itaeducativa.android.redita.data.modelos.Comentario
+import com.itaeducativa.android.redita.data.repositorios.RepositorioActividad
 import com.itaeducativa.android.redita.data.repositorios.RepositorioComentario
 import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
 import com.itaeducativa.android.redita.network.RequestListener
@@ -12,7 +13,8 @@ import com.itaeducativa.android.redita.ui.actividad.comentario.adapters.ListaCom
 
 class ListaComentariosViewModel(
     private val repositorioComentario: RepositorioComentario,
-    private val repositorioUsuario: RepositorioUsuario
+    private val repositorioUsuario: RepositorioUsuario,
+    private val repositorioActividad: RepositorioActividad
 ) :
     ViewModel() {
 
@@ -23,14 +25,22 @@ class ListaComentariosViewModel(
 
     var requestListener: RequestListener? = null
 
-    fun agregarComentariosEnFirestorePorActividad(comentario: Comentario) {
+    fun agregarComentariosEnFirestorePorActividad(
+        comentario: Comentario,
+        cantidadComentarios: Int
+    ) {
         requestListener?.onStartRequest()
         repositorioComentario.agregarComentarioEnFirestorePorActividad(comentario)
             .addOnFailureListener {
                 requestListener?.onFailureRequest(it.message!!)
             }.addOnSuccessListener {
-            requestListener?.onSuccessRequest()
-        }
+                repositorioActividad.sumarComentarios(comentario.actividadId, cantidadComentarios)
+                    .addOnSuccessListener {
+                        requestListener?.onSuccessRequest()
+                    }.addOnFailureListener {
+                    requestListener?.onFailureRequest(it.message!!)
+                }
+            }
     }
 
     fun getComentariosEnFirestorePorActividad(referenciaDocumentoActividad: String) {
@@ -51,7 +61,8 @@ class ListaComentariosViewModel(
                         actividadId = doc.getString("actividadId")!!,
                         usuarioUid = doc.getString("usuarioUid")!!
                     )
-                    comentario.usuarioReference = repositorioUsuario.getUsuarioByUid(comentario.usuarioUid)
+                    comentario.usuarioReference =
+                        repositorioUsuario.getUsuarioByUid(comentario.usuarioUid)
                     Log.d("Comentario", comentario.toString())
                     comentarios.add(comentario)
                 }

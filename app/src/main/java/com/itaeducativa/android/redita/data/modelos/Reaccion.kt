@@ -1,6 +1,12 @@
 package com.itaeducativa.android.redita.data.modelos
 
-data class Reaccion (
+import java.io.Serializable
+
+data class Reaccion(
     val tipoReaccion: String,
-    val usuario: Usuario
-)
+    val usuarioUid: String,
+    val actividadId: String,
+    val timestamp: String
+) : Serializable {
+    constructor() : this("", "", "", "")
+}

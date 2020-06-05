@@ -41,8 +41,10 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
             DataBindingUtil.setContentView(this, R.layout.activity_actividad)
         val viewModelActividad = ViewModelProviders.of(this).get(ActividadViewModel::class.java)
         viewModelActividad.bind(actividad)
-        val viewModelComentario = ViewModelProviders.of(this, factory).get(ListaComentariosViewModel::class.java)
-        val autenticacionViewModel = ViewModelProviders.of(this, autenticacionFactory).get(AutenticacionViewModel::class.java)
+        val viewModelComentario =
+            ViewModelProviders.of(this, factory).get(ListaComentariosViewModel::class.java)
+        val autenticacionViewModel = ViewModelProviders.of(this, autenticacionFactory)
+            .get(AutenticacionViewModel::class.java)
 
         binding.viewModelActividad = viewModelActividad
         binding.viewModelComentario = viewModelComentario
@@ -56,8 +58,11 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
             val uid: String = autenticacionViewModel.usuario!!.uid
             val timestamp = actividad.fechaCreacionTimeStamp
             textoComentario = inputComentario.text.toString().trim()
-            val comentario = Comentario(textoComentario, Timestamp(Date()),uid, timestamp)
-            viewModelComentario.agregarComentariosEnFirestorePorActividad(comentario)
+            val comentario = Comentario(textoComentario, Timestamp(Date()), uid, timestamp)
+            viewModelComentario.agregarComentariosEnFirestorePorActividad(
+                comentario,
+                actividad.comentarios + 1
+            )
             hideKeyboard(this)
             inputComentario.setText("")
         }

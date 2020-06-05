@@ -4,27 +4,33 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.itaeducativa.android.redita.data.modelos.Actividad
+import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.repositorios.RepositorioActividad
+import com.itaeducativa.android.redita.data.repositorios.RepositorioAutenticacion
+import com.itaeducativa.android.redita.data.repositorios.RepositorioReaccion
 import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.ListaActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.MisActividadesAdapter
-import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionListener
 import com.itaeducativa.android.redita.util.startCrearActividadActivity
 
 @Suppress("UNCHECKED_CAST")
 class ListaActividadesViewModel(
     private val repositorioActividad: RepositorioActividad,
-    private val repositorioUsuario: RepositorioUsuario
-) : ViewModel(), ReaccionListener {
+    private val repositorioUsuario: RepositorioUsuario,
+    private val repositorioReaccion: RepositorioReaccion,
+    private val repositorioAutenticacion: RepositorioAutenticacion
+) : ViewModel() {
 
     private val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
 
     var requestListener: RequestListener? = null
     val listaActividadesAdapter by lazy {
         ListaActividadesAdapter(
-            this
+            this,
+            repositorioAutenticacion.currentUser()!!.uid
         )
     }
 
@@ -54,24 +60,9 @@ class ListaActividadesViewModel(
 
                 val actividades: MutableList<Actividad> = mutableListOf()
                 for (doc in value!!) {
-                    Log.d("Documento", doc.data.toString())
-                    val actividad = Actividad(
-                        nombre = doc.getString("nombre")!!,
-                        descripcion = doc.getString("descripcion")!!,
-                        fechaCreacionTimeStamp = doc.getString("fechaCreacionTimeStamp")!!,
-                        tipoActividad = doc.getString("tipoActividad")!!,
-                        meGusta = if (doc.getLong("meGusta") != null) doc.getLong("meGusta")
-                            ?.toInt()!! else 0,
-                        noMeGusta = if (doc.getLong("noMeGusta") != null) doc.getLong("noMeGusta")
-                            ?.toInt()!! else 0,
-                        comentarios = if (doc.getLong("comentarios") != null) doc.getLong("comentarios")
-                            ?.toInt()!! else 0
-                    )
-                    val autorUid = doc.getString("autorUid")!!
-                    actividad.autorUid = autorUid
-                    actividad.imagenes = doc.get("imagenes") as List<String>?
+                    val actividad = crearActividadByDocumentReference(doc)
 
-                    val referenciaAutor = repositorioUsuario.getUsuarioByUid(autorUid)
+                    val referenciaAutor = repositorioUsuario.getUsuarioByUid(actividad.autorUid!!)
                     actividad.referenciaAutor = referenciaAutor
                     actividades.add(actividad)
                 }
@@ -94,22 +85,7 @@ class ListaActividadesViewModel(
                 val actividades: MutableList<Actividad> = mutableListOf()
                 for (doc in value!!) {
                     Log.d("Documento", doc.data.toString())
-                    val actividad = Actividad(
-                        nombre = doc.getString("nombre")!!,
-                        descripcion = doc.getString("descripcion")!!,
-                        fechaCreacionTimeStamp = doc.getString("fechaCreacionTimeStamp")!!,
-                        tipoActividad = doc.getString("tipoActividad")!!,
-                        meGusta = if (doc.getLong("meGusta") != null) doc.getLong("meGusta")
-                            ?.toInt()!! else 0,
-                        noMeGusta = if (doc.getLong("noMeGusta") != null) doc.getLong("noMeGusta")
-                            ?.toInt()!! else 0,
-                        comentarios = if (doc.getLong("comentarios") != null) doc.getLong("comentarios")
-                            ?.toInt()!! else 0
-                    )
-                    val autorUid = doc.getString("autorUid")!!
-                    actividad.autorUid = autorUid
-                    actividad.imagenes = doc.get("imagenes") as List<String>?
-
+                    val actividad = crearActividadByDocumentReference(doc)
                     actividades.add(actividad)
                 }
 
@@ -128,34 +104,51 @@ class ListaActividadesViewModel(
         }
     }
 
-    fun agregarReaccion(actividad: Actividad, reaccion: String) {
-        when (reaccion) {
-            "meGusta" -> repositorioActividad.agregarReaccion(
-                actividad,
-                reaccion,
-                actividad.meGusta++
-            ).addOnSuccessListener {
-                Log.d("Like", "Puesto ${reaccion} = ${actividad.meGusta}")
-            }.addOnFailureListener {
-                Log.e("error", it.message!!)
-            }
-            "noMeGusta" -> repositorioActividad.agregarReaccion(
-                actividad,
-                reaccion,
-                actividad.noMeGusta++
-            )
+    fun crearReaccion(reaccion: Reaccion, cantidadReaccion: Int) {
+        requestListener?.onStartRequest()
+        repositorioReaccion.crearReaccion(reaccion).addOnSuccessListener {
+            requestListener?.onSuccessRequest()
+            repositorioActividad.agregarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion, cantidadReaccion)
+        }.addOnFailureListener {
+            requestListener?.onFailureRequest(it.message!!)
         }
     }
 
-    override fun onMeGusta(actividad: Actividad) {
-        agregarReaccion(actividad, "meGusta")
+    fun eliminarReaccion(reaccion: Reaccion, cantidadReaccion: Int) {
+        requestListener?.onStartRequest()
+        repositorioReaccion.eliminarReaccion(reaccion.actividadId).addOnSuccessListener {
+            repositorioActividad.agregarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion, cantidadReaccion)
+            requestListener?.onSuccessRequest()
+        }.addOnFailureListener {
+            requestListener?.onFailureRequest(it.message!!)
+        }
     }
 
-    override fun onNoMeGusta(actividad: Actividad) {
-        agregarReaccion(actividad, "noMeGusta")
-    }
+    fun getReaccionByActividadIdYUsuarioUid(actividadId: String, usuarioUid: String) =
+        repositorioReaccion.getReaccionesByActividadIdYUsuarioUid(actividadId, usuarioUid)
+
 
     fun goToCrearActividad(view: View) {
         view.context.startCrearActividadActivity()
+    }
+
+    private fun crearActividadByDocumentReference(doc: QueryDocumentSnapshot): Actividad {
+        val actividad = Actividad(
+            nombre = doc.getString("nombre")!!,
+            descripcion = doc.getString("descripcion")!!,
+            fechaCreacionTimeStamp = doc.getString("fechaCreacionTimeStamp")!!,
+            tipoActividad = doc.getString("tipoActividad")!!,
+            meGusta = if (doc.getLong("meGusta") != null) doc.getLong("meGusta")
+                ?.toInt()!! else 0,
+            noMeGusta = if (doc.getLong("noMeGusta") != null) doc.getLong("noMeGusta")
+                ?.toInt()!! else 0,
+            comentarios = if (doc.getLong("comentarios") != null) doc.getLong("comentarios")
+                ?.toInt()!! else 0
+        )
+        val autorUid = doc.getString("autorUid")!!
+        actividad.autorUid = autorUid
+        actividad.imagenes = doc.get("imagenes") as List<String>?
+
+        return actividad
     }
 }

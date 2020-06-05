@@ -2,12 +2,10 @@ package com.itaeducativa.android.redita
 
 import android.app.Application
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
-import com.itaeducativa.android.redita.data.repositorios.RepositorioActividad
-import com.itaeducativa.android.redita.data.repositorios.RepositorioAutenticacion
-import com.itaeducativa.android.redita.data.repositorios.RepositorioComentario
-import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
+import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
 import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
 import org.kodein.di.Kodein
@@ -32,6 +30,8 @@ class FirebaseApplication : Application(), KodeinAware {
         bind() from provider {
             ListaActividadesViewModelFactory(
                 instance(),
+                instance(),
+                instance(),
                 instance()
             )
         }
@@ -39,9 +39,12 @@ class FirebaseApplication : Application(), KodeinAware {
         bind() from provider {
             ListaComentariosViewModelFactory(
                 instance(),
+                instance(),
                 instance()
             )
         }
+        bind() from singleton { RepositorioReaccion(instance()) }
+        bind() from provider { ReaccionViewModelFactory(instance()) }
     }
 
 }

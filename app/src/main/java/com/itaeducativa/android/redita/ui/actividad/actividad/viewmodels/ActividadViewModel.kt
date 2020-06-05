@@ -5,7 +5,9 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.modelos.Actividad
+import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.ImagenesAdapter
@@ -23,6 +25,7 @@ class ActividadViewModel : ViewModel() {
     val comentarios = MutableLiveData<String>()
     val imagenPerfilUrl = MutableLiveData<String>()
     val imagenes = MutableLiveData<List<String>>()
+    val reaccion = MutableLiveData<Reaccion>()
 
     var requestListener: RequestListener? = null
 
@@ -61,6 +64,18 @@ class ActividadViewModel : ViewModel() {
             autor.value = actividad.value!!.autor!!.nombreCompleto
             actividad.value!!.referenciaAutor = null
             imagenPerfilUrl.value = actividad.value!!.autor!!.imagenPerfilUrl
+            requestListener?.onSuccessRequest()
+        }
+    }
+
+    fun getReaccionByActividadIdYUsuarioUid(query: Query) {
+        query.addSnapshotListener { value, exception ->
+            requestListener?.onStartRequest()
+            if (exception != null) {
+                requestListener?.onFailureRequest(exception.message!!)
+                return@addSnapshotListener
+            }
+            reaccion.value = value?.firstOrNull()?.toObject(Reaccion::class.java)
             requestListener?.onSuccessRequest()
         }
     }
