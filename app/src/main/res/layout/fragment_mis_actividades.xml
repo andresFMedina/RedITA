@@ -12,7 +12,10 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.actividad.actividad.ui.MisActividadesFragment">
+        tools:context=".ui.actividad.actividad.ui.MisActividadesFragment"
+        android:paddingStart="@dimen/padding_horizontal_form"
+        android:paddingEnd="@dimen/padding_horizontal_form"
+        >
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

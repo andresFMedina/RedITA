@@ -8,7 +8,7 @@ import java.util.*
 class Actividad(
     var nombre: String,
     var descripcion: String,
-    var fechaCreacionTimeStamp: Timestamp?,
+    var fechaCreacionTimeStamp: String,
     var tipoActividad: String,
     var meGusta: Int,
     var noMeGusta: Int,
@@ -20,6 +20,6 @@ class Actividad(
     var imagenes: List<String>? = null
 
 
-    constructor():this("","", Timestamp(Date()),"",0,0,0)
+    constructor():this("","", "","",0,0,0)
 }
 

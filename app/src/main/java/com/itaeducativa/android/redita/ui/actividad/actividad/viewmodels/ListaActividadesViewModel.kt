@@ -29,7 +29,7 @@ class ListaActividadesViewModel(
     }
 
     val misActividadesAdapter: MisActividadesAdapter by lazy {
-        MisActividadesAdapter()
+        MisActividadesAdapter(this)
     }
 
 
@@ -37,7 +37,7 @@ class ListaActividadesViewModel(
         requestListener?.onStartRequest()
         repositorioActividad.guardarActividadEnFirestore(actividad).addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
-        }. addOnSuccessListener {
+        }.addOnSuccessListener {
             requestListener?.onSuccessRequest()
         }
     }
@@ -58,7 +58,7 @@ class ListaActividadesViewModel(
                     val actividad = Actividad(
                         nombre = doc.getString("nombre")!!,
                         descripcion = doc.getString("descripcion")!!,
-                        fechaCreacionTimeStamp = doc.getTimestamp("fechaCreacionTimeStamp")!!,
+                        fechaCreacionTimeStamp = doc.getString("fechaCreacionTimeStamp")!!,
                         tipoActividad = doc.getString("tipoActividad")!!,
                         meGusta = if (doc.getLong("meGusta") != null) doc.getLong("meGusta")
                             ?.toInt()!! else 0,
@@ -97,7 +97,7 @@ class ListaActividadesViewModel(
                     val actividad = Actividad(
                         nombre = doc.getString("nombre")!!,
                         descripcion = doc.getString("descripcion")!!,
-                        fechaCreacionTimeStamp = doc.getTimestamp("fechaCreacionTimeStamp")!!,
+                        fechaCreacionTimeStamp = doc.getString("fechaCreacionTimeStamp")!!,
                         tipoActividad = doc.getString("tipoActividad")!!,
                         meGusta = if (doc.getLong("meGusta") != null) doc.getLong("meGusta")
                             ?.toInt()!! else 0,
@@ -108,6 +108,7 @@ class ListaActividadesViewModel(
                     )
                     val autorUid = doc.getString("autorUid")!!
                     actividad.autorUid = autorUid
+                    actividad.imagenes = doc.get("imagenes") as List<String>?
 
                     actividades.add(actividad)
                 }
@@ -118,14 +119,31 @@ class ListaActividadesViewModel(
             }
     }
 
+    fun eliminarActividad(actividad: Actividad) {
+        requestListener?.onStartRequest()
+        repositorioActividad.eliminarActividad(actividad).addOnSuccessListener {
+            requestListener?.onSuccessRequest()
+        }.addOnFailureListener {
+            requestListener?.onFailureRequest(it.message!!)
+        }
+    }
+
     fun agregarReaccion(actividad: Actividad, reaccion: String) {
-        when(reaccion) {
-            "meGusta" -> repositorioActividad.agregarReaccion(actividad, reaccion,actividad.meGusta++).addOnSuccessListener{
+        when (reaccion) {
+            "meGusta" -> repositorioActividad.agregarReaccion(
+                actividad,
+                reaccion,
+                actividad.meGusta++
+            ).addOnSuccessListener {
                 Log.d("Like", "Puesto ${reaccion} = ${actividad.meGusta}")
             }.addOnFailureListener {
                 Log.e("error", it.message!!)
             }
-            "noMeGusta" -> repositorioActividad.agregarReaccion(actividad, reaccion,actividad.noMeGusta++)
+            "noMeGusta" -> repositorioActividad.agregarReaccion(
+                actividad,
+                reaccion,
+                actividad.noMeGusta++
+            )
         }
     }
 

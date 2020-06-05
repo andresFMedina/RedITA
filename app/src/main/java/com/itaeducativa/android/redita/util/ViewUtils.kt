@@ -1,8 +1,11 @@
 package com.itaeducativa.android.redita.util
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.itaeducativa.android.redita.MainActivity
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Usuario
@@ -23,12 +26,7 @@ fun Context.startMainActivity(usuario: Usuario) =
 fun Context.startActividadActivity(actividad: Actividad) =
     Intent(this, ActividadActivity::class.java).also {
         val bundle = Bundle()
-        val seconds = actividad.fechaCreacionTimeStamp?.seconds
-        val nanoseconds = actividad.fechaCreacionTimeStamp?.nanoseconds
-        actividad.fechaCreacionTimeStamp = null
         bundle.putSerializable("actividad", actividad)
-        bundle.putLong("seconds", seconds!!)
-        bundle.putInt("nanoseconds", nanoseconds!!)
         it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         it.putExtras(bundle)
         startActivity(it)
@@ -47,4 +45,11 @@ fun Context.startSingUpActivity() = Intent(this, SingUpActivity::class.java).als
 fun Context.startCrearActividadActivity() = Intent(this, CrearActividadActivity::class.java).also {
     it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
     startActivity(it)
+}
+
+fun Context.hideKeyboard(activity: Activity) {
+    val inputMethodManager: InputMethodManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    val view: View = activity.currentFocus?: View(activity)
+    inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+
 }

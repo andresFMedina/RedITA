@@ -32,6 +32,6 @@
     <string name="mis_actividades">Mis Actividades</string>
     <string name="crear_nueva_activivdad">Crear nueva activivdad</string>
     <string name="creando">Creando...</string>
-    <string name="imagen_actividad">Imagen actividad</string>
     <string name="imagenes">imagenes</string>
+    <string name="imagen_actividad">Imagen actividad</string>
 </resources>

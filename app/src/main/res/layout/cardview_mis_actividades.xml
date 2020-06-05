@@ -39,12 +39,14 @@
                 android:layout_alignParentEnd="true">
 
                 <ImageButton
+                    android:id="@+id/imageButtonEditar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_edit_black_18dp"
                     android:contentDescription="@string/editar" />
 
                 <ImageButton
+                    android:id="@+id/imageButtonEliminar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_delete_black_18dp"
@@ -52,13 +54,14 @@
 
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <ImageView
                 android:id="@+id/imageViewMiActividad"
                 android:layout_centerVertical="true"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 app:imageUrl="@{viewModel.imagenes.get(0)}"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/imagen_actividad" />
 
             <TextView
                 android:layout_width="match_parent"

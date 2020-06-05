@@ -19,7 +19,7 @@ import com.itaeducativa.android.redita.util.startActividadActivity
 
 
 class ListaActividadesAdapter(
-    listaActividadesViewModel: ListaActividadesViewModel
+    private val listaActividadesViewModel: ListaActividadesViewModel
 ) : RecyclerView.Adapter<ListaActividadesAdapter.ViewHolder>(),
     RequestListener {
     private lateinit var listaActividades: List<Actividad>

@@ -21,7 +21,7 @@ class RepositorioComentario
 
     fun getComentariosEnFirestorePorActividad(referenciaDocumentoActividad: String): Query =
         firestoreDB.collection(COMENTARIOS)
-            .whereEqualTo("actividadId", referenciaDocumentoActividad)
+            .whereEqualTo("actividadId", referenciaDocumentoActividad).orderBy("fecha", Query.Direction.DESCENDING)
 
 
 }

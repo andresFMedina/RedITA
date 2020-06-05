@@ -33,7 +33,7 @@ class ActividadViewModel : ViewModel() {
     fun bind(actividad: Actividad) {
         nombre.value = actividad.nombre
         descripcion.value = actividad.descripcion
-        fechaCreacionTimeStamp.value = actividad.fechaCreacionTimeStamp?.toDate().toString()
+        fechaCreacionTimeStamp.value = actividad.fechaCreacionTimeStamp
         tipoActividad.value = actividad.tipoActividad
         this.actividad.value = actividad
         meGusta.value = actividad.meGusta.toString()

@@ -2,6 +2,7 @@ package com.itaeducativa.android.redita.ui.actividad.actividad.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -16,6 +17,7 @@ import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaC
 import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
+import com.itaeducativa.android.redita.util.hideKeyboard
 import kotlinx.android.synthetic.main.activity_actividad.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -35,9 +37,6 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actividad = intent.extras?.getSerializable("actividad") as Actividad
-        val seconds = intent.extras?.getLong("seconds")
-        val nanoseconds = intent.extras?.getInt("nanoseconds")
-        actividad.fechaCreacionTimeStamp = Timestamp(seconds!!, nanoseconds!!)
         val binding: ActivityActividadBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_actividad)
         val viewModelActividad = ViewModelProviders.of(this).get(ActividadViewModel::class.java)
@@ -51,14 +50,16 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
 
         viewModelComentario.requestListener = this
 
-        viewModelComentario.getComentariosEnFirestorePorActividad(actividad.fechaCreacionTimeStamp!!.seconds.toString())
+        viewModelComentario.getComentariosEnFirestorePorActividad(actividad.fechaCreacionTimeStamp)
 
         editTextComentario.setEndIconOnClickListener {
             val uid: String = autenticacionViewModel.usuario!!.uid
-            val timestamp = actividad.fechaCreacionTimeStamp!!.seconds.toString()
-            textoComentario = editTextComentario.editText!!.text.toString().trim()
+            val timestamp = actividad.fechaCreacionTimeStamp
+            textoComentario = inputComentario.text.toString().trim()
             val comentario = Comentario(textoComentario, Timestamp(Date()),uid, timestamp)
             viewModelComentario.agregarComentariosEnFirestorePorActividad(comentario)
+            hideKeyboard(this)
+            inputComentario.setText("")
         }
 
     }
@@ -73,6 +74,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
 
     override fun onFailureRequest(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        Log.e("Error query", message)
     }
 
 

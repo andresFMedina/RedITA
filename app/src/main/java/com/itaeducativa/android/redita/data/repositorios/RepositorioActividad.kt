@@ -20,7 +20,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     fun guardarActividadEnFirestore(actividad: Actividad): Task<Void> {
         val documentReference =
             firestoreDB.collection(ACTIVIDADES)
-                .document(actividad.fechaCreacionTimeStamp!!.seconds.toString())
+                .document(actividad.fechaCreacionTimeStamp)
         return documentReference.set(actividad)
     }
 
@@ -33,13 +33,13 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     fun eliminarActividad(actividad: Actividad): Task<Void> {
         val documentReference =
             firestoreDB.collection(ACTIVIDADES)
-                .document(actividad.fechaCreacionTimeStamp.toString())
+                .document(actividad.fechaCreacionTimeStamp)
         return documentReference.delete()
     }
 
     fun agregarReaccion(actividad: Actividad, reaccion: String, valor: Int): Task<Void> {
         val documentReference = firestoreDB.collection(ACTIVIDADES)
-            .document(actividad.fechaCreacionTimeStamp!!.seconds.toString())
+            .document(actividad.fechaCreacionTimeStamp)
         return documentReference.update(reaccion, valor)
     }
 
