@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:setAdapter="@{viewModel.listaActividadesAdapter}"
+                app:setAdapter="@{viewModel.misActividadesAdapter}"
                 tools:listitem="@layout/cardview_mis_actividades"
                 tools:itemCount="3" />
         </androidx.core.widget.NestedScrollView>

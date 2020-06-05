@@ -1,5 +1,6 @@
 package com.itaeducativa.android.redita.ui.actividad.actividad.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -19,7 +20,9 @@ class MisActividadesAdapter() : RecyclerView.Adapter<MisActividadesAdapter.ViewH
     ) : RecyclerView.ViewHolder(binding.root) {
         private val viewModel = ActividadViewModel()
 
+
         fun bind(actividad: Actividad) {
+            binding.viewModel = viewModel
             viewModel.bind(actividad)
         }
     }

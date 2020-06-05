@@ -93,6 +93,7 @@ class ListaActividadesViewModel(
                 Log.d("Query usuario", value.toString())
                 val actividades: MutableList<Actividad> = mutableListOf()
                 for (doc in value!!) {
+                    Log.d("Documento", doc.data.toString())
                     val actividad = Actividad(
                         nombre = doc.getString("nombre")!!,
                         descripcion = doc.getString("descripcion")!!,
@@ -110,9 +111,10 @@ class ListaActividadesViewModel(
 
                     actividades.add(actividad)
                 }
+
                 listaActividades.value = actividades
                 requestListener?.onSuccessRequest()
-                misActividadesAdapter.actualizarActividades(listaActividades.value as MutableList<Actividad>)
+                misActividadesAdapter.actualizarActividades(actividades)
             }
     }
 

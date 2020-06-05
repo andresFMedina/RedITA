@@ -56,6 +56,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
         editTextComentario.setEndIconOnClickListener {
             val uid: String = autenticacionViewModel.usuario!!.uid
             val timestamp = actividad.fechaCreacionTimeStamp!!.seconds.toString()
+            textoComentario = editTextComentario.editText!!.text.toString().trim()
             val comentario = Comentario(textoComentario, Timestamp(Date()),uid, timestamp)
             viewModelComentario.agregarComentariosEnFirestorePorActividad(comentario)
         }
