@@ -18,28 +18,25 @@ class ListaComentariosViewModel(
 ) :
     ViewModel() {
 
-    val listaComentarios: MutableLiveData<List<Comentario>> = MutableLiveData()
+    private val listaComentarios = MutableLiveData<List<Comentario>>()
 
     val listaComentariosAdapter: ListaComentariosAdapter =
         ListaComentariosAdapter()
 
     var requestListener: RequestListener? = null
 
-    fun agregarComentariosEnFirestorePorActividad(
-        comentario: Comentario,
-        cantidadComentarios: Int
-    ) {
+    fun agregarComentariosEnFirestorePorActividad(comentario: Comentario) {
         requestListener?.onStartRequest()
         repositorioComentario.agregarComentarioEnFirestorePorActividad(comentario)
             .addOnFailureListener {
                 requestListener?.onFailureRequest(it.message!!)
             }.addOnSuccessListener {
-                repositorioActividad.sumarComentarios(comentario.actividadId, cantidadComentarios)
+                repositorioActividad.sumarComentarios(comentario.actividadId)
                     .addOnSuccessListener {
                         requestListener?.onSuccessRequest()
                     }.addOnFailureListener {
-                    requestListener?.onFailureRequest(it.message!!)
-                }
+                        requestListener?.onFailureRequest(it.message!!)
+                    }
             }
     }
 

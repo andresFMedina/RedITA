@@ -59,10 +59,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
             val timestamp = actividad.fechaCreacionTimeStamp
             textoComentario = inputComentario.text.toString().trim()
             val comentario = Comentario(textoComentario, Timestamp(Date()), uid, timestamp)
-            viewModelComentario.agregarComentariosEnFirestorePorActividad(
-                comentario,
-                actividad.comentarios + 1
-            )
+            viewModelComentario.agregarComentariosEnFirestorePorActividad(comentario)
             hideKeyboard(this)
             inputComentario.setText("")
         }

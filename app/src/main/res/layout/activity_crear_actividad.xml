@@ -26,6 +26,27 @@
                 android:paddingEnd="@dimen/padding_horizontal_form"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/textViewEstadoImagenes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/no_se_han_seleccionado_imagenes"
+                    />
+
+                <Button
+                    android:id="@+id/buttonAgregarImagenes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginTop="@dimen/margin_top_multimedia_layout"
+                    android:layout_marginBottom="@dimen/margin_top_multimedia_layout"
+                    android:text="@string/subir_imagenes"
+                    android:textColor="@android:color/white"
+                    android:onClick="elegirImagenes"
+                    />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -70,6 +91,7 @@
                     android:layout_gravity="center"
                     android:onClick="crearActividad"
                     android:background="@color/colorPrimaryDark"
+                    android:layout_marginTop="@dimen/margin_top_multimedia_layout"
                     android:text="@string/crear_nueva_activivdad"
                     android:textColor="@android:color/white" />
 

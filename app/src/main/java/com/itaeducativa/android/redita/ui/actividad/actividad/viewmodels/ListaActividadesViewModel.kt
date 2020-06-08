@@ -1,5 +1,6 @@
 package com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels
 
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
@@ -7,10 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Reaccion
-import com.itaeducativa.android.redita.data.repositorios.RepositorioActividad
-import com.itaeducativa.android.redita.data.repositorios.RepositorioAutenticacion
-import com.itaeducativa.android.redita.data.repositorios.RepositorioReaccion
-import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
+import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.ListaActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.MisActividadesAdapter
@@ -21,7 +19,8 @@ class ListaActividadesViewModel(
     private val repositorioActividad: RepositorioActividad,
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioReaccion: RepositorioReaccion,
-    private val repositorioAutenticacion: RepositorioAutenticacion
+    private val repositorioAutenticacion: RepositorioAutenticacion,
+    private val repositorioStorage: RepositorioStorage
 ) : ViewModel() {
 
     private val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
@@ -45,6 +44,14 @@ class ListaActividadesViewModel(
             requestListener?.onFailureRequest(it.message!!)
         }.addOnSuccessListener {
             requestListener?.onSuccessRequest()
+
+        }
+    }
+
+    fun agregarImagenesAActividad(actividadId: String, rutaImagen: String, imagen: Uri) {
+        repositorioStorage.subirFotoStorage(rutaImagen, imagen).addOnSuccessListener {
+            val urlImagen = "gs://redita.appspot.com${it.storage.path}"
+            repositorioActividad.guardarUrlImagenesEnFirestore(actividadId, urlImagen)
         }
     }
 

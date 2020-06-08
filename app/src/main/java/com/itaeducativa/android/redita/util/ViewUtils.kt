@@ -63,4 +63,12 @@ fun Context.fileChooser(activity: Activity) = Intent().also {
     activity.startActivityForResult(it, ACTION_RESULT_GET_IMAGES)
 }
 
+fun Context.multipleFileChooser(activity: Activity) = Intent().also {
+    it.setType("image/*");
+    it.setAction(Intent.ACTION_GET_CONTENT)
+    it.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+    activity.startActivityForResult(it, ACTION_RESULT_GET_IMAGES)
+}
+
+
 fun Context.showSnackbar(mensaje: String, view: View) = Snackbar.make(view, mensaje, Snackbar.LENGTH_SHORT).show()

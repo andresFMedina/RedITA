@@ -36,4 +36,8 @@
     <string name="imagen_actividad">Imagen actividad</string>
     <string name="foto_de_perfil">Foto de perfil</string>
     <string name="tu_foto_de_perfil">Tu foto de perfil</string>
+    <string name="subir_imagenes">Subir imagenes</string>
+    <string name="se_han_agregado">Se han agregado</string>
+    <string name="no_se_han_seleccionado_imagenes">No se han seleccionado imagenes</string>
+    <string name="se_ha_agregado_una_imagen">Se ha agregado una imagen</string>
 </resources>

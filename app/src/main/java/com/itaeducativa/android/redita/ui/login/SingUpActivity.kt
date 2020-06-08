@@ -39,6 +39,7 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
 
     var uriImagen: Uri? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
