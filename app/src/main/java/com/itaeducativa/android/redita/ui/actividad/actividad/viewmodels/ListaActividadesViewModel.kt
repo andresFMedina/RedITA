@@ -116,7 +116,7 @@ class ListaActividadesViewModel(
 
     fun eliminarReaccion(reaccion: Reaccion, cantidadReaccion: Int) {
         requestListener?.onStartRequest()
-        repositorioReaccion.eliminarReaccion(reaccion.actividadId).addOnSuccessListener {
+        repositorioReaccion.eliminarReaccion(reaccion.timestamp).addOnSuccessListener {
             repositorioActividad.agregarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion, cantidadReaccion)
             requestListener?.onSuccessRequest()
         }.addOnFailureListener {

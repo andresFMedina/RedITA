@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         autenticacionViewModel =
             ViewModelProviders.of(this, factory).get(AutenticacionViewModel::class.java)
 
-        //bottomBarMenuPrincipal.menu().isVisible = false
+        bottomBarMenuPrincipal.menu.findItem(R.id.menuMisActividades).isVisible = usuario.rol == "Docente"
         bottomBarMenuPrincipal.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menuInicio -> {

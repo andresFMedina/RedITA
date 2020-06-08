@@ -1,6 +1,8 @@
 package com.itaeducativa.android.redita.data.repositorios
 
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 
@@ -25,7 +27,9 @@ class RepositorioReaccion(private val firebase: FirebaseSource) {
     fun getReaccionesByActividadId(actividadId: String) =
         firestoreDB.collection(REACCIONES).whereEqualTo(ACTIVIDAD_ID, actividadId)
 
-    fun getReaccionesByActividadIdYUsuarioUid(actividadId: String, usuarioUid: String) =
-        firestoreDB.collection(REACCIONES).whereEqualTo(ACTIVIDAD_ID, actividadId).whereEqualTo(
-            USUARIO_UID, usuarioUid)
+    fun getReaccionesByActividadIdYUsuarioUid(actividadId: String, usuarioUid: String): Query {
+        var query = firestoreDB.collection(REACCIONES).whereEqualTo(ACTIVIDAD_ID, actividadId)
+        query = query.whereEqualTo(USUARIO_UID, usuarioUid)
+        return query
+    }
 }

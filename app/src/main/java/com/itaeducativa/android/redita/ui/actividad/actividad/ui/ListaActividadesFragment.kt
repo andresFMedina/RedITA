@@ -71,7 +71,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
     }
 
     override fun onSuccessRequest() {
-        //progressBarListaActividades.visibility = View.GONE
+        progressBarListaActividades.visibility = View.GONE
     }
 
     override fun onFailureRequest(message: String) {
@@ -81,4 +81,10 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
     override fun onStartRequest() {
         progressBarListaActividades.visibility = View.VISIBLE
     }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.requestListener = null
+    }
+
 }

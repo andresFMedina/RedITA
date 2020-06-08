@@ -16,6 +16,7 @@ import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaAc
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
+import com.itaeducativa.android.redita.util.showSnackbar
 import kotlinx.android.synthetic.main.activity_crear_actividad.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -55,7 +56,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
     override fun onSuccessRequest() {
         buttonCrearActividad.isEnabled = true
         buttonCrearActividad.text = getText(R.string.crear_nueva_activivdad)
-        Snackbar.make(layoutCrearActividad, "Se ha creado la actividad", Snackbar.LENGTH_SHORT).show()
+        showSnackbar("Se ha creado la actividad", coordinatorCrearActividad)
     }
 
     override fun onFailureRequest(message: String) {

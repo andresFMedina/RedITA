@@ -4,8 +4,10 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.modelos.Usuario
@@ -69,20 +71,22 @@ class ActividadViewModel : ViewModel() {
     }
 
     fun getReaccionByActividadIdYUsuarioUid(query: Query) {
-        query.addSnapshotListener { value, exception ->
-            requestListener?.onStartRequest()
-            if (exception != null) {
-                requestListener?.onFailureRequest(exception.message!!)
-                return@addSnapshotListener
+        requestListener?.onStartRequest()
+        query.get().addOnCompleteListener {
+            if (it.isSuccessful) {
+                requestListener?.onSuccessRequest()
+                reaccion.value = it.result?.firstOrNull()?.toObject(Reaccion::class.java)
+                actividad.value?.reaccion = reaccion.value
+            } else {
+                requestListener?.onFailureRequest("Falló")
             }
-            reaccion.value = value?.firstOrNull()?.toObject(Reaccion::class.java)
-            requestListener?.onSuccessRequest()
         }
     }
 
 
     fun verActividad(view: View) {
         view.context.startActividadActivity(actividad.value!!)
+        Log.d("Escucha", "Im listening")
     }
 
 }

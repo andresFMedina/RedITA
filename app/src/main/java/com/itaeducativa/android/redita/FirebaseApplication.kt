@@ -23,9 +23,10 @@ class FirebaseApplication : Application(), KodeinAware {
 
         bind() from singleton { FirebaseSource() }
         bind() from singleton { RepositorioAutenticacion(instance()) }
+        bind() from singleton { RepositorioStorage() }
         bind() from provider { AutenticacionViewModelFactory(instance()) }
         bind() from singleton { RepositorioUsuario(instance()) }
-        bind() from provider { UsuarioViewModelFactory(instance()) }
+        bind() from provider { UsuarioViewModelFactory(instance(), instance()) }
         bind() from singleton { RepositorioActividad(instance()) }
         bind() from provider {
             ListaActividadesViewModelFactory(

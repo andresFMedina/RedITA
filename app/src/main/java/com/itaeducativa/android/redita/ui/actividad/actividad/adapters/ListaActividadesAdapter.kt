@@ -36,6 +36,7 @@ class ListaActividadesAdapter(
         RecyclerView.ViewHolder(binding.root) {
         val viewModelActividad =
             ActividadViewModel()
+
         val layout = binding.layoutReacciones
         val imageButtonMeGusta: ImageButton = binding.layoutReacciones.imageButtonMeGusta
         val imageButtonNoMeGusta: ImageButton = binding.layoutReacciones.imageButtonNoMeGusta
@@ -47,13 +48,18 @@ class ListaActividadesAdapter(
             if (actividad.imagenes.isNullOrEmpty())
                 imageViewActividad.visibility = View.GONE
             viewModelActividad.requestListener = adapter
+            if(actividad.reaccion == null) {
+                val query = adapter.listaActividadesViewModel.getReaccionByActividadIdYUsuarioUid(
+                    actividad.fechaCreacionTimeStamp,
+                    adapter.uidUsuarioActual
+                )
+                viewModelActividad.getReaccionByActividadIdYUsuarioUid(query)
+            }
             viewModelActividad.bind(actividad)
-            val query = adapter.listaActividadesViewModel.getReaccionByActividadIdYUsuarioUid(
-                actividad.fechaCreacionTimeStamp,
-                adapter.uidUsuarioActual
-            )
-            viewModelActividad.getReaccionByActividadIdYUsuarioUid(query)
+
             binding.viewModelActividad = viewModelActividad
+
+
 
         }
 
@@ -78,8 +84,10 @@ class ListaActividadesAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(listaActividades[position])
-        holder.viewModelActividad.reaccion.value?.let {
-            when (it.tipoReaccion) {
+
+        val reaccion = holder.viewModelActividad.reaccion.value
+        if (reaccion != null) {
+            when (reaccion.tipoReaccion) {
                 "meGusta" -> holder.imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp)
                 "noMeGusta" -> holder.imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp)
             }
@@ -107,7 +115,7 @@ class ListaActividadesAdapter(
                 holder.viewModelActividad.reaccion.value,
                 listaActividades[position],
                 "noMeGusta",
-                listaActividades[position].meGusta + 1
+                listaActividades[position].noMeGusta + 1
             )
         }
         holder.imageButtonComentarios.setOnClickListener {
@@ -120,7 +128,7 @@ class ListaActividadesAdapter(
             usuarioUid = uidUsuarioActual,
             tipoReaccion = tipoReaccion,
             actividadId = actividadId,
-            timestamp = Timestamp(Date()).toString()
+            timestamp = Timestamp(Date()).seconds.toString()
         )
 
 

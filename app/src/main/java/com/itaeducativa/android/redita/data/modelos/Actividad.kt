@@ -17,6 +17,7 @@ class Actividad(
     var autor: Usuario? = null
     var autorUid: String? = null
     var referenciaAutor: DocumentReference? = null
+    var reaccion: Reaccion? = null
     var imagenes: List<String>? = null
 
 

@@ -1,5 +1,8 @@
 package com.itaeducativa.android.redita.ui.login
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,24 +14,30 @@ import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.databinding.ActivitySingUpBinding
 import com.itaeducativa.android.redita.network.AutenticacionListener
 import com.itaeducativa.android.redita.network.RequestListener
+import com.itaeducativa.android.redita.ui.ImageUploadListener
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModel
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
+import com.itaeducativa.android.redita.util.fileChooser
+import com.itaeducativa.android.redita.util.showSnackbar
 import com.itaeducativa.android.redita.util.startLoginActivity
 import com.itaeducativa.android.redita.util.startMainActivity
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_sing_up.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
-class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListener, KodeinAware {
+private const val ACTION_RESULT_GET_IMAGES = 0
+
+class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListener, ImageUploadListener, KodeinAware {
     override val kodein: Kodein by kodein()
     private val autenticacionFactory: AutenticacionViewModelFactory by instance()
     private val usuarioFactory: UsuarioViewModelFactory by instance()
 
     private lateinit var usuarioViewModel: UsuarioViewModel
     private lateinit var autenticacionViewModel: AutenticacionViewModel
+
+    var uriImagen: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +53,7 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
 
         autenticacionViewModel.autenticacionListener = this
         usuarioViewModel.requestListener = this
+        usuarioViewModel.imageUploadListener = this
     }
 
     override fun onStarted() {
@@ -55,8 +65,13 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
 
     override fun onSuccess() {
         progressBarSingUp.visibility = View.GONE
-        val uid = autenticacionViewModel.usuario!!.uid
-        usuarioViewModel.guardarUsuario(autenticacionViewModel.email!!, uid)
+        if(uriImagen != null) {
+           usuarioViewModel.uploadProfileImage(uriImagen!!, this)
+        } else {
+            val uid = autenticacionViewModel.usuario!!.uid
+            usuarioViewModel.guardarUsuario(autenticacionViewModel.email!!, uid, null)
+        }
+
     }
 
     override fun onFailure(mensaje: String) {
@@ -77,10 +92,41 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
     override fun onFailureRequest(message: String) {
         buttonRegistarse.isEnabled = true
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        layoutSignUp.visibility = View.VISIBLE
     }
 
     fun goToLoginActivity(view: View) {
         this.startLoginActivity()
+    }
+
+    fun elegirImagen(view: View) {
+        this.fileChooser(this)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ACTION_RESULT_GET_IMAGES && resultCode == Activity.RESULT_OK &&
+            data != null && data.data != null
+        ) {
+            uriImagen = data.data!!
+            imageViewFotoPerfilSignUp.setImageURI(uriImagen)
+            imageViewFotoPerfilSignUp.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onStartUploadImage() {
+        progressBarSingUp.visibility = View.VISIBLE
+    }
+
+    override fun onSuccessUploadImage(rutaImagen: String) {
+        Log.d("ruta", rutaImagen)
+        val uid = autenticacionViewModel.usuario!!.uid
+        usuarioViewModel.guardarUsuario(autenticacionViewModel.email!!, uid, rutaImagen)
+    }
+
+    override fun onFailureUploadImage(message: String) {
+        showSnackbar(message, coordinatorSignUp)
+        layoutSignUp.visibility = View.GONE
     }
 
 }
