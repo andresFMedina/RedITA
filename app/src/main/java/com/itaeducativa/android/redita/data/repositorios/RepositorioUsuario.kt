@@ -15,6 +15,13 @@ class RepositorioUsuario (private val firebase: FirebaseSource) {
         return documentReference.set(usuario)
     }
 
+    fun modificarTelefono(telefono: String, usuarioUid: String): Task<Void> =
+        firestoreDB.collection(USUARIOS).document(usuarioUid).update("telefono", telefono)
+
     fun getUsuarioByUid(uid: String): DocumentReference =
         firestoreDB.collection(USUARIOS).document(uid)
+
+    fun cambiarUrlImagenPerfil(url: String, uid: String): Task<Void> =
+        firestoreDB.collection(USUARIOS).document(uid).update("imagenPerfilUrl", url)
+
 }

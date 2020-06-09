@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
                     true
                 }
                 R.id.menuPerfil -> {
-                    openFragment(PerfilFragment.newInstance("", ""))
+                    openFragment(PerfilFragment.newInstance(usuario))
                     true
 
                 }

@@ -1,33 +1,49 @@
 package com.itaeducativa.android.redita.ui.usuario
 
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 
 import com.itaeducativa.android.redita.R
+import com.itaeducativa.android.redita.data.modelos.Usuario
+import com.itaeducativa.android.redita.databinding.FragmentPerfilBinding
+import com.itaeducativa.android.redita.util.fileChooser
+import com.itaeducativa.android.redita.util.hideKeyboard
+import kotlinx.android.synthetic.main.fragment_perfil.*
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.kodein
+import org.kodein.di.generic.instance
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val USUARIO = "usuario"
+
+private const val ACTION_RESULT_GET_IMAGES = 0
 
 /**
  * A simple [Fragment] subclass.
  * Use the [PerfilFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PerfilFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class PerfilFragment : Fragment(), KodeinAware {
+    override val kodein: Kodein by kodein()
+    private val factory: UsuarioViewModelFactory by instance()
+
+    private lateinit var viewModel: UsuarioViewModel
+    private lateinit var usuario: Usuario
+
+    private var uriImagen: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            usuario = it.getSerializable(USUARIO) as Usuario
         }
     }
 
@@ -35,9 +51,35 @@ class PerfilFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_perfil, container, false)
+        val binding: FragmentPerfilBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_perfil, container, false)
+        viewModel = ViewModelProviders.of(this, factory).get(UsuarioViewModel::class.java)
+
+        binding.viewModel = viewModel
+        viewModel.bindUsuario(usuario)
+
+        binding.textFieldTelefono.setEndIconOnClickListener {
+            viewModel.modificarTelefono()
+            context!!.hideKeyboard(activity!!)
+        }
+
+        binding.buttonCambiarImagenPerfil.setOnClickListener {
+            context!!.fileChooser(activity!!)
+        }
+
+        return binding.root
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == ACTION_RESULT_GET_IMAGES && resultCode == Activity.RESULT_OK &&
+            data != null && data.data != null
+        ) {
+            uriImagen = data.data!!
+            imagenPerfil.setImageURI(uriImagen)
+            viewModel.cambiarImagenPerfil(uriImagen!!, context!!)
+        }
+    }
+
 
     companion object {
         /**
@@ -50,11 +92,10 @@ class PerfilFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(usuario: Usuario) =
             PerfilFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(USUARIO, usuario)
                 }
             }
     }

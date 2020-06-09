@@ -18,21 +18,32 @@ class UsuarioViewModel(
 ) : ViewModel() {
 
     val usuario: MutableLiveData<Usuario> = MutableLiveData()
-    var email: String? = null
-    var nombreCompleto: String? = null
-    var telefono: String? = null
+    val email = MutableLiveData<String>()
+    val nombreCompleto = MutableLiveData<String>()
+    val telefono = MutableLiveData<String>()
+    val rol = MutableLiveData<String>()
+    val imagenPerfilUrl = MutableLiveData<String>()
 
     var requestListener: RequestListener? = null
     var imageUploadListener: ImageUploadListener? = null
 
+    fun bindUsuario(usuario: Usuario) {
+        this.usuario.value = usuario
+        email.value = usuario.email
+        nombreCompleto.value = usuario.nombreCompleto
+        telefono.value = usuario.telefono
+        rol.value = usuario.rol
+        imagenPerfilUrl.value = usuario.imagenPerfilUrl
+    }
+
     fun guardarUsuario(email: String, uid: String, urlImagen: String?) {
-        val imagen = if (urlImagen != null) urlImagen else "gs://redita.appspot.com/img_profile.png"
+        val imagen = urlImagen ?: "gs://redita.appspot.com/img_profile.png"
 
         usuario.value = Usuario(
-            nombreCompleto = nombreCompleto!!,
+            nombreCompleto = nombreCompleto.value!!,
             email = email,
             rol = "",
-            telefono = telefono!!,
+            telefono = telefono.value!!,
             uid = uid,
             imagenPerfilUrl = imagen
         )
@@ -59,6 +70,18 @@ class UsuarioViewModel(
                 requestListener?.onSuccessRequest()
 
             })
+    }
+
+    fun modificarTelefono() {
+        repositorioUsuario.modificarTelefono(telefono.value!!, usuario.value!!.uid)
+    }
+
+    fun cambiarImagenPerfil(uriImagen: Uri, context: Context) {
+        val ruta = "${System.currentTimeMillis()}.${getExtension(uriImagen, context)}"
+        repositorioStorage.subirArchivoStorage(ruta, uriImagen).addOnSuccessListener {
+            val url = "gs://redita.appspot.com${it.storage.path}"
+            repositorioUsuario.cambiarUrlImagenPerfil(url, usuario.value!!.uid)
+        }
     }
 
     fun uploadProfileImage(uriImagen: Uri, context: Context) {

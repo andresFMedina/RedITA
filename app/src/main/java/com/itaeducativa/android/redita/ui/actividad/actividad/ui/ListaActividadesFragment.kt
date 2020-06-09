@@ -82,9 +82,10 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
         progressBarListaActividades.visibility = View.VISIBLE
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
         viewModel.requestListener = null
     }
+
 
 }

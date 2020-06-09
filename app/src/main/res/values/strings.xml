@@ -43,4 +43,6 @@
     <string name="subir_video">Subir video</string>
     <string name="no_se_ha_seleccionado_video">No se ha seleccionado video</string>
     <string name="se_ha_agregado_un_video">Se ha agregado un video</string>
+    <string name="cambiar_foto">Cambiar Foto</string>
+    <string name="tu_actividad">Tu actividad</string>
 </resources>

@@ -29,7 +29,8 @@ import org.kodein.di.generic.instance
 
 private const val ACTION_RESULT_GET_IMAGES = 0
 
-class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListener, ImageUploadListener, KodeinAware {
+class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListener,
+    ImageUploadListener, KodeinAware {
     override val kodein: Kodein by kodein()
     private val autenticacionFactory: AutenticacionViewModelFactory by instance()
     private val usuarioFactory: UsuarioViewModelFactory by instance()
@@ -66,8 +67,8 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
 
     override fun onSuccess() {
         progressBarSingUp.visibility = View.GONE
-        if(uriImagen != null) {
-           usuarioViewModel.uploadProfileImage(uriImagen!!, this)
+        if (uriImagen != null) {
+            usuarioViewModel.uploadProfileImage(uriImagen!!, this)
         } else {
             val uid = autenticacionViewModel.usuario!!.uid
             usuarioViewModel.guardarUsuario(autenticacionViewModel.email!!, uid, null)

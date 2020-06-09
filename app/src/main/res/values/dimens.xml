@@ -20,4 +20,7 @@
     <dimen name="margin_end_image_button_reacciones">5dp</dimen>
     <dimen name="margin_end_textview_reacciones">10dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="textview_tu_actividad_size">20sp</dimen>
+    <dimen name="margintop_textview_actividad">10dp</dimen>
+    <dimen name="textsize_mi_actividad">16sp</dimen>
 </resources>

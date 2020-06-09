@@ -28,6 +28,7 @@
                 android:layout_height="@dimen/height_width_image_circle_actividad"
                 android:layout_marginEnd="@dimen/margin_end_imagen_perfil"
                 app:imageUrl="@{viewModel.imagenPerfilUrl}"
+                android:scaleType="centerCrop"
                 />
 
             <TextView
