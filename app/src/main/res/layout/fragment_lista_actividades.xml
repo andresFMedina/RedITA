@@ -20,7 +20,9 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:setAdapter="@{viewModel.listaActividadesAdapter}"
-            tools:listitem="@layout/cardview_actividad" />
+            tools:listitem="@layout/cardview_actividad"
+            android:layout_marginBottom="70dp"
+            />
 
         <ProgressBar
             android:id="@+id/progressBarListaActividades"

@@ -28,6 +28,7 @@ class ActividadViewModel : ViewModel() {
     val imagenPerfilUrl = MutableLiveData<String>()
     val imagenes = MutableLiveData<List<String>>()
     val reaccion = MutableLiveData<Reaccion>()
+    private var fueConsultado = false
 
     var requestListener: RequestListener? = null
 
@@ -71,16 +72,19 @@ class ActividadViewModel : ViewModel() {
     }
 
     fun getReaccionByActividadIdYUsuarioUid(query: Query) {
-        requestListener?.onStartRequest()
-        query.get().addOnCompleteListener {
-            if (it.isSuccessful) {
-                requestListener?.onSuccessRequest()
-                reaccion.value = it.result?.firstOrNull()?.toObject(Reaccion::class.java)
-                actividad.value?.reaccion = reaccion.value
-            } else {
-                requestListener?.onFailureRequest("Falló")
-            }
-        }
+        if(reaccion.value == null && !fueConsultado)
+        {
+            requestListener?.onStartRequest()
+            query.get().addOnCompleteListener {
+                if (it.isSuccessful) {
+                    fueConsultado = true
+                    requestListener?.onSuccessRequest()
+                    reaccion.value = it.result?.firstOrNull()?.toObject(Reaccion::class.java)
+                    actividad.value?.reaccion = reaccion.value
+                } else {
+                    requestListener?.onFailureRequest("Falló")
+                }
+            }}
     }
 
 

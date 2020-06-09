@@ -43,10 +43,16 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         return documentReference.delete()
     }
 
-    fun agregarReaccionActividad(actividadId: String, reaccion: String, valor: Int): Task<Void> {
+    fun sumarReaccionActividad(actividadId: String, reaccion: String): Task<Void> {
         val documentReference = firestoreDB.collection(ACTIVIDADES)
             .document(actividadId)
-        return documentReference.update(reaccion, valor)
+        return documentReference.update(reaccion, FieldValue.increment(1))
+    }
+
+    fun restarReaccionActividad(actividadId: String, reaccion: String): Task<Void> {
+        val documentReference = firestoreDB.collection(ACTIVIDADES)
+            .document(actividadId)
+        return documentReference.update(reaccion, FieldValue.increment(-1))
     }
 
     fun sumarComentarios(actividadId: String): Task<Void> {

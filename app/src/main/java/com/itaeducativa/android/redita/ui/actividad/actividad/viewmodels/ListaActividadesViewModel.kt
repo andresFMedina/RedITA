@@ -111,20 +111,20 @@ class ListaActividadesViewModel(
         }
     }
 
-    fun crearReaccion(reaccion: Reaccion, cantidadReaccion: Int) {
+    fun crearReaccion(reaccion: Reaccion) {
         requestListener?.onStartRequest()
         repositorioReaccion.crearReaccion(reaccion).addOnSuccessListener {
             requestListener?.onSuccessRequest()
-            repositorioActividad.agregarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion, cantidadReaccion)
+            repositorioActividad.sumarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion)
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }
     }
 
-    fun eliminarReaccion(reaccion: Reaccion, cantidadReaccion: Int) {
+    fun eliminarReaccion(reaccion: Reaccion) {
         requestListener?.onStartRequest()
         repositorioReaccion.eliminarReaccion(reaccion.timestamp).addOnSuccessListener {
-            repositorioActividad.agregarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion, cantidadReaccion)
+            repositorioActividad.restarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion)
             requestListener?.onSuccessRequest()
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
