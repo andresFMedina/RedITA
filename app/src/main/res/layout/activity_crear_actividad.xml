@@ -47,6 +47,27 @@
                     android:onClick="elegirImagenes"
                     />
 
+                <TextView
+                    android:id="@+id/textViewEstadoVideo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/no_se_ha_seleccionado_video"
+                    />
+
+                <Button
+                    android:id="@+id/buttonAgregarVideo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginTop="@dimen/margin_top_multimedia_layout"
+                    android:layout_marginBottom="@dimen/margin_top_multimedia_layout"
+                    android:text="@string/subir_video"
+                    android:textColor="@android:color/white"
+                    android:onClick="elegirVideo"
+                    />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">

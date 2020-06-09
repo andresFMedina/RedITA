@@ -12,7 +12,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 class RepositorioStorage() {
     private val storage: FirebaseStorage = FirebaseStorage.getInstance()
 
-    fun subirFotoStorage(reference: String, imagenUri: Uri) =
+    fun subirArchivoStorage(reference: String, imagenUri: Uri) =
         storage.reference.child(reference).putFile(imagenUri)
 
     companion object DataBindingAdapter {

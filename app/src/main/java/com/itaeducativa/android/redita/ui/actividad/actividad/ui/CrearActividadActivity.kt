@@ -19,10 +19,7 @@ import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaAc
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
-import com.itaeducativa.android.redita.util.fileChooser
-import com.itaeducativa.android.redita.util.getExtension
-import com.itaeducativa.android.redita.util.multipleFileChooser
-import com.itaeducativa.android.redita.util.showSnackbar
+import com.itaeducativa.android.redita.util.*
 import kotlinx.android.synthetic.main.activity_crear_actividad.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -31,6 +28,7 @@ import org.kodein.di.generic.instance
 import java.util.*
 
 private const val ACTION_RESULT_GET_IMAGES = 0
+private const val ACTION_RESULT_GET_VIDEO = 1
 
 class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
     override val kodein: Kodein by kodein()
@@ -39,8 +37,9 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
 
     private lateinit var autenticacionViewModel: AutenticacionViewModel
     private lateinit var listaActividadesViewModel: ListaActividadesViewModel
-    val actividadViewModel: ActividadViewModel = ActividadViewModel()
+    private val actividadViewModel: ActividadViewModel = ActividadViewModel()
     private val imagenesUri = mutableListOf<Uri>()
+    private var videoUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,9 +86,9 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         )
         actividad.autorUid = autenticacionViewModel.usuario!!.uid
         listaActividadesViewModel.guardarActividadEnFirestore(actividad)
-        if(!imagenesUri.isEmpty()){
+        if(imagenesUri.isNotEmpty()){
             for (imagen in imagenesUri) {
-                val ruta = "${System.currentTimeMillis()}${getExtension(imagen, this)}"
+                val ruta = "${System.currentTimeMillis()}.${getExtension(imagen, this)}"
                 listaActividadesViewModel.agregarImagenesAActividad(
                     actividad.fechaCreacionTimeStamp,
                     ruta,
@@ -97,10 +96,22 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 )
             }
         }
+        if(videoUri != null) {
+            val ruta = "${System.currentTimeMillis()}.${getExtension(videoUri!!, this)}"
+            listaActividadesViewModel.agregarVideoAActividad(
+                actividad.fechaCreacionTimeStamp,
+                ruta,
+                videoUri!!
+            )
+        }
     }
 
     fun elegirImagenes(view: View) {
         this.multipleFileChooser(this)
+    }
+
+    fun elegirVideo(view: View) {
+        this.videoChooser(this)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -128,6 +139,13 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 }
 
 
+            }
+        }
+
+        if (requestCode == ACTION_RESULT_GET_VIDEO && resultCode == Activity.RESULT_OK) {
+            if (data != null && data.data != null) {
+                videoUri = data.data!!
+                textViewEstadoVideo.text = getString(R.string.se_ha_agregado_un_video)
             }
         }
     }

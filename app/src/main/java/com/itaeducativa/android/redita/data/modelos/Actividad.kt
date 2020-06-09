@@ -19,6 +19,7 @@ class Actividad(
     var referenciaAutor: DocumentReference? = null
     var reaccion: Reaccion? = null
     var imagenes: List<String>? = null
+    var video: String? = null
 
 
     constructor():this("","", "","",0,0,0)

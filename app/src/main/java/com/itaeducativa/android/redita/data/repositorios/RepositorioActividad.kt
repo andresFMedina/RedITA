@@ -61,5 +61,11 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         return documentReference.update("comentarios", FieldValue.increment(1))
     }
 
+    fun guardarUrlVideoEnFirestore(actividadId: String, urlVideo: String): Task<Void> {
+        val documentReference =
+            firestoreDB.collection(ACTIVIDADES).document(actividadId)
+        return documentReference.update("video",urlVideo)
+    }
+
 
 }

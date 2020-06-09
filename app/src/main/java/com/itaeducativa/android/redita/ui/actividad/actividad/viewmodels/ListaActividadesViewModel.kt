@@ -49,9 +49,16 @@ class ListaActividadesViewModel(
     }
 
     fun agregarImagenesAActividad(actividadId: String, rutaImagen: String, imagen: Uri) {
-        repositorioStorage.subirFotoStorage(rutaImagen, imagen).addOnSuccessListener {
+        repositorioStorage.subirArchivoStorage(rutaImagen, imagen).addOnSuccessListener {
             val urlImagen = "gs://redita.appspot.com${it.storage.path}"
             repositorioActividad.guardarUrlImagenesEnFirestore(actividadId, urlImagen)
+        }
+    }
+
+    fun agregarVideoAActividad(actividadId: String, rutaVideo: String, video: Uri) {
+        repositorioStorage.subirArchivoStorage(rutaVideo, video).addOnSuccessListener {
+            val urlVideo = "gs://redita.appspot.com${it.storage.path}"
+            repositorioActividad.guardarUrlVideoEnFirestore(actividadId, urlVideo)
         }
     }
 

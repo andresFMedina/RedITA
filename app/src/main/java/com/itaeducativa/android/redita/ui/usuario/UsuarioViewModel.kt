@@ -64,7 +64,7 @@ class UsuarioViewModel(
     fun uploadProfileImage(uriImagen: Uri, context: Context) {
         val ruta = "${System.currentTimeMillis()}.${getExtension(uriImagen, context)}"
         imageUploadListener?.onStartUploadImage()
-        repositorioStorage.subirFotoStorage(ruta, uriImagen).addOnSuccessListener {
+        repositorioStorage.subirArchivoStorage(ruta, uriImagen).addOnSuccessListener {
             val url = "gs://redita.appspot.com${it.storage.path}"
             imageUploadListener?.onSuccessUploadImage(url)
         }.addOnFailureListener {

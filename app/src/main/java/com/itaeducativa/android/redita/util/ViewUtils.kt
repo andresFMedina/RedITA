@@ -16,6 +16,7 @@ import com.itaeducativa.android.redita.ui.login.LoginActivity
 import com.itaeducativa.android.redita.ui.login.SingUpActivity
 
 private const val ACTION_RESULT_GET_IMAGES = 0
+private const val ACTION_RESULT_GET_VIDEO = 1
 
 fun Context.startMainActivity(usuario: Usuario) =
     Intent(this, MainActivity::class.java).also {
@@ -61,6 +62,12 @@ fun Context.fileChooser(activity: Activity) = Intent().also {
     it.setType("image/*");
     it.setAction(Intent.ACTION_GET_CONTENT)
     activity.startActivityForResult(it, ACTION_RESULT_GET_IMAGES)
+}
+
+fun Context.videoChooser(activity: Activity) = Intent().also {
+    it.setType("video/*");
+    it.setAction(Intent.ACTION_GET_CONTENT)
+    activity.startActivityForResult(it, ACTION_RESULT_GET_VIDEO)
 }
 
 fun Context.multipleFileChooser(activity: Activity) = Intent().also {

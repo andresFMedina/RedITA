@@ -40,4 +40,7 @@
     <string name="se_han_agregado">Se han agregado</string>
     <string name="no_se_han_seleccionado_imagenes">No se han seleccionado imagenes</string>
     <string name="se_ha_agregado_una_imagen">Se ha agregado una imagen</string>
+    <string name="subir_video">Subir video</string>
+    <string name="no_se_ha_seleccionado_video">No se ha seleccionado video</string>
+    <string name="se_ha_agregado_un_video">Se ha agregado un video</string>
 </resources>
