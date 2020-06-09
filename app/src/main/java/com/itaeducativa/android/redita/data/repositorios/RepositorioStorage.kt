@@ -3,6 +3,7 @@ package com.itaeducativa.android.redita.data.repositorios
 import android.net.Uri
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
@@ -14,6 +15,9 @@ class RepositorioStorage() {
 
     fun subirArchivoStorage(reference: String, imagenUri: Uri) =
         storage.reference.child(reference).putFile(imagenUri)
+
+    fun getReferenciaVideoDeUrl(url: String): Task<Uri> =
+        storage.getReferenceFromUrl(url).downloadUrl
 
     companion object DataBindingAdapter {
         private val storage: FirebaseStorage = FirebaseStorage.getInstance()

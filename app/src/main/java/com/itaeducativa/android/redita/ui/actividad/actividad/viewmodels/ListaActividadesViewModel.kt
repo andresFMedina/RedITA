@@ -162,6 +162,7 @@ class ListaActividadesViewModel(
         val autorUid = doc.getString("autorUid")!!
         actividad.autorUid = autorUid
         actividad.imagenes = doc.get("imagenes") as List<String>?
+        actividad.video = doc.getString("video")
 
         return actividad
     }

@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModelActividad"
             type="com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel" />
+
         <variable
             name="viewModelComentario"
             type="com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModel" />
+
         <variable
             name="textoComentario"
             type="String" />
@@ -23,8 +26,7 @@
 
         <include
             layout="@layout/app_bar_layout"
-            bind:titulo="@{viewModelActividad.nombre}"
-            />
+            bind:titulo="@{viewModelActividad.nombre}" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -34,42 +36,48 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="?attr/actionBarSize"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/padding_horizontal_actividad"
-                android:paddingEnd="@dimen/padding_horizontal_actividad"
                 android:paddingTop="@dimen/padding_top_actividad"
-                android:layout_marginTop="?attr/actionBarSize">
+                android:paddingEnd="@dimen/padding_horizontal_actividad">
 
                 <include
                     layout="@layout/relative_layout_actividad"
-                    bind:viewModel="@{viewModelActividad}"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    bind:viewModel="@{viewModelActividad}" />
+
+                <VideoView
+                    android:id="@+id/videoActividad"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+
+                    />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:setAdapter="@{viewModelActividad.imagenesAdapter}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/cardview_multimedia"
-                    tools:itemCount="6" />
+                    app:setAdapter="@{viewModelActividad.imagenesAdapter}"
+                    tools:itemCount="6"
+                    tools:listitem="@layout/cardview_multimedia" />
 
                 <include
                     android:id="@+id/layoutReacciones"
+                    layout="@layout/linearlayout_reacciones"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    layout="@layout/linearlayout_reacciones"
-                    bind:viewModelActividad="@{viewModelActividad}"
-                    />
+                    bind:viewModelActividad="@{viewModelActividad}" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:setAdapter="@{viewModelComentario.listaComentariosAdapter}"
-                    tools:listitem="@layout/cardview_comentario"
-                    tools:itemCount="2" />
+                    tools:itemCount="2"
+                    tools:listitem="@layout/cardview_comentario" />
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
@@ -77,22 +85,22 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/editTextComentario"
             android:layout_width="match_parent"
-            android:layout_gravity="bottom"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:background="@android:color/white"
-            app:endIconMode="custom"
-            app:endIconDrawable="@drawable/ic_send_black_24dp"
             app:endIconContentDescription="Enviar"
-            >
+            app:endIconDrawable="@drawable/ic_send_black_24dp"
+            app:endIconMode="custom">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputComentario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:hint="@string/escribe_tu_comentario"
-                android:text="@={textoComentario}"
                 android:importantForAutofill="no"
-                android:inputType="text" />
+                android:inputType="text"
+                android:text="@={textoComentario}" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
