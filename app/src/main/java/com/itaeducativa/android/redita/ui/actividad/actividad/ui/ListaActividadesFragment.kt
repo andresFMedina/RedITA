@@ -52,6 +52,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
         viewModel.requestListener = this
 
+
         return binding.root
     }
 

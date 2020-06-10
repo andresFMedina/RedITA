@@ -54,6 +54,8 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         binding.viewModel = actividadViewModel
 
         listaActividadesViewModel.requestListener = this
+        supportActionBar?.title = "Crear actividad"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onStartRequest() {
@@ -137,8 +139,6 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                     imagenesUri.add(data.data!!)
                     textViewEstadoImagenes.text = getString(R.string.se_ha_agregado_una_imagen)
                 }
-
-
             }
         }
 

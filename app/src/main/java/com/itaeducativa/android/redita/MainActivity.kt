@@ -1,8 +1,9 @@
 package com.itaeducativa.android.redita
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
@@ -28,7 +29,13 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        usuario = intent.extras!!.getSerializable("usuario") as Usuario
+        val extras = intent.extras
+        if (extras != null) {
+            usuario = extras.getSerializable("usuario") as Usuario
+        } else {
+            usuario = savedInstanceState!!.getSerializable("usuario") as Usuario
+        }
+
         Log.d("USuario", usuario.toString())
 
         autenticacionViewModel =
@@ -66,6 +73,16 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         transaction.replace(R.id.container, fragment)
         transaction.addToBackStack(null)
         transaction.commit()
+    }
 
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        outState.putSerializable("usuario", usuario)
+
+        super.onSaveInstanceState(outState, outPersistentState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        usuario = savedInstanceState.getSerializable("usuario") as Usuario
     }
 }

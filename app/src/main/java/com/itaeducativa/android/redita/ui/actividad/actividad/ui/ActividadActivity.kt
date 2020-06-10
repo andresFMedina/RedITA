@@ -3,6 +3,8 @@ package com.itaeducativa.android.redita.ui.actividad.actividad.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.MediaController
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -44,7 +46,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actividad = intent.extras?.getSerializable("actividad") as Actividad
-        Log.d("Actividad", actividad.video!!)
+
         val binding: ActivityActividadBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_actividad)
         val viewModelActividad = ViewModelProviders.of(this).get(ActividadViewModel::class.java)
@@ -57,7 +59,8 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
         storageViewModel =
             ViewModelProviders.of(this, storageViewModelFactory).get(StorageViewModel::class.java)
 
-        if(actividad.video != null) storageViewModel.getVideoUri(actividad.video!!)
+        if (actividad.video != null) storageViewModel.getVideoUri(actividad.video!!)
+        else videoActividad.visibility = View.GONE
 
         binding.viewModelActividad = viewModelActividad
         binding.viewModelComentario = viewModelComentario
@@ -77,6 +80,9 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
             hideKeyboard(this)
             inputComentario.setText("")
         }
+
+        supportActionBar?.title = actividad.nombre
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
     }
 
@@ -98,6 +104,9 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
     }
 
     override fun onSuccessVideo() {
+        val mediaController = MediaController(this)
+        mediaController.setMediaPlayer(videoActividad)
+        videoActividad.setMediaController(mediaController)
         videoActividad.setVideoURI(storageViewModel.uri.value!!)
     }
 
