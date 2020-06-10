@@ -1,6 +1,8 @@
 package com.itaeducativa.android.redita.ui.login
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +20,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import org.w3c.dom.Text
 
 class LoginActivity : AppCompatActivity(),
     AutenticacionListener, KodeinAware, RequestListener {
@@ -44,14 +47,62 @@ class LoginActivity : AppCompatActivity(),
         usuarioViewModel.requestListener = this
 
 
+        inputEmailLogin.editText?.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(count > 0){
+                    inputEmailLogin.error = null
+                }
+            }
+
+        })
+
+        inputPasswordLogin.editText?.addTextChangedListener(object : TextWatcher{
+            override fun afterTextChanged(s: Editable?) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(count > 0){
+                    inputPasswordLogin.error = null
+                }
+            }
+
+        })
+
+    }
+
+    fun login(view: View) {
+        if(inputEmailLogin.editText?.text.toString().isEmpty()){
+            inputEmailLogin.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+        if(inputPasswordLogin.editText?.text.toString().isEmpty()){
+            inputPasswordLogin.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+        autenticacionViewModel.login()
     }
 
     override fun onStarted() {
-        buttonIngresar.isEnabled = false
         layoutEstadoLogin.visibility = View.VISIBLE
         textViewEstadoLogin.text = getString(R.string.autenticando)
+        buttonIngresar.isEnabled = false
         layoutLogin.visibility = View.GONE
+
     }
+
 
     override fun onSuccess() {
         usuarioViewModel.getUsuarioByUid(autenticacionViewModel.usuario!!.uid)
@@ -69,6 +120,10 @@ class LoginActivity : AppCompatActivity(),
         super.onStart()
         autenticacionViewModel.usuario?.let {
             usuarioViewModel.getUsuarioByUid(it.uid)
+            layoutEstadoLogin.visibility = View.VISIBLE
+            textViewEstadoLogin.text = getString(R.string.autenticando)
+            buttonIngresar.isEnabled = false
+            layoutLogin.visibility = View.GONE
         }
     }
 

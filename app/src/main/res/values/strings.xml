@@ -48,4 +48,6 @@
     <string name="actividades_que_te_han_gustado">Actividades que te han gustado</string>
     <string name="actividades_que_no_te_han_gustado">Actividades que no te han gustado</string>
     <string name="comentarios_que_has_realizado">Comentarios que has realizado</string>
+    <string name="debes_escribir_un_comentario">Debes escribir un comentario</string>
+    <string name="este_campo_no_puede_estar_vacio">Este campo no puede estar vacio</string>
 </resources>

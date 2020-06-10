@@ -74,6 +74,10 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
             val uid: String = autenticacionViewModel.usuario!!.uid
             val timestamp = actividad.fechaCreacionTimeStamp
             textoComentario = inputComentario.text.toString().trim()
+            if (textoComentario.isEmpty()) {
+                inputComentario.error = getString(R.string.debes_escribir_un_comentario)
+                return@setEndIconOnClickListener
+            }
             val comentario = Comentario(textoComentario, Timestamp(Date()), uid, timestamp)
             viewModelComentario.agregarComentariosEnFirestorePorActividad(comentario)
             hideKeyboard(this)
