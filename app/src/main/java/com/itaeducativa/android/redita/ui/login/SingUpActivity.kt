@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -17,10 +18,7 @@ import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.ImageUploadListener
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModel
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
-import com.itaeducativa.android.redita.util.fileChooser
-import com.itaeducativa.android.redita.util.showSnackbar
-import com.itaeducativa.android.redita.util.startLoginActivity
-import com.itaeducativa.android.redita.util.startMainActivity
+import com.itaeducativa.android.redita.util.*
 import kotlinx.android.synthetic.main.activity_sing_up.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -56,6 +54,67 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
         autenticacionViewModel.autenticacionListener = this
         usuarioViewModel.requestListener = this
         usuarioViewModel.imageUploadListener = this
+
+        inputNombreCompletoSignUp.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputNombreCompletoSignUp
+            )
+        )
+        inputEmailSignup.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputEmailSignup
+            )
+        )
+        inputTelefono.editText?.addTextChangedListener(TextWatcherValidacionVacio(inputTelefono))
+        inputPasswordSignup.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputPasswordSignup
+            )
+        )
+        inputConfirmarPasswordSignup.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputConfirmarPasswordSignup
+            )
+        )
+
+        autenticacionViewModel.singUp()
+    }
+
+    fun signup(view: View) {
+        val textoNombreCompleto = inputNombreCompletoSignUp.editText?.text.toString()
+        val textoEmail = inputEmailSignup.editText?.text.toString()
+        val textoTelefono = inputTelefono.editText?.text.toString()
+        val textoPassword = inputPasswordSignup.editText?.text.toString()
+        val textoConfirmarPassword = inputConfirmarPasswordSignup.editText?.text.toString()
+        if (textoNombreCompleto.isEmpty()) {
+            inputNombreCompletoSignUp.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+        if (textoEmail.isEmpty()) {
+            inputEmailSignup.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+        if (textoTelefono.isEmpty()) {
+            inputTelefono.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+        if (textoPassword.isEmpty()) {
+            inputPasswordSignup.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+        if (textoPassword.length < 6) {
+            inputPasswordSignup.error = getString(R.string.contraseña_corta)
+            return
+        }
+        if (textoConfirmarPassword.isEmpty()) {
+            inputConfirmarPasswordSignup.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+        if (textoConfirmarPassword != textoPassword) {
+            inputConfirmarPasswordSignup.error = getString(R.string.no_coinciden)
+            return
+        }
+        autenticacionViewModel.singUp()
     }
 
     override fun onStarted() {

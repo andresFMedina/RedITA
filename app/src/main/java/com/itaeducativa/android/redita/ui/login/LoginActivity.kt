@@ -14,6 +14,7 @@ import com.itaeducativa.android.redita.network.AutenticacionListener
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModel
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
+import com.itaeducativa.android.redita.util.TextWatcherValidacionVacio
 import com.itaeducativa.android.redita.util.startMainActivity
 import com.itaeducativa.android.redita.util.startSingUpActivity
 import kotlinx.android.synthetic.main.activity_login.*
@@ -47,48 +48,22 @@ class LoginActivity : AppCompatActivity(),
         usuarioViewModel.requestListener = this
 
 
-        inputEmailLogin.editText?.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
+        inputEmailLogin.editText?.addTextChangedListener(TextWatcherValidacionVacio(inputEmailLogin))
 
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(count > 0){
-                    inputEmailLogin.error = null
-                }
-            }
-
-        })
-
-        inputPasswordLogin.editText?.addTextChangedListener(object : TextWatcher{
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(count > 0){
-                    inputPasswordLogin.error = null
-                }
-            }
-
-        })
+        inputPasswordLogin.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputPasswordLogin
+            )
+        )
 
     }
 
     fun login(view: View) {
-        if(inputEmailLogin.editText?.text.toString().isEmpty()){
+        if (inputEmailLogin.editText?.text.toString().isEmpty()) {
             inputEmailLogin.error = getString(R.string.este_campo_no_puede_estar_vacio)
             return
         }
-        if(inputPasswordLogin.editText?.text.toString().isEmpty()){
+        if (inputPasswordLogin.editText?.text.toString().isEmpty()) {
             inputPasswordLogin.error = getString(R.string.este_campo_no_puede_estar_vacio)
             return
         }

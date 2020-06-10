@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="usuarioViewModel"
             type="com.itaeducativa.android.redita.ui.usuario.UsuarioViewModel" />
@@ -42,8 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/tu_foto_de_perfil"
-                    android:visibility="gone"
-                    />
+                    android:visibility="gone" />
 
                 <Button
                     android:layout_width="match_parent"
@@ -51,14 +51,15 @@
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
                     android:layout_marginBottom="@dimen/margin_top_multimedia_layout"
                     android:background="@color/colorPrimaryDark"
-                    android:text="@string/foto_de_perfil"
-                    android:textColor="@android:color/white"
                     android:onClick="elegirImagen"
-                    />
+                    android:text="@string/foto_de_perfil"
+                    android:textColor="@android:color/white" />
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputNombreCompletoSignUp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -69,8 +70,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputEmailSignup"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -81,8 +84,10 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputTelefono"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -93,9 +98,11 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputPasswordSignup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:endIconMode="password_toggle">
+                    app:endIconMode="password_toggle"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -106,16 +113,20 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputConfirmarPasswordSignup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:endIconMode="password_toggle">
+                    app:endIconMode="password_toggle"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/confirmar_contrasena"
                         android:inputType="textPassword"
-                        android:text="@={confirmarPassword}" />
+                        android:text="@={confirmarPassword}"
+
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
@@ -125,7 +136,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
                     android:background="@color/colorPrimaryDark"
-                    android:onClick="@{() -> autenticacionViewModel.singUp()}"
+                    android:onClick="signup"
                     android:text="@string/registrarse"
                     android:textColor="@android:color/white" />
 
