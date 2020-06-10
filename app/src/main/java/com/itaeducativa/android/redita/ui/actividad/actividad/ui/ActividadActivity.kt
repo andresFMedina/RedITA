@@ -1,11 +1,11 @@
 package com.itaeducativa.android.redita.ui.actividad.actividad.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.MediaController
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.Timestamp
@@ -23,12 +23,11 @@ import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaC
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.util.hideKeyboard
-import com.itaeducativa.android.redita.util.showSnackbar
 import kotlinx.android.synthetic.main.activity_actividad.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
-import org.kodein.di.generic.instance
 import org.kodein.di.android.kodein
+import org.kodein.di.generic.instance
 import java.util.*
 
 class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, KodeinAware {

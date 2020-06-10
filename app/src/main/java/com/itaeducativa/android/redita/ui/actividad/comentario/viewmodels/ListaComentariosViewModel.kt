@@ -32,6 +32,7 @@ class ListaComentariosViewModel(
                 requestListener?.onFailureRequest(it.message!!)
             }.addOnSuccessListener {
                 repositorioActividad.sumarComentarios(comentario.actividadId)
+                repositorioUsuario.sumarInteraccion("comentarios", comentario.usuarioUid)
                     .addOnSuccessListener {
                         requestListener?.onSuccessRequest()
                     }.addOnFailureListener {

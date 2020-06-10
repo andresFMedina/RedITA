@@ -8,7 +8,10 @@ data class Usuario (
     val telefono: String,
     val imagenPerfilUrl: String,
     var email: String,
-    val uid: String
+    val uid: String,
+    var meGusta: Int = 0,
+    var noMeGusta: Int = 0,
+    var comentarios: Int = 0
 ): Serializable {
 
 

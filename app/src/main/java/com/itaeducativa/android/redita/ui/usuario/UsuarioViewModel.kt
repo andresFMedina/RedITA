@@ -23,6 +23,9 @@ class UsuarioViewModel(
     val telefono = MutableLiveData<String>()
     val rol = MutableLiveData<String>()
     val imagenPerfilUrl = MutableLiveData<String>()
+    val cantidadMeGusta = MutableLiveData<String>()
+    val cantidadNoMeGusta = MutableLiveData<String>()
+    val cantidadComentarios = MutableLiveData<String>()
 
     var requestListener: RequestListener? = null
     var imageUploadListener: ImageUploadListener? = null
@@ -34,6 +37,9 @@ class UsuarioViewModel(
         telefono.value = usuario.telefono
         rol.value = usuario.rol
         imagenPerfilUrl.value = usuario.imagenPerfilUrl
+        cantidadMeGusta.value = usuario.meGusta.toString()
+        cantidadNoMeGusta.value = usuario.noMeGusta.toString()
+        cantidadComentarios.value = usuario.comentarios.toString()
     }
 
     fun guardarUsuario(email: String, uid: String, urlImagen: String?) {

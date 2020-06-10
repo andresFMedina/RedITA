@@ -97,27 +97,81 @@
                 android:textSize="@dimen/textview_tu_actividad_size"
                 />
 
-            <TextView
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Te gustan 2 actividades"
-                android:layout_marginTop="@dimen/margintop_textview_actividad"
-                android:textSize="@dimen/textsize_mi_actividad"
-                />
-            <TextView
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewCantidadMeGustaPerfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/actividades_que_te_han_gustado"
+                    android:layout_marginEnd="5dp"
+                    android:textSize="@dimen/textsize_mi_actividad"
+                    android:layout_marginTop="@dimen/margintop_textview_actividad"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.cantidadMeGusta}"
+                    android:layout_toEndOf="@id/textViewCantidadMeGustaPerfil"
+                    android:layout_marginTop="@dimen/margintop_textview_actividad"
+                    android:textSize="@dimen/textsize_mi_actividad"
+                    />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No te gustan 2 actividades"
-                android:layout_marginTop="@dimen/margintop_textview_actividad"
-                android:textSize="@dimen/textsize_mi_actividad"
-                />
-            <TextView
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewCantidadNoMeGustaPerfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/actividades_que_no_te_han_gustado"
+                    android:textSize="@dimen/textsize_mi_actividad"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="@dimen/margintop_textview_actividad"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.cantidadNoMeGusta}"
+                    android:layout_toEndOf="@id/textViewCantidadNoMeGustaPerfil"
+                    android:layout_marginTop="@dimen/margintop_textview_actividad"
+                    android:textSize="@dimen/textsize_mi_actividad"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Has comentado 2 actividades"
-                android:layout_marginTop="@dimen/margintop_textview_actividad"
-                android:textSize="@dimen/textsize_mi_actividad"
-                />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewCantidadComentarios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/comentarios_que_has_realizado"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginTop="@dimen/margintop_textview_actividad"
+                    android:textSize="@dimen/textsize_mi_actividad"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.cantidadComentarios}"
+                    android:layout_toEndOf="@id/textViewCantidadComentarios"
+                    android:layout_marginTop="@dimen/margintop_textview_actividad"
+                    android:textSize="@dimen/textsize_mi_actividad"
+                    />
+
+            </RelativeLayout>
 
 
         </LinearLayout>

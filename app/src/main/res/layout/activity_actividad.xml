@@ -33,9 +33,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="@dimen/padding_horizontal_actividad"
                 android:paddingTop="@dimen/padding_top_actividad"
-                android:paddingEnd="@dimen/padding_horizontal_actividad">
+                android:paddingStart="@dimen/padding_horizontal_actividad"
+                android:paddingEnd="@dimen/padding_horizontal_actividad"
+                >
 
                 <include
                     layout="@layout/relative_layout_actividad"
@@ -85,7 +86,11 @@
             android:background="@android:color/white"
             app:endIconContentDescription="Enviar"
             app:endIconDrawable="@drawable/ic_send_black_24dp"
-            app:endIconMode="custom">
+            app:endIconMode="custom"
+            app:errorEnabled="true"
+            android:paddingStart="@dimen/padding_horizontal_actividad"
+            android:paddingEnd="@dimen/padding_horizontal_actividad"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputComentario"

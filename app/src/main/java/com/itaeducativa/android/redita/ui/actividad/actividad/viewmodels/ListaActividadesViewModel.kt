@@ -123,6 +123,7 @@ class ListaActividadesViewModel(
         repositorioReaccion.crearReaccion(reaccion).addOnSuccessListener {
             requestListener?.onSuccessRequest()
             repositorioActividad.sumarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion)
+            repositorioUsuario.sumarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }
@@ -132,6 +133,7 @@ class ListaActividadesViewModel(
         requestListener?.onStartRequest()
         repositorioReaccion.eliminarReaccion(reaccion.timestamp).addOnSuccessListener {
             repositorioActividad.restarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion)
+            repositorioUsuario.restarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
             requestListener?.onSuccessRequest()
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)

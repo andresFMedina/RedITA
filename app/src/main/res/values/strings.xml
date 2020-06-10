@@ -45,4 +45,7 @@
     <string name="se_ha_agregado_un_video">Se ha agregado un video</string>
     <string name="cambiar_foto">Cambiar Foto</string>
     <string name="tu_actividad">Tu actividad</string>
+    <string name="actividades_que_te_han_gustado">Actividades que te han gustado</string>
+    <string name="actividades_que_no_te_han_gustado">Actividades que no te han gustado</string>
+    <string name="comentarios_que_has_realizado">Comentarios que has realizado</string>
 </resources>
