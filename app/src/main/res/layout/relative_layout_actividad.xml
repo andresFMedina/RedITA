@@ -42,11 +42,11 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/textViewFechaYHoraActividad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/textViewNombreUsuarioActividad"
                 android:layout_toEndOf="@id/circleImagePerfilActividad"
-                android:text="@={viewModel.fechaCreacionTimeStamp}"
                 android:textSize="@dimen/text_size_fecha_publicacion" />
 
         </RelativeLayout>

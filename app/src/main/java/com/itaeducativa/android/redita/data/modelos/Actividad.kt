@@ -12,7 +12,9 @@ class Actividad(
     var tipoActividad: String,
     var meGusta: Int,
     var noMeGusta: Int,
-    var comentarios: Int
+    var comentarios: Int,
+    var horaInicio: String,
+    var fechaInicio: String
 ) : Serializable {
     var autor: Usuario? = null
     var autorUid: String? = null
@@ -22,6 +24,6 @@ class Actividad(
     var video: String? = null
 
 
-    constructor():this("","", "","",0,0,0)
+    constructor():this("","", "","",0,0,0,"","")
 }
 

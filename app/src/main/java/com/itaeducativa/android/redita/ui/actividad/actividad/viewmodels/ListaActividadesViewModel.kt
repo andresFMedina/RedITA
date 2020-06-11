@@ -159,7 +159,9 @@ class ListaActividadesViewModel(
             noMeGusta = if (doc.getLong("noMeGusta") != null) doc.getLong("noMeGusta")
                 ?.toInt()!! else 0,
             comentarios = if (doc.getLong("comentarios") != null) doc.getLong("comentarios")
-                ?.toInt()!! else 0
+                ?.toInt()!! else 0,
+            fechaInicio = doc.getString("fechaInicio")!!,
+            horaInicio = doc.getString("horaInicio")!!
         )
         val autorUid = doc.getString("autorUid")!!
         actividad.autorUid = autorUid

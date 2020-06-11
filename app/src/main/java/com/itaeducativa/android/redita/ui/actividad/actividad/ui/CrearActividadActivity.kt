@@ -56,6 +56,42 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         listaActividadesViewModel.requestListener = this
         supportActionBar?.title = "Crear actividad"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        inputNombreActividad.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputNombreActividad
+            )
+        )
+        inputDescripcionActividad.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputDescripcionActividad
+            )
+        )
+        inputTipoActividad.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputTipoActividad
+            )
+        )
+
+        inputFechaInicio.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputFechaInicio
+            )
+        )
+
+        inputHoraInicio.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputHoraInicio
+            )
+        )
+
+        inputFechaInicio.editText?.setOnClickListener {
+            obtenerFecha(this, inputFechaInicio.editText!!)
+        }
+        inputHoraInicio.editText?.setOnClickListener {
+            obtenerHora(this, inputHoraInicio.editText!!)
+        }
+
     }
 
     override fun onStartRequest() {
@@ -77,6 +113,37 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
     }
 
     fun crearActividad(view: View) {
+        val textoNombreActividad = inputNombreActividad.editText!!.text.toString()
+        val textoDescripcionActividad = inputDescripcionActividad.editText!!.text.toString()
+        val textoTipoActividad = inputTipoActividad.editText!!.text.toString()
+        val textoFechaInicio = inputFechaInicio.editText!!.text.toString()
+        val textoHoraInicio = inputHoraInicio.editText!!.text.toString()
+
+        if (textoNombreActividad.isEmpty()) {
+            inputNombreActividad.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+
+        if (textoDescripcionActividad.isEmpty()) {
+            inputDescripcionActividad.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+
+        if (textoTipoActividad.isEmpty()) {
+            inputTipoActividad.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+
+        if (textoFechaInicio.isEmpty()) {
+            inputFechaInicio.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+
+        if (textoHoraInicio.isEmpty()) {
+            inputHoraInicio.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
+
         val actividad = Actividad(
             nombre = actividadViewModel.nombre.value!!,
             descripcion = actividadViewModel.descripcion.value!!,
@@ -84,11 +151,13 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             fechaCreacionTimeStamp = Timestamp(Date()).seconds.toString(),
             meGusta = 0,
             noMeGusta = 0,
-            comentarios = 0
+            comentarios = 0,
+            horaInicio = actividadViewModel.horaInicio.value!!,
+            fechaInicio = actividadViewModel.fechaInicio.value!!
         )
         actividad.autorUid = autenticacionViewModel.usuario!!.uid
         listaActividadesViewModel.guardarActividadEnFirestore(actividad)
-        if(imagenesUri.isNotEmpty()){
+        if (imagenesUri.isNotEmpty()) {
             for (imagen in imagenesUri) {
                 val ruta = "${System.currentTimeMillis()}.${getExtension(imagen, this)}"
                 listaActividadesViewModel.agregarImagenesAActividad(
@@ -98,7 +167,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 )
             }
         }
-        if(videoUri != null) {
+        if (videoUri != null) {
             val ruta = "${System.currentTimeMillis()}.${getExtension(videoUri!!, this)}"
             listaActividadesViewModel.agregarVideoAActividad(
                 actividad.fechaCreacionTimeStamp,

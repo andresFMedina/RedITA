@@ -29,6 +29,8 @@ class ActividadViewModel : ViewModel() {
     val imagenes = MutableLiveData<List<String>>()
     val reaccion = MutableLiveData<Reaccion>()
     private var fueConsultado = false
+    val horaInicio = MutableLiveData<String>()
+    val fechaInicio = MutableLiveData<String>()
 
     var requestListener: RequestListener? = null
 
@@ -46,6 +48,8 @@ class ActividadViewModel : ViewModel() {
         noMeGusta.value = actividad.noMeGusta.toString()
         comentarios.value = actividad.comentarios.toString()
         imagenes.value = actividad.imagenes
+        horaInicio.value = actividad.horaInicio
+        fechaInicio.value = actividad.fechaInicio
         if (actividad.autor == null) {
             bindAutor(actividad.referenciaAutor)
             imagenPerfilUrl.value = "gs://redita.appspot.com/img_profile.png"

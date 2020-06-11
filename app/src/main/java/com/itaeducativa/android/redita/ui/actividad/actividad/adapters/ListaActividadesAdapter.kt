@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
@@ -41,6 +42,7 @@ class ListaActividadesAdapter(
         val imageButtonMeGusta: ImageButton = binding.layoutReacciones.imageButtonMeGusta
         val imageButtonNoMeGusta: ImageButton = binding.layoutReacciones.imageButtonNoMeGusta
         val imageButtonComentarios: ImageButton = binding.layoutReacciones.imageButtonComentarios
+        val textViewFechaYHora: TextView = binding.layoutActividad.textViewFechaYHoraActividad
         private val imageViewActividad: ImageView = binding.imagenActividad
 
 
@@ -84,11 +86,15 @@ class ListaActividadesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(listaActividades[position])
 
+        val formatoFecha = "${listaActividades[position].fechaInicio} a las ${listaActividades[position].horaInicio}"
+
+        holder.textViewFechaYHora.text = formatoFecha
+
         val reaccion = holder.viewModelActividad.reaccion.value
         if (reaccion != null) {
             when (reaccion.tipoReaccion) {
                 "meGusta" -> holder.imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp)
-                "noMeGusta" -> holder.imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp)
+                "noMeGusta" -> holder.imageButtonNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp)
             }
         }
         holder.imageButtonMeGusta.setOnClickListener {

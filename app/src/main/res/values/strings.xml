@@ -51,4 +51,6 @@
     <string name="este_campo_no_puede_estar_vacio">Este campo no puede estar vacio</string>
     <string name="contraseña_corta">Tu contraseña debe tener al menos 6 caracteres</string>
     <string name="no_coinciden">Las contraseñas no coinciden</string>
+    <string name="fecha_de_inicio">Fecha de inicio</string>
+    <string name="hora_de_inicio">Hora de inicio</string>
 </resources>
