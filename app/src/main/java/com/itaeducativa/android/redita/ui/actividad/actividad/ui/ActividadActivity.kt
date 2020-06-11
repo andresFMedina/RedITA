@@ -89,6 +89,11 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
 
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
+
     override fun onStartRequest() {
 
     }
