@@ -38,6 +38,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
 
     private lateinit var actividad: Actividad
     private lateinit var storageViewModel: StorageViewModel
+    private lateinit var autenticacionViewModel: AutenticacionViewModel
 
     var textoComentario: String = ""
 
@@ -52,7 +53,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
         viewModelActividad.bind(actividad)
         val viewModelComentario =
             ViewModelProviders.of(this, factory).get(ListaComentariosViewModel::class.java)
-        val autenticacionViewModel = ViewModelProviders.of(this, autenticacionFactory)
+        autenticacionViewModel = ViewModelProviders.of(this, autenticacionFactory)
             .get(AutenticacionViewModel::class.java)
 
         storageViewModel =
@@ -120,6 +121,12 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
 
     override fun onFailureVideo(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        autenticacionViewModel.autenticacionListener = null
+        storageViewModel.videoListener = null
     }
 
 

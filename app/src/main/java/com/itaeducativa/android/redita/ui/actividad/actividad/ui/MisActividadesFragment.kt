@@ -91,5 +91,10 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
         Log.e("error", message)
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.requestListener = null
+    }
+
 
 }

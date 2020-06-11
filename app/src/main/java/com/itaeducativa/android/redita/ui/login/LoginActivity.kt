@@ -122,4 +122,10 @@ class LoginActivity : AppCompatActivity(),
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         layoutLogin.visibility = View.VISIBLE
     }
+
+    override fun onStop() {
+        super.onStop()
+        autenticacionViewModel.autenticacionListener = null
+        usuarioViewModel.requestListener = null
+    }
 }

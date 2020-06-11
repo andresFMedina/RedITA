@@ -80,6 +80,11 @@ class PerfilFragment : Fragment(), KodeinAware {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.requestListener = null
+    }
+
 
     companion object {
         /**

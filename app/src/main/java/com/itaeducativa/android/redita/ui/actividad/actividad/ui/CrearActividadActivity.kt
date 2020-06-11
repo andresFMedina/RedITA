@@ -218,4 +218,10 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             }
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        autenticacionViewModel.autenticacionListener = null
+        listaActividadesViewModel.requestListener = null
+    }
 }

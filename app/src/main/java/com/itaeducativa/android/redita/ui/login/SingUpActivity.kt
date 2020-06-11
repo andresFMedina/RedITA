@@ -190,4 +190,10 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
         layoutSignUp.visibility = View.GONE
     }
 
+    override fun onStop() {
+        super.onStop()
+        autenticacionViewModel.autenticacionListener = null
+        usuarioViewModel.requestListener = null
+    }
+
 }
