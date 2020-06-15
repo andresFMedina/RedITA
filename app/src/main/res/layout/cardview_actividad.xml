@@ -17,7 +17,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp">
+        android:paddingTop="5dp"
+        android:layout_marginTop="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,11 +42,11 @@
 
             <ImageView
                 android:id="@+id/imagenActividad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
                 android:layout_gravity="center"
                 app:imageUrl="@{viewModelActividad.imagenes.get(0)}"
-                android:src="@drawable/ic_launcher_background"
+                android:layout_marginBottom="10dp"
                 android:contentDescription="@string/imagen_actividad" />
             </LinearLayout>
 

@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/padding_horizontal_informacion_actividad"
-        android:paddingEnd="@dimen/padding_horizontal_informacion_actividad">
+        android:paddingEnd="@dimen/padding_horizontal_informacion_actividad"
+        android:layout_marginBottom="10dp"
+        >
 
         <RelativeLayout
             android:id="@+id/layoutInformacionActividad"
