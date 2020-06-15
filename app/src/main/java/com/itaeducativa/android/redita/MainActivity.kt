@@ -3,6 +3,8 @@ package com.itaeducativa.android.redita
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -53,11 +55,6 @@ class MainActivity : AppCompatActivity(), KodeinAware {
                     true
 
                 }
-                R.id.logout -> {
-                    autenticacionViewModel.logout(this)
-                    true
-
-                }
                 R.id.menuMisActividades -> {
                     openFragment(MisActividadesFragment.newInstance(usuario))
                     true
@@ -66,6 +63,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
             }
         }
         openFragment(ListaActividadesFragment())
+
     }
 
     private fun openFragment(fragment: Fragment) {
@@ -85,4 +83,23 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         super.onRestoreInstanceState(savedInstanceState)
         usuario = savedInstanceState.getSerializable("usuario") as Usuario
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_principal_app_bar, menu!!)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        R.id.logout -> {
+            autenticacionViewModel.logout(this)
+            true
+        }
+
+        else -> {
+            // If we got here, the user's action was not recognized.
+            // Invoke the superclass to handle it.
+            super.onOptionsItemSelected(item)
+        }
+    }
+
 }

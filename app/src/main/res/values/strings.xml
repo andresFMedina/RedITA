@@ -53,4 +53,5 @@
     <string name="no_coinciden">Las contraseñas no coinciden</string>
     <string name="fecha_de_inicio">Fecha de inicio</string>
     <string name="hora_de_inicio">Hora de inicio</string>
+    <string name="cerrar_sesion">Cerrar Sesion</string>
 </resources>
