@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.ui.actividad.actividad.ui.ListaActividadesFragment
 import com.itaeducativa.android.redita.ui.actividad.actividad.ui.MisActividadesFragment
+import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.NotificacionViewModel
+import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.NotificacionViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.usuario.PerfilFragment
@@ -23,8 +25,10 @@ import org.kodein.di.generic.instance
 
 class MainActivity : AppCompatActivity(), KodeinAware {
     override val kodein: Kodein by kodein()
-    private val factory: AutenticacionViewModelFactory by instance()
+    private val autenticacionFactory: AutenticacionViewModelFactory by instance()
+    private val notificacionFactory: NotificacionViewModelFactory by instance()
     private lateinit var autenticacionViewModel: AutenticacionViewModel
+    private lateinit var notificacionViewModel: NotificacionViewModel
     private lateinit var usuario: Usuario
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +45,10 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         Log.d("USuario", usuario.toString())
 
         autenticacionViewModel =
-            ViewModelProviders.of(this, factory).get(AutenticacionViewModel::class.java)
+            ViewModelProviders.of(this, autenticacionFactory).get(AutenticacionViewModel::class.java)
+        notificacionViewModel =
+            ViewModelProviders.of(this, notificacionFactory).get(NotificacionViewModel::class.java)
+        notificacionViewModel.getToken()
 
         bottomBarMenuPrincipal.menu.findItem(R.id.menuMisActividades).isVisible = usuario.rol == "Docente"
         bottomBarMenuPrincipal.setOnNavigationItemSelectedListener { item ->

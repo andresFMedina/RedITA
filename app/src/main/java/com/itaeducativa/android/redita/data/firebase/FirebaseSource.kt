@@ -2,6 +2,7 @@ package com.itaeducativa.android.redita.data.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 
 class FirebaseSource {
@@ -16,6 +17,10 @@ class FirebaseSource {
 
     val firebaseStorage: FirebaseStorage by lazy {
         FirebaseStorage.getInstance()
+    }
+
+    val firebaseInstanceId: FirebaseInstanceId by lazy {
+        FirebaseInstanceId.getInstance()
     }
 
     fun login(email: String, password: String) =

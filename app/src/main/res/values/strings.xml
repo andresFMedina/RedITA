@@ -54,4 +54,6 @@
     <string name="fecha_de_inicio">Fecha de inicio</string>
     <string name="hora_de_inicio">Hora de inicio</string>
     <string name="cerrar_sesion">Cerrar Sesion</string>
+    <string name="default_notification_channel_id">actividades</string>
+    <string name="titulo_notificacion">Nueva actividad</string>
 </resources>

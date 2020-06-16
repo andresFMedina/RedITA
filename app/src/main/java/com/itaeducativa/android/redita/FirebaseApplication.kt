@@ -4,6 +4,7 @@ import android.app.Application
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.NotificacionViewModelFactory
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.StorageViewModelFactory
 import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModelFactory
 import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionViewModelFactory
@@ -25,6 +26,8 @@ class FirebaseApplication : Application(), KodeinAware {
         bind() from singleton { FirebaseSource() }
         bind() from singleton { RepositorioAutenticacion(instance()) }
         bind() from singleton { RepositorioStorage() }
+        bind() from singleton { RepositorioNotificacion(instance()) }
+        bind() from provider { NotificacionViewModelFactory(instance()) }
         bind() from provider { AutenticacionViewModelFactory(instance()) }
         bind() from singleton { RepositorioUsuario(instance()) }
         bind() from provider { UsuarioViewModelFactory(instance(), instance()) }
