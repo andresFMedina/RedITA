@@ -44,7 +44,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        actividad = intent.extras?.getSerializable("actividad") as Actividad
+        actividad = if(intent.extras !=null) intent.extras?.getSerializable("actividad") as Actividad else null
 
         val binding: ActivityCrearActividadBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_crear_actividad)

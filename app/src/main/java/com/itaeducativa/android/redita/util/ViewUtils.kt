@@ -46,13 +46,18 @@ fun Context.startSingUpActivity() = Intent(this, SingUpActivity::class.java).als
     startActivity(it)
 }
 
-fun Context.startFormularioActividadActivity(actividad: Actividad?) = Intent(this, CrearActividadActivity::class.java).also {
-    val bundle = Bundle()
-    bundle.putSerializable("actividad", actividad)
-    it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-    it.putExtras(bundle)
-    startActivity(it)
-}
+fun Context.startFormularioActividadActivity(actividad: Actividad?) =
+    Intent(this, CrearActividadActivity::class.java).also {
+
+        if (actividad != null) {
+            val bundle = Bundle()
+            bundle.putSerializable("actividad", actividad)
+            it.putExtras(bundle)
+        }
+        it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+        startActivity(it)
+    }
 
 fun Context.hideKeyboard(activity: Activity) {
     val inputMethodManager: InputMethodManager =
@@ -81,4 +86,5 @@ fun Context.multipleFileChooser(activity: Activity) = Intent().also {
 }
 
 
-fun Context.showSnackbar(mensaje: String, view: View) = Snackbar.make(view, mensaje, Snackbar.LENGTH_SHORT).show()
+fun Context.showSnackbar(mensaje: String, view: View) =
+    Snackbar.make(view, mensaje, Snackbar.LENGTH_SHORT).show()

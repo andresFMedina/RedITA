@@ -8,6 +8,7 @@ import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.Notific
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.StorageViewModelFactory
 import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModelFactory
 import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionViewModelFactory
+import com.itaeducativa.android.redita.ui.historial.ListaHistorialViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
 import com.itaeducativa.android.redita.ui.vista.ListaVistaViewModelFactory
@@ -55,6 +56,8 @@ class FirebaseApplication : Application(), KodeinAware {
         bind() from provider { StorageViewModelFactory(instance()) }
         bind() from singleton { RepositorioVista(instance()) }
         bind() from provider { ListaVistaViewModelFactory(instance()) }
+        bind() from singleton { RepositorioHistorial(instance()) }
+        bind() from provider { ListaHistorialViewModelFactory(instance(), instance(), instance()) }
     }
 
 }

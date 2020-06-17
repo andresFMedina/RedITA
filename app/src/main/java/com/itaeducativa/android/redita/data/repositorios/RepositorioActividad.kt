@@ -1,15 +1,13 @@
 package com.itaeducativa.android.redita.data.repositorios
 
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Actividad
 
 private const val AUTOR_UID = "autorUid"
 private const val ACTIVIDADES = "actividades"
+private const val FECHA_CREACION = "fechaCreacionTimeStamp"
 
 class RepositorioActividad(private val firebase: FirebaseSource) {
     private val firestoreDB: FirebaseFirestore by lazy {
@@ -32,6 +30,9 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
 
     fun getActividades(): CollectionReference =
         firestoreDB.collection(ACTIVIDADES)
+
+    fun getActividadesById(id: String): DocumentReference =
+        firestoreDB.collection(ACTIVIDADES).document(id)
 
     fun getActividadesByAutorUid(uid: String): Query =
         firestoreDB.collection(ACTIVIDADES).whereEqualTo(AUTOR_UID, uid)

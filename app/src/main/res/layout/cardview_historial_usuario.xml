@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/padding_horizontal_cardview"
+        android:paddingEnd="@dimen/padding_horizontal_cardview">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imagenPerfilHistorial"
+            android:layout_width="@dimen/height_width_image_circle_actividad"
+            android:layout_height="@dimen/height_width_image_circle_actividad"
+            android:src="@drawable/ic_event_black_24dp" />
+
+        <TextView
+            android:id="@+id/nombreUsuarioHistorial"
+            android:layout_toEndOf="@id/imagenPerfilHistorial"
+            android:layout_width="wrap_content"
+            android:text="@string/lorem"
+
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

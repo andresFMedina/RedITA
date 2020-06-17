@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/padding_horizontal_cardview"
+        android:paddingEnd="@dimen/padding_horizontal_cardview">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imagenPerfilVista"
+            android:layout_width="@dimen/height_width_image_circle_actividad"
+            android:layout_height="@dimen/height_width_image_circle_actividad"
+            android:src="@drawable/ic_event_black_24dp" />
+
+        <TextView
+            android:id="@+id/mensajeVista"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/imagenPerfilVista"
+
+            android:text="Juan Perez ha visto esta actividad: 10 veces" />
+
+
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
