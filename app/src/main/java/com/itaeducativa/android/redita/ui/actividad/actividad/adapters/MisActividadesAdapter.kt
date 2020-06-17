@@ -11,6 +11,7 @@ import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.databinding.CardviewMisActividadesBinding
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
+import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 
 class MisActividadesAdapter(private val listaActividadesViewModel: ListaActividadesViewModel) :
     RecyclerView.Adapter<MisActividadesAdapter.ViewHolder>() {
@@ -24,7 +25,6 @@ class MisActividadesAdapter(private val listaActividadesViewModel: ListaActivida
         val imagenActividad: ImageView = binding.imageViewMiActividad
         val imageButtonEditar = binding.imageButtonEditar
         val imageButtonEliminar = binding.imageButtonEliminar
-
 
         fun bind(actividad: Actividad) {
             binding.viewModel = viewModel
@@ -51,7 +51,7 @@ class MisActividadesAdapter(private val listaActividadesViewModel: ListaActivida
             holder.imagenActividad.visibility = View.GONE
         }
         holder.imageButtonEditar.setOnClickListener {
-            TODO("Hacer el intent a crear actividad")
+            it.context.startFormularioActividadActivity(listaActividades[position])
         }
         holder.imageButtonEliminar.setOnClickListener {
             listaActividadesViewModel.eliminarActividad(listaActividades[position])

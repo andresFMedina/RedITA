@@ -15,8 +15,7 @@ import com.itaeducativa.android.redita.databinding.FragmentMisActividadesBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
-import com.itaeducativa.android.redita.util.startCrearActividadActivity
-import kotlinx.android.synthetic.main.fragment_mis_actividades.*
+import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 import org.kodein.di.Kodein
 import org.kodein.di.android.x.kodein
 import org.kodein.di.KodeinAware
@@ -57,8 +56,9 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
     }
 
     fun goToCrearActivity(view: View) {
-        context!!.startCrearActividadActivity()
+        context!!.startFormularioActividadActivity(null)
     }
+
 
     companion object {
         /**

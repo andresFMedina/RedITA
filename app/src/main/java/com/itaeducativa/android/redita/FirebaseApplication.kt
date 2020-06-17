@@ -10,6 +10,7 @@ import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaC
 import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
+import com.itaeducativa.android.redita.ui.vista.ListaVistaViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -52,6 +53,8 @@ class FirebaseApplication : Application(), KodeinAware {
         bind() from singleton { RepositorioReaccion(instance()) }
         bind() from provider { ReaccionViewModelFactory(instance()) }
         bind() from provider { StorageViewModelFactory(instance()) }
+        bind() from singleton { RepositorioVista(instance()) }
+        bind() from provider { ListaVistaViewModelFactory(instance()) }
     }
 
 }

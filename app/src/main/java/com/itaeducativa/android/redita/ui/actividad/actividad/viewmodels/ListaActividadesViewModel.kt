@@ -12,7 +12,7 @@ import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.ListaActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.MisActividadesAdapter
-import com.itaeducativa.android.redita.util.startCrearActividadActivity
+import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 
 @Suppress("UNCHECKED_CAST")
 class ListaActividadesViewModel(
@@ -145,7 +145,7 @@ class ListaActividadesViewModel(
 
 
     fun goToCrearActividad(view: View) {
-        view.context.startCrearActividadActivity()
+        view.context.startFormularioActividadActivity(null)
     }
 
     private fun crearActividadByDocumentReference(doc: QueryDocumentSnapshot): Actividad {

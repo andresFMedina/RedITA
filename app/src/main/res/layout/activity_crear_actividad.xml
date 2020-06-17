@@ -156,7 +156,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:onClick="crearActividad"
+                    android:onClick="guardarActividad"
                     android:background="@color/colorPrimaryDark"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
                     android:text="@string/crear_nueva_activivdad"

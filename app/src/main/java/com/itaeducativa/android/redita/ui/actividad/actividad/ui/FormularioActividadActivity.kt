@@ -3,12 +3,11 @@ package com.itaeducativa.android.redita.ui.actividad.actividad.ui
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
@@ -41,8 +40,12 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
     private val imagenesUri = mutableListOf<Uri>()
     private var videoUri: Uri? = null
 
+    private var actividad: Actividad? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actividad = intent.extras?.getSerializable("actividad") as Actividad
+
         val binding: ActivityCrearActividadBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_crear_actividad)
 
@@ -53,8 +56,13 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
 
         binding.viewModel = actividadViewModel
 
+        if (this.actividad != null) {
+            actividadViewModel.bind(this.actividad!!)
+        }
+
         listaActividadesViewModel.requestListener = this
-        supportActionBar?.title = "Crear actividad"
+        if (actividad == null) supportActionBar?.title = "Crear actividad"
+        else supportActionBar?.title = actividad!!.nombre
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         inputNombreActividad.editText?.addTextChangedListener(
@@ -112,12 +120,12 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         showSnackbar(message, coordinatorCrearActividad)
     }
 
-    fun crearActividad(view: View) {
+    fun guardarActividad(view: View) {
         val textoNombreActividad = inputNombreActividad.editText!!.text.toString()
         val textoDescripcionActividad = inputDescripcionActividad.editText!!.text.toString()
         val textoTipoActividad = inputTipoActividad.editText!!.text.toString()
-        val textoFechaInicio = inputFechaInicio.editText!!.text.toString()
-        val textoHoraInicio = inputHoraInicio.editText!!.text.toString()
+
+        lateinit var actividad: Actividad
 
         if (textoNombreActividad.isEmpty()) {
             inputNombreActividad.error = getString(R.string.este_campo_no_puede_estar_vacio)
@@ -133,28 +141,28 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             inputTipoActividad.error = getString(R.string.este_campo_no_puede_estar_vacio)
             return
         }
+        if (this.actividad != null) {
+            actividad = this.actividad!!
+            actividad.nombre = actividadViewModel.nombre.value!!
+            actividad.descripcion = actividadViewModel.descripcion.value!!
+            actividad.tipoActividad = actividadViewModel.tipoActividad.value!!
+            actividad.horaInicio = actividadViewModel.horaInicio.value!!
+            actividad.fechaInicio = actividadViewModel.fechaInicio.value!!
+        } else {
 
-        if (textoFechaInicio.isEmpty()) {
-            inputFechaInicio.error = getString(R.string.este_campo_no_puede_estar_vacio)
-            return
+            actividad = Actividad(
+                nombre = actividadViewModel.nombre.value!!,
+                descripcion = actividadViewModel.descripcion.value!!,
+                tipoActividad = actividadViewModel.tipoActividad.value!!,
+                fechaCreacionTimeStamp = Timestamp(Date()).seconds.toString(),
+                meGusta = 0,
+                noMeGusta = 0,
+                comentarios = 0,
+                horaInicio = actividadViewModel.horaInicio.value!!,
+                fechaInicio = actividadViewModel.fechaInicio.value!!
+            )
+            actividad.autorUid = autenticacionViewModel.usuario!!.uid
         }
-
-        if (textoHoraInicio.isEmpty()) {
-            inputHoraInicio.error = getString(R.string.este_campo_no_puede_estar_vacio)
-            return
-        }
-
-        val actividad = Actividad(
-            nombre = actividadViewModel.nombre.value!!,
-            descripcion = actividadViewModel.descripcion.value!!,
-            tipoActividad = actividadViewModel.tipoActividad.value!!,
-            fechaCreacionTimeStamp = Timestamp(Date()).seconds.toString(),
-            meGusta = 0,
-            noMeGusta = 0,
-            comentarios = 0,
-            horaInicio = actividadViewModel.horaInicio.value!!,
-            fechaInicio = actividadViewModel.fechaInicio.value!!
-        )
         actividad.autorUid = autenticacionViewModel.usuario!!.uid
         listaActividadesViewModel.guardarActividadEnFirestore(actividad)
         if (imagenesUri.isNotEmpty()) {
@@ -223,5 +231,10 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         super.onStop()
         autenticacionViewModel.autenticacionListener = null
         listaActividadesViewModel.requestListener = null
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
     }
 }

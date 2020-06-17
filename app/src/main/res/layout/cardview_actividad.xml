@@ -43,7 +43,8 @@
             <ImageView
                 android:id="@+id/imagenActividad"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="300dp"
+                android:maxHeight="700dp"
                 android:layout_gravity="center"
                 app:imageUrl="@{viewModelActividad.imagenes.get(0)}"
                 android:layout_marginBottom="10dp"
