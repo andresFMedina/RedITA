@@ -40,12 +40,14 @@ class FirebaseApplication : Application(), KodeinAware {
                 instance(),
                 instance(),
                 instance(),
+                instance(),
                 instance()
             )
         }
         bind() from singleton { RepositorioComentario(instance()) }
         bind() from provider {
             ListaComentariosViewModelFactory(
+                instance(),
                 instance(),
                 instance(),
                 instance()

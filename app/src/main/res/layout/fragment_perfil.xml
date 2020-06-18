@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="viewModel"
+            name="usuarioViewModel"
             type="com.itaeducativa.android.redita.ui.usuario.UsuarioViewModel" />
+
+        <variable
+            name="historialViewModel"
+            type="com.itaeducativa.android.redita.ui.historial.ListaHistorialViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -31,10 +35,9 @@
                     android:id="@+id/imagenPerfil"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    app:imageUrl="@{viewModel.imagenPerfilUrl}"
                     android:layout_marginEnd="@dimen/margin_end_imagen_perfil"
                     android:scaleType="centerCrop"
-                    />
+                    app:imageUrl="@{usuarioViewModel.imagenPerfilUrl}" />
 
                 <TextView
                     android:id="@+id/textViewNombrePerfil"
@@ -42,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/imagenPerfil"
                     android:gravity="center"
-                    android:text="@={viewModel.nombreCompleto}"
+                    android:text="@={usuarioViewModel.nombreCompleto}"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/nombre_usuario_text_size_actividad"
                     android:textStyle="bold" />
@@ -53,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/textViewNombrePerfil"
                     android:layout_toEndOf="@id/imagenPerfil"
-                    android:text="@={viewModel.rol}"
+                    android:text="@={usuarioViewModel.rol}"
                     android:textSize="@dimen/text_size_fecha_publicacion" />
 
                 <Button
@@ -65,27 +68,25 @@
                     android:layout_toEndOf="@id/imagenPerfil"
                     android:background="@color/colorPrimaryDark"
                     android:text="@string/cambiar_foto"
-                    android:textColor="@android:color/white"
-                    />
+                    android:textColor="@android:color/white" />
             </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textFieldTelefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/telefono"
-                app:startIconDrawable="@drawable/ic_edit_black_24dp"
-                app:endIconMode="custom"
-                app:endIconDrawable="@drawable/ic_save_black_24dp"
-                app:endIconContentDescription="Guardar"
                 android:layout_marginTop="10dp"
+                android:hint="@string/telefono"
+                app:endIconContentDescription="Guardar"
+                app:endIconDrawable="@drawable/ic_save_black_24dp"
+                app:endIconMode="custom"
+                app:startIconDrawable="@drawable/ic_edit_black_24dp"
                 tools:ignore="PrivateResource">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.telefono}"
-                    />
+                    android:text="@={usuarioViewModel.telefono}" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,31 +95,29 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tu_actividad"
                 android:textColor="@android:color/black"
-                android:textSize="@dimen/textview_tu_actividad_size"
-                />
+                android:textSize="@dimen/textview_tu_actividad_size" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <TextView
                     android:id="@+id/textViewCantidadMeGustaPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/actividades_que_te_han_gustado"
-                    android:layout_marginEnd="5dp"
-                    android:textSize="@dimen/textsize_mi_actividad"
                     android:layout_marginTop="@dimen/margintop_textview_actividad"
-                    />
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/actividades_que_te_han_gustado"
+                    android:textSize="@dimen/textsize_mi_actividad" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.cantidadMeGusta}"
-                    android:layout_toEndOf="@id/textViewCantidadMeGustaPerfil"
                     android:layout_marginTop="@dimen/margintop_textview_actividad"
-                    android:textSize="@dimen/textsize_mi_actividad"
-                    />
+                    android:layout_toEndOf="@id/textViewCantidadMeGustaPerfil"
+                    android:text="@={usuarioViewModel.cantidadMeGusta}"
+                    android:textSize="@dimen/textsize_mi_actividad" />
 
             </RelativeLayout>
 
@@ -131,20 +130,18 @@
                     android:id="@+id/textViewCantidadNoMeGustaPerfil"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/actividades_que_no_te_han_gustado"
-                    android:textSize="@dimen/textsize_mi_actividad"
-                    android:layout_marginEnd="5dp"
                     android:layout_marginTop="@dimen/margintop_textview_actividad"
-                    />
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/actividades_que_no_te_han_gustado"
+                    android:textSize="@dimen/textsize_mi_actividad" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.cantidadNoMeGusta}"
-                    android:layout_toEndOf="@id/textViewCantidadNoMeGustaPerfil"
                     android:layout_marginTop="@dimen/margintop_textview_actividad"
-                    android:textSize="@dimen/textsize_mi_actividad"
-                    />
+                    android:layout_toEndOf="@id/textViewCantidadNoMeGustaPerfil"
+                    android:text="@={usuarioViewModel.cantidadNoMeGusta}"
+                    android:textSize="@dimen/textsize_mi_actividad" />
 
             </RelativeLayout>
 
@@ -156,22 +153,35 @@
                     android:id="@+id/textViewCantidadComentarios"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/comentarios_que_has_realizado"
-                    android:layout_marginEnd="5dp"
                     android:layout_marginTop="@dimen/margintop_textview_actividad"
-                    android:textSize="@dimen/textsize_mi_actividad"
-                    />
+                    android:layout_marginEnd="5dp"
+                    android:text="@string/comentarios_que_has_realizado"
+                    android:textSize="@dimen/textsize_mi_actividad" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.cantidadComentarios}"
-                    android:layout_toEndOf="@id/textViewCantidadComentarios"
                     android:layout_marginTop="@dimen/margintop_textview_actividad"
-                    android:textSize="@dimen/textsize_mi_actividad"
-                    />
+                    android:layout_toEndOf="@id/textViewCantidadComentarios"
+                    android:text="@={usuarioViewModel.cantidadComentarios}"
+                    android:textSize="@dimen/textsize_mi_actividad" />
 
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/tu_historial"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/textview_tu_actividad_size" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:setAdapter="@{historialViewModel.listaHistorialAdapter}"
+                tools:listitem="@layout/cardview_historial_usuario" />
 
 
         </LinearLayout>

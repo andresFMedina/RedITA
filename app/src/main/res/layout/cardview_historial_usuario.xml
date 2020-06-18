@@ -1,30 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.itaeducativa.android.redita.ui.historial.HistorialViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/padding_horizontal_cardview"
-        android:paddingEnd="@dimen/padding_horizontal_cardview">
+        android:layout_marginTop="@dimen/margin_top_multimedia_layout"
+        android:paddingBottom="@dimen/margin_bottom_relative_layout_informacion">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imagenPerfilHistorial"
-            android:layout_width="@dimen/height_width_image_circle_actividad"
-            android:layout_height="@dimen/height_width_image_circle_actividad"
-            android:src="@drawable/ic_event_black_24dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_horizontal_cardview"
+            android:paddingEnd="@dimen/padding_horizontal_cardview">
 
-        <TextView
-            android:id="@+id/nombreUsuarioHistorial"
-            android:layout_toEndOf="@id/imagenPerfilHistorial"
-            android:layout_width="wrap_content"
-            android:text="@string/lorem"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imagenPerfilHistorial"
+                android:layout_width="@dimen/height_width_image_circle_actividad"
+                android:layout_height="@dimen/height_width_image_circle_actividad"
+                app:imageUrl="@{viewModel.fotoUsuario}" />
 
-            android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/descripcionHistorial"
+                android:layout_toEndOf="@id/imagenPerfilHistorial"
+                android:layout_width="wrap_content"
+                android:text="@string/lorem"
+
+                android:layout_height="wrap_content" />
 
 
-    </RelativeLayout>
+        </RelativeLayout>
 
 
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

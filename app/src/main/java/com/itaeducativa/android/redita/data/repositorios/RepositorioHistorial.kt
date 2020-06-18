@@ -14,7 +14,7 @@ class RepositorioHistorial(
     }
 
     fun guardarHistorialFirestore(historial: Historial) = firestoreDB.collection(HISTORIAL)
-        .document(historial.timestamp).set(historial)
+        .document(historial.timestampAccion).set(historial)
 
     fun getListaHistorial() = firestoreDB.collection(HISTORIAL).orderBy("timestamp")
 

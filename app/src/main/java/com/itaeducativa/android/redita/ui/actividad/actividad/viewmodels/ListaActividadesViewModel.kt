@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.itaeducativa.android.redita.data.modelos.Actividad
+import com.itaeducativa.android.redita.data.modelos.Historial
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.network.RequestListener
@@ -20,7 +22,8 @@ class ListaActividadesViewModel(
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioReaccion: RepositorioReaccion,
     private val repositorioAutenticacion: RepositorioAutenticacion,
-    private val repositorioStorage: RepositorioStorage
+    private val repositorioStorage: RepositorioStorage,
+    private val repositorioHistorial: RepositorioHistorial
 ) : ViewModel() {
 
     private val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
@@ -124,6 +127,17 @@ class ListaActividadesViewModel(
             requestListener?.onSuccessRequest()
             repositorioActividad.sumarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion)
             repositorioUsuario.sumarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
+            val historial = Historial(
+                usuarioUid = reaccion.usuarioUid,
+                actividadId = reaccion.actividadId,
+                accion = when (reaccion.tipoReaccion) {
+                    "noMeGusta" -> "No le gustó"
+                    "meGusta" -> "Le gustó"
+                    else -> ""
+                },
+                timestampAccion = reaccion.timestamp
+            )
+            repositorioHistorial.guardarHistorialFirestore(historial)
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }
@@ -132,8 +146,12 @@ class ListaActividadesViewModel(
     fun eliminarReaccion(reaccion: Reaccion) {
         requestListener?.onStartRequest()
         repositorioReaccion.eliminarReaccion(reaccion.timestamp).addOnSuccessListener {
-            repositorioActividad.restarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion)
+            repositorioActividad.restarReaccionActividad(
+                reaccion.actividadId,
+                reaccion.tipoReaccion
+            )
             repositorioUsuario.restarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
+            repositorioHistorial.eliminarHistorial(reaccion.timestamp)
             requestListener?.onSuccessRequest()
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)

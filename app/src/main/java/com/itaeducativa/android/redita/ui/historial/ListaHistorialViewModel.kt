@@ -19,16 +19,10 @@ class ListaHistorialViewModel(
     private val repositorioUsuario: RepositorioUsuario
 ) : ViewModel() {
     private val listaHistorial = MutableLiveData<List<Historial>>()
+    val listaHistorialAdapter = ListaHistorialAdapter()
 
     var requestListener: RequestListener? = null
-    fun guardarHistorial(historial: Historial) {
-        requestListener?.onStartRequest()
-        repositorioHistorial.guardarHistorialFirestore(historial).addOnSuccessListener {
-            requestListener?.onSuccessRequest()
-        }.addOnFailureListener {
-            requestListener?.onFailureRequest(it.message!!)
-        }
-    }
+
 
     fun getHistorial() {
         requestListener?.onStartRequest()
@@ -44,8 +38,6 @@ class ListaHistorialViewModel(
                 snapshotListener(snapshot, exception)
             }
     }
-
-    fun eliminarHistorial(historialId: String) = repositorioHistorial.eliminarHistorial(historialId)
 
     fun snapshotListener(snapshot: QuerySnapshot?, exception: FirebaseFirestoreException?) {
         if (exception != null) {
@@ -66,6 +58,7 @@ class ListaHistorialViewModel(
             historiales.add(historial)
         }
         listaHistorial.value = historiales
+        listaHistorialAdapter.actualizarHistorial(historiales)
         requestListener?.onSuccessRequest()
     }
 

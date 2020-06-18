@@ -56,4 +56,5 @@
     <string name="cerrar_sesion">Cerrar Sesion</string>
     <string name="default_notification_channel_id">actividades</string>
     <string name="titulo_notificacion">Nueva actividad</string>
+    <string name="tu_historial">Tu Historial</string>
 </resources>

@@ -5,8 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.EventListener
 import com.itaeducativa.android.redita.data.modelos.Comentario
+import com.itaeducativa.android.redita.data.modelos.Historial
 import com.itaeducativa.android.redita.data.repositorios.RepositorioActividad
 import com.itaeducativa.android.redita.data.repositorios.RepositorioComentario
+import com.itaeducativa.android.redita.data.repositorios.RepositorioHistorial
 import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.comentario.adapters.ListaComentariosAdapter
@@ -14,7 +16,8 @@ import com.itaeducativa.android.redita.ui.actividad.comentario.adapters.ListaCom
 class ListaComentariosViewModel(
     private val repositorioComentario: RepositorioComentario,
     private val repositorioUsuario: RepositorioUsuario,
-    private val repositorioActividad: RepositorioActividad
+    private val repositorioActividad: RepositorioActividad,
+    private val repositorioHistorial: RepositorioHistorial
 ) :
     ViewModel() {
 
@@ -31,6 +34,13 @@ class ListaComentariosViewModel(
             .addOnFailureListener {
                 requestListener?.onFailureRequest(it.message!!)
             }.addOnSuccessListener {
+                val historial = Historial(
+                    usuarioUid = comentario.usuarioUid,
+                    actividadId = comentario.actividadId,
+                    accion = "Comentó",
+                    timestampAccion = comentario.fecha.seconds.toString()
+                )
+                repositorioHistorial.guardarHistorialFirestore(historial)
                 repositorioActividad.sumarComentarios(comentario.actividadId)
                 repositorioUsuario.sumarInteraccion("comentarios", comentario.usuarioUid)
                     .addOnSuccessListener {

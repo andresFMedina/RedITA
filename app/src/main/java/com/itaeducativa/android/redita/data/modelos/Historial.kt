@@ -6,12 +6,11 @@ data class Historial(
     var usuarioUid: String,
     var actividadId: String,
     var accion: String,
-    var timestampAccion: String,
-    var timestamp: String
+    var timestampAccion: String
 ) : Serializable {
     var usuario: Usuario? = null
     var actividad: Actividad? = null
 
-    constructor():this("","","","","")
+    constructor() : this("", "", "", "")
 
 }

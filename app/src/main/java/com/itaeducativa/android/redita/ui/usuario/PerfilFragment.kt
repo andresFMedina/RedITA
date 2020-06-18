@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.databinding.FragmentPerfilBinding
+import com.itaeducativa.android.redita.ui.historial.ListaHistorialViewModel
+import com.itaeducativa.android.redita.ui.historial.ListaHistorialViewModelFactory
 import com.itaeducativa.android.redita.util.fileChooser
 import com.itaeducativa.android.redita.util.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_perfil.*
@@ -33,9 +35,12 @@ private const val ACTION_RESULT_GET_IMAGES = 0
  */
 class PerfilFragment : Fragment(), KodeinAware {
     override val kodein: Kodein by kodein()
-    private val factory: UsuarioViewModelFactory by instance()
+    private val usuarioFactory: UsuarioViewModelFactory by instance()
+    private val historialFactory: ListaHistorialViewModelFactory by instance()
 
-    private lateinit var viewModel: UsuarioViewModel
+    private lateinit var usuarioViewModel: UsuarioViewModel
+    private lateinit var listaHistoriaViewModel: ListaHistorialViewModel
+
     private lateinit var usuario: Usuario
 
     private var uriImagen: Uri? = null
@@ -51,14 +56,18 @@ class PerfilFragment : Fragment(), KodeinAware {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentPerfilBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_perfil, container, false)
-        viewModel = ViewModelProviders.of(this, factory).get(UsuarioViewModel::class.java)
+        val binding: FragmentPerfilBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_perfil, container, false)
+        usuarioViewModel = ViewModelProviders.of(this, usuarioFactory).get(UsuarioViewModel::class.java)
+        listaHistoriaViewModel = ViewModelProviders.of(this, historialFactory).get(ListaHistorialViewModel::class.java)
 
-        binding.viewModel = viewModel
-        viewModel.bindUsuario(usuario)
+        binding.usuarioViewModel = usuarioViewModel
+        usuarioViewModel.bindUsuario(usuario)
+
+        binding.historialViewModel = listaHistoriaViewModel
 
         binding.textFieldTelefono.setEndIconOnClickListener {
-            viewModel.modificarTelefono()
+            usuarioViewModel.modificarTelefono()
             context!!.hideKeyboard(activity!!)
         }
 
@@ -76,13 +85,13 @@ class PerfilFragment : Fragment(), KodeinAware {
         ) {
             uriImagen = data.data!!
             imagenPerfil.setImageURI(uriImagen)
-            viewModel.cambiarImagenPerfil(uriImagen!!, context!!)
+            usuarioViewModel.cambiarImagenPerfil(uriImagen!!, context!!)
         }
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.requestListener = null
+        usuarioViewModel.requestListener = null
     }
 
 
@@ -91,8 +100,7 @@ class PerfilFragment : Fragment(), KodeinAware {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
+         * @param usuario Parameter 1.
          * @return A new instance of fragment PerfilFragment.
          */
         // TODO: Rename and change types and number of parameters
