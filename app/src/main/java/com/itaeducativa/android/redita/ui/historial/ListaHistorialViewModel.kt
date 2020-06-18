@@ -50,16 +50,19 @@ class ListaHistorialViewModel(
             repositorioActividad.getActividadesById(historial.actividadId)
                 .addSnapshotListener { snapshotActividad, exceptionActividad ->
                     historial.actividad = snapshotActividad?.toObject(Actividad::class.java)
+                    repositorioUsuario.getUsuarioByUid(historial.usuarioUid)
+                        .addSnapshotListener { snapshotUsuario, exceptionUsuario ->
+                            historial.usuario = snapshotUsuario?.toObject(Usuario::class.java)
+                            historiales.add(historial)
+                            listaHistorial.value = historiales
+                            listaHistorialAdapter.actualizarHistorial(historiales)
+                            requestListener?.onSuccessRequest()
+                        }
                 }
-            repositorioUsuario.getUsuarioByUid(historial.usuarioUid)
-                .addSnapshotListener { snapshotUsuario, exceptionUsuario ->
-                    historial.usuario = snapshotUsuario?.toObject(Usuario::class.java)
-                }
-            historiales.add(historial)
+
+
         }
-        listaHistorial.value = historiales
-        listaHistorialAdapter.actualizarHistorial(historiales)
-        requestListener?.onSuccessRequest()
+
     }
 
 

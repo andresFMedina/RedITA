@@ -13,4 +13,9 @@ data class Historial(
 
     constructor() : this("", "", "", "")
 
+    override fun toString(): String {
+        return "Historial(usuarioUid='$usuarioUid', actividadId='$actividadId', accion='$accion', timestampAccion='$timestampAccion', usuario=$usuario, actividad=$actividad)"
+    }
+
+
 }

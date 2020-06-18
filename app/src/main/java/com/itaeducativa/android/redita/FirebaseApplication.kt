@@ -57,7 +57,7 @@ class FirebaseApplication : Application(), KodeinAware {
         bind() from provider { ReaccionViewModelFactory(instance()) }
         bind() from provider { StorageViewModelFactory(instance()) }
         bind() from singleton { RepositorioVista(instance()) }
-        bind() from provider { ListaVistaViewModelFactory(instance()) }
+        bind() from provider { ListaVistaViewModelFactory(instance(), instance()) }
         bind() from singleton { RepositorioHistorial(instance()) }
         bind() from provider { ListaHistorialViewModelFactory(instance(), instance(), instance()) }
     }

@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_top_multimedia_layout"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.itaeducativa.android.redita.ui.vista.VistaViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/padding_horizontal_cardview"
-        android:paddingEnd="@dimen/padding_horizontal_cardview">
+        android:layout_marginTop="@dimen/margin_top_multimedia_layout">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imagenPerfilVista"
-            android:layout_width="@dimen/height_width_image_circle_actividad"
-            android:layout_height="@dimen/height_width_image_circle_actividad"
-            android:src="@drawable/ic_event_black_24dp" />
-
-        <TextView
-            android:id="@+id/mensajeVista"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/imagenPerfilVista"
+            android:paddingStart="@dimen/padding_horizontal_cardview"
+            android:paddingEnd="@dimen/padding_horizontal_cardview">
 
-            android:text="Juan Perez ha visto esta actividad: 10 veces" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imagenPerfilVista"
+                android:layout_width="@dimen/height_width_image_circle_actividad"
+                android:layout_height="@dimen/height_width_image_circle_actividad"
+                app:imageUrl="@{viewModel.fotoUsuario}"/>
+
+            <TextView
+                android:id="@+id/mensajeVista"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/imagenPerfilVista"
+                 />
 
 
+        </RelativeLayout>
 
-
-    </RelativeLayout>
-
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

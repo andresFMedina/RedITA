@@ -8,4 +8,9 @@ data class Vista(
     val timestamp: String,
     val vecesVisto: Int
 ): Serializable {
+    constructor() : this("","","",0)
+
+    var usuario: Usuario? = null
+
+
 }

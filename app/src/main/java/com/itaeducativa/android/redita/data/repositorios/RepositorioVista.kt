@@ -21,10 +21,11 @@ class RepositorioVista(
         firestoreDB.collection(VISTAS).document(vista.timestamp)
             .update("vecesVisto", FieldValue.increment(1))
 
-    fun getVistaByUsuarioUid(usuarioUid: String) =
-        firestoreDB.collection(VISTAS).whereEqualTo("usuarioUid", usuarioUid)
+    fun getVistaPorParametro(nombreParametro: String, parametro: String) =
+        firestoreDB.collection(VISTAS).whereEqualTo(nombreParametro, parametro)
 
     fun getVistaByUsuarioYActividad(usuarioUid: String, actividadId: String) =
-        getVistaByUsuarioUid(usuarioUid).whereEqualTo("actividadId", actividadId)
+        firestoreDB.collection(VISTAS).whereEqualTo("usuarioUid", usuarioUid)
+            .whereEqualTo("actividadId", actividadId)
 
 }

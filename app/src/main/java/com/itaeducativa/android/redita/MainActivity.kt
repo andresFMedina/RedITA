@@ -36,10 +36,10 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         setContentView(R.layout.activity_main)
 
         val extras = intent.extras
-        if (extras != null) {
-            usuario = extras.getSerializable("usuario") as Usuario
+        usuario = if (extras != null) {
+            extras.getSerializable("usuario") as Usuario
         } else {
-            usuario = savedInstanceState!!.getSerializable("usuario") as Usuario
+            savedInstanceState!!.getSerializable("usuario") as Usuario
         }
 
         Log.d("USuario", usuario.toString())

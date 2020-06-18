@@ -24,11 +24,13 @@ class RepositorioStorage() {
 
         @BindingAdapter("bind:imageUrl")
         @JvmStatic
-        fun getStorageReferenceCircleImageView(imageView: CircleImageView, url: String) {
-            val storageReference = storage.getReferenceFromUrl(url)
-            GlideApp.with(imageView)
-                .load(storageReference)
-                .into(imageView)
+        fun getStorageReferenceCircleImageView(imageView: CircleImageView, url: String?) {
+            if (url != null && url != "") {
+                val storageReference = storage.getReferenceFromUrl(url)
+                GlideApp.with(imageView)
+                    .load(storageReference)
+                    .into(imageView)
+            }
         }
 
         @BindingAdapter("bind:imageUrl")

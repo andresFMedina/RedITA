@@ -14,6 +14,7 @@ import com.itaeducativa.android.redita.ui.actividad.actividad.ui.ActividadActivi
 import com.itaeducativa.android.redita.ui.actividad.actividad.ui.CrearActividadActivity
 import com.itaeducativa.android.redita.ui.login.LoginActivity
 import com.itaeducativa.android.redita.ui.login.SingUpActivity
+import com.itaeducativa.android.redita.ui.vista.VistasActivity
 
 private const val ACTION_RESULT_GET_IMAGES = 0
 private const val ACTION_RESULT_GET_VIDEO = 1
@@ -29,6 +30,15 @@ fun Context.startMainActivity(usuario: Usuario) =
 
 fun Context.startActividadActivity(actividad: Actividad) =
     Intent(this, ActividadActivity::class.java).also {
+        val bundle = Bundle()
+        bundle.putSerializable("actividad", actividad)
+        it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        it.putExtras(bundle)
+        startActivity(it)
+    }
+
+fun Context.startVistasActivity(actividad: Actividad) =
+    Intent(this, VistasActivity::class.java).also {
         val bundle = Bundle()
         bundle.putSerializable("actividad", actividad)
         it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP

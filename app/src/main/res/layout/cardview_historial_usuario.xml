@@ -20,18 +20,18 @@
             android:paddingStart="@dimen/padding_horizontal_cardview"
             android:paddingEnd="@dimen/padding_horizontal_cardview">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 android:id="@+id/imagenPerfilHistorial"
                 android:layout_width="@dimen/height_width_image_circle_actividad"
                 android:layout_height="@dimen/height_width_image_circle_actividad"
-                app:imageUrl="@{viewModel.fotoUsuario}" />
+                app:imageUrl="@{viewModel.fotoUsuario}"
+
+                />
 
             <TextView
                 android:id="@+id/descripcionHistorial"
                 android:layout_toEndOf="@id/imagenPerfilHistorial"
                 android:layout_width="wrap_content"
-                android:text="@string/lorem"
-
                 android:layout_height="wrap_content" />
 
 

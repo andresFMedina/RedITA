@@ -5,6 +5,5 @@
         android:id="@+id/logout"
         android:enabled="true"
         android:title="@string/cerrar_sesion"
-
         />
 </menu>

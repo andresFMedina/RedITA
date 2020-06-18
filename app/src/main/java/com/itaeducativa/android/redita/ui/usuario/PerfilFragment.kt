@@ -66,6 +66,8 @@ class PerfilFragment : Fragment(), KodeinAware {
 
         binding.historialViewModel = listaHistoriaViewModel
 
+        listaHistoriaViewModel.getHistorialByUsuarioUid(usuario.uid)
+
         binding.textFieldTelefono.setEndIconOnClickListener {
             usuarioViewModel.modificarTelefono()
             context!!.hideKeyboard(activity!!)
