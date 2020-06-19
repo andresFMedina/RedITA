@@ -76,8 +76,7 @@ class ActividadViewModel : ViewModel() {
     }
 
     fun getReaccionByActividadIdYUsuarioUid(query: Query) {
-        if(reaccion.value == null && !fueConsultado)
-        {
+        if (reaccion.value == null && !fueConsultado) {
             requestListener?.onStartRequest()
             query.get().addOnCompleteListener {
                 if (it.isSuccessful) {
@@ -88,13 +87,13 @@ class ActividadViewModel : ViewModel() {
                 } else {
                     requestListener?.onFailureRequest("Falló")
                 }
-            }}
+            }
+        }
     }
 
 
     fun verActividad(view: View) {
-        view.context.startActividadActivity(actividad.value!!)
-        Log.d("Escucha", "Im listening")
+        view.context.startActividadActivity(actividad.value!!, reaccion.value)
     }
 
 }

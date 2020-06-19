@@ -28,8 +28,11 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         return documentReference.update("imagenes", FieldValue.arrayUnion(urlImagen))
     }
 
-    fun getActividades(): CollectionReference =
-        firestoreDB.collection(ACTIVIDADES)
+    fun getActividades(
+        ordenCampo: String,
+        direccion: Query.Direction
+    ): Query =
+        firestoreDB.collection(ACTIVIDADES).orderBy(ordenCampo, direccion)
 
     fun getActividadesById(id: String): DocumentReference =
         firestoreDB.collection(ACTIVIDADES).document(id)
@@ -65,7 +68,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     fun guardarUrlVideoEnFirestore(actividadId: String, urlVideo: String): Task<Void> {
         val documentReference =
             firestoreDB.collection(ACTIVIDADES).document(actividadId)
-        return documentReference.update("video",urlVideo)
+        return documentReference.update("video", urlVideo)
     }
 
 

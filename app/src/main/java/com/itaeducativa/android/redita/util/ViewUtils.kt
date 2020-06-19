@@ -1,14 +1,18 @@
 package com.itaeducativa.android.redita.util
 
+import android.R
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import com.google.android.material.snackbar.Snackbar
 import com.itaeducativa.android.redita.MainActivity
 import com.itaeducativa.android.redita.data.modelos.Actividad
+import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.ui.actividad.actividad.ui.ActividadActivity
 import com.itaeducativa.android.redita.ui.actividad.actividad.ui.CrearActividadActivity
@@ -28,10 +32,11 @@ fun Context.startMainActivity(usuario: Usuario) =
         startActivity(it)
     }
 
-fun Context.startActividadActivity(actividad: Actividad) =
+fun Context.startActividadActivity(actividad: Actividad, reaccion: Reaccion?) =
     Intent(this, ActividadActivity::class.java).also {
         val bundle = Bundle()
         bundle.putSerializable("actividad", actividad)
+        bundle.putSerializable("reaccion", reaccion)
         it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         it.putExtras(bundle)
         startActivity(it)

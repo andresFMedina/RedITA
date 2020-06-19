@@ -6,6 +6,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Historial
@@ -15,6 +16,10 @@ import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.ListaActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.MisActividadesAdapter
 import com.itaeducativa.android.redita.util.startFormularioActividadActivity
+
+
+private const val MAS_RECIENTE = "Más reciente"
+private const val MAS_ANTIGUO = "Más antiguo"
 
 @Suppress("UNCHECKED_CAST")
 class ListaActividadesViewModel(
@@ -27,6 +32,8 @@ class ListaActividadesViewModel(
 ) : ViewModel() {
 
     private val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
+    val entries = listOf(MAS_RECIENTE, MAS_ANTIGUO)
+    val orden = MutableLiveData<String>()
 
     var requestListener: RequestListener? = null
     val listaActividadesAdapter by lazy {
@@ -65,9 +72,20 @@ class ListaActividadesViewModel(
         }
     }
 
-    fun getListaActividades() {
+    fun onItemSelected(orden: Any) {
+        this.orden.value = orden as String
+        val direccion =
+            if (this.orden.value!! == MAS_RECIENTE) Query.Direction.DESCENDING else Query.Direction.ASCENDING
+        getListaActividades(direccion = direccion)
+    }
+
+    fun getListaActividades(
+        ordenCampo: String = "fechaCreacionTimeStamp",
+        direccion: Query.Direction = Query.Direction.DESCENDING
+    ) {
+        orden.value = MAS_RECIENTE
         requestListener?.onStartRequest()
-        repositorioActividad.getActividades()
+        repositorioActividad.getActividades(ordenCampo, direccion)
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     listaActividades.value = null

@@ -86,7 +86,8 @@ class ListaActividadesAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(listaActividades[position])
 
-        val formatoFecha = "${listaActividades[position].fechaInicio} a las ${listaActividades[position].horaInicio}"
+        val formatoFecha =
+            "${listaActividades[position].fechaInicio} a las ${listaActividades[position].horaInicio}"
 
         holder.textViewFechaYHora.text = formatoFecha
 
@@ -122,7 +123,10 @@ class ListaActividadesAdapter(
             )
         }
         holder.imageButtonComentarios.setOnClickListener {
-            it.context.startActividadActivity(listaActividades[position])
+            it.context.startActividadActivity(
+                listaActividades[position],
+                holder.viewModelActividad.reaccion.value
+            )
         }
     }
 
