@@ -60,4 +60,7 @@
     <string name="quien_ha_visto">¿Quién ha visto?</string>
     <string name="mas_antiguo">Más antiguo</string>
     <string name="mas_reciente">Más reciente</string>
+    <string name="cerrar">Cerrar</string>
+    <string name="docente">Docente</string>
+    <string name="guardar">Guardar</string>
 </resources>

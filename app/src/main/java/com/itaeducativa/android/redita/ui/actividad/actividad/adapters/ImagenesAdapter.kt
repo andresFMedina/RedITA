@@ -4,14 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.databinding.CardviewMultimediaBinding
+
 
 class ImagenesAdapter(private val listaImagenes: List<String>?) :
     RecyclerView.Adapter<ImagenesAdapter.ViewHolder>() {
 
 
     class ViewHolder(private val binding: CardviewMultimediaBinding) : RecyclerView.ViewHolder(binding.root) {
+        val imageView = binding.imageViewMultimedia
         fun bind(urlImagen: String) {
             binding.imagen = urlImagen
         }
@@ -34,5 +37,8 @@ class ImagenesAdapter(private val listaImagenes: List<String>?) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(listaImagenes!![position])
+        holder.imageView.setOnClickListener {
+            MaterialAlertDialogBuilder(it.context!!).show()
+        }
     }
 }

@@ -7,7 +7,7 @@
 
         <variable
             name="usuarioViewModel"
-            type="com.itaeducativa.android.redita.ui.usuario.UsuarioViewModel" />
+            type="com.itaeducativa.android.redita.ui.usuario.ListaUsuarioViewModel" />
 
         <variable
             name="historialViewModel"

@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -16,7 +15,7 @@ import com.itaeducativa.android.redita.databinding.ActivitySingUpBinding
 import com.itaeducativa.android.redita.network.AutenticacionListener
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.ImageUploadListener
-import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModel
+import com.itaeducativa.android.redita.ui.usuario.ListaUsuarioViewModel
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
 import com.itaeducativa.android.redita.util.*
 import kotlinx.android.synthetic.main.activity_sing_up.*
@@ -33,7 +32,7 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
     private val autenticacionFactory: AutenticacionViewModelFactory by instance()
     private val usuarioFactory: UsuarioViewModelFactory by instance()
 
-    private lateinit var usuarioViewModel: UsuarioViewModel
+    private lateinit var listaUsuarioViewModel: ListaUsuarioViewModel
     private lateinit var autenticacionViewModel: AutenticacionViewModel
 
     var uriImagen: Uri? = null
@@ -47,13 +46,13 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
         autenticacionViewModel = ViewModelProviders.of(this, autenticacionFactory)
             .get(AutenticacionViewModel::class.java)
         binding.autenticacionViewModel = autenticacionViewModel
-        usuarioViewModel =
-            ViewModelProviders.of(this, usuarioFactory).get(UsuarioViewModel::class.java)
-        binding.usuarioViewModel = usuarioViewModel
+        listaUsuarioViewModel =
+            ViewModelProviders.of(this, usuarioFactory).get(ListaUsuarioViewModel::class.java)
+        binding.usuarioViewModel = listaUsuarioViewModel
 
         autenticacionViewModel.autenticacionListener = this
-        usuarioViewModel.requestListener = this
-        usuarioViewModel.imageUploadListener = this
+        listaUsuarioViewModel.requestListener = this
+        listaUsuarioViewModel.imageUploadListener = this
 
         inputNombreCompletoSignUp.editText?.addTextChangedListener(
             TextWatcherValidacionVacio(
@@ -127,10 +126,10 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
     override fun onSuccess() {
         progressBarSingUp.visibility = View.GONE
         if (uriImagen != null) {
-            usuarioViewModel.uploadProfileImage(uriImagen!!, this)
+            listaUsuarioViewModel.uploadProfileImage(uriImagen!!, this)
         } else {
             val uid = autenticacionViewModel.usuario!!.uid
-            usuarioViewModel.guardarUsuario(autenticacionViewModel.email!!, uid, null)
+            listaUsuarioViewModel.guardarUsuario(autenticacionViewModel.email!!, uid, null)
         }
 
     }
@@ -147,7 +146,7 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
     }
 
     override fun onSuccessRequest() {
-        this.startMainActivity(usuarioViewModel.usuario.value!!)
+        this.startMainActivity(listaUsuarioViewModel.usuario.value!!)
     }
 
     override fun onFailureRequest(message: String) {
@@ -182,7 +181,7 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
     override fun onSuccessUploadImage(rutaImagen: String) {
         Log.d("ruta", rutaImagen)
         val uid = autenticacionViewModel.usuario!!.uid
-        usuarioViewModel.guardarUsuario(autenticacionViewModel.email!!, uid, rutaImagen)
+        listaUsuarioViewModel.guardarUsuario(autenticacionViewModel.email!!, uid, rutaImagen)
     }
 
     override fun onFailureUploadImage(message: String) {
@@ -193,7 +192,7 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
     override fun onStop() {
         super.onStop()
         autenticacionViewModel.autenticacionListener = null
-        usuarioViewModel.requestListener = null
+        listaUsuarioViewModel.requestListener = null
     }
 
 }

@@ -16,7 +16,7 @@ class ListaVistaViewModel(
     private val listaVistas = MutableLiveData<List<Vista>>()
     val vista = MutableLiveData<Vista>()
 
-    private val listaVistaAdapter = ListaVistaAdapter()
+    val listaVistaAdapter = ListaVistaAdapter()
 
     var requestListener: RequestListener? = null
 

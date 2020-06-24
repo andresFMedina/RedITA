@@ -1,22 +1,10 @@
 package com.itaeducativa.android.redita.ui.usuario
 
-import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.EventListener
 import com.itaeducativa.android.redita.data.modelos.Usuario
-import com.itaeducativa.android.redita.data.repositorios.RepositorioStorage
-import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
-import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.ui.ImageUploadListener
-import com.itaeducativa.android.redita.util.getExtension
 
-class UsuarioViewModel(
-    private val repositorioUsuario: RepositorioUsuario,
-    private val repositorioStorage: RepositorioStorage
-) : ViewModel() {
-
+class UsuarioViewModel : ViewModel() {
     val usuario: MutableLiveData<Usuario> = MutableLiveData()
     val email = MutableLiveData<String>()
     val nombreCompleto = MutableLiveData<String>()
@@ -26,9 +14,6 @@ class UsuarioViewModel(
     val cantidadMeGusta = MutableLiveData<String>()
     val cantidadNoMeGusta = MutableLiveData<String>()
     val cantidadComentarios = MutableLiveData<String>()
-
-    var requestListener: RequestListener? = null
-    var imageUploadListener: ImageUploadListener? = null
 
     fun bindUsuario(usuario: Usuario) {
         this.usuario.value = usuario
@@ -41,64 +26,4 @@ class UsuarioViewModel(
         cantidadNoMeGusta.value = usuario.noMeGusta.toString()
         cantidadComentarios.value = usuario.comentarios.toString()
     }
-
-    fun guardarUsuario(email: String, uid: String, urlImagen: String?) {
-        val imagen = urlImagen ?: "gs://redita.appspot.com/img_profile.png"
-
-        usuario.value = Usuario(
-            nombreCompleto = nombreCompleto.value!!,
-            email = email,
-            rol = "",
-            telefono = telefono.value!!,
-            uid = uid,
-            imagenPerfilUrl = imagen
-        )
-
-        requestListener?.onStartRequest()
-        repositorioUsuario.guardarUsuario(usuario.value!!).addOnSuccessListener {
-            requestListener?.onSuccessRequest()
-        }.addOnFailureListener { exception ->
-            requestListener?.onFailureRequest(exception.message!!)
-        }
-
-    }
-
-    fun getUsuarioByUid(uid: String) {
-        repositorioUsuario.getUsuarioByUid(uid)
-            .addSnapshotListener(EventListener { value, e ->
-                requestListener?.onStartRequest()
-                if (e != null) {
-                    usuario.value = null
-                    requestListener?.onFailureRequest(e.message!!)
-                    return@EventListener
-                }
-                usuario.value = value!!.toObject(Usuario::class.java)
-                requestListener?.onSuccessRequest()
-
-            })
-    }
-
-    fun modificarTelefono() {
-        repositorioUsuario.modificarTelefono(telefono.value!!, usuario.value!!.uid)
-    }
-
-    fun cambiarImagenPerfil(uriImagen: Uri, context: Context) {
-        val ruta = "${System.currentTimeMillis()}.${getExtension(uriImagen, context)}"
-        repositorioStorage.subirArchivoStorage(ruta, uriImagen).addOnSuccessListener {
-            val url = "gs://redita.appspot.com${it.storage.path}"
-            repositorioUsuario.cambiarUrlImagenPerfil(url, usuario.value!!.uid)
-        }
-    }
-
-    fun uploadProfileImage(uriImagen: Uri, context: Context) {
-        val ruta = "${System.currentTimeMillis()}.${getExtension(uriImagen, context)}"
-        imageUploadListener?.onStartUploadImage()
-        repositorioStorage.subirArchivoStorage(ruta, uriImagen).addOnSuccessListener {
-            val url = "gs://redita.appspot.com${it.storage.path}"
-            imageUploadListener?.onSuccessUploadImage(url)
-        }.addOnFailureListener {
-            imageUploadListener?.onFailureUploadImage(it.message!!)
-        }
-    }
-
 }

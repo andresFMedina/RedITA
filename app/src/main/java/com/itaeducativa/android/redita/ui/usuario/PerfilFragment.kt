@@ -38,7 +38,7 @@ class PerfilFragment : Fragment(), KodeinAware {
     private val usuarioFactory: UsuarioViewModelFactory by instance()
     private val historialFactory: ListaHistorialViewModelFactory by instance()
 
-    private lateinit var usuarioViewModel: UsuarioViewModel
+    private lateinit var listaUsuarioViewModel: ListaUsuarioViewModel
     private lateinit var listaHistoriaViewModel: ListaHistorialViewModel
 
     private lateinit var usuario: Usuario
@@ -58,18 +58,18 @@ class PerfilFragment : Fragment(), KodeinAware {
     ): View? {
         val binding: FragmentPerfilBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_perfil, container, false)
-        usuarioViewModel = ViewModelProviders.of(this, usuarioFactory).get(UsuarioViewModel::class.java)
+        listaUsuarioViewModel = ViewModelProviders.of(this, usuarioFactory).get(ListaUsuarioViewModel::class.java)
         listaHistoriaViewModel = ViewModelProviders.of(this, historialFactory).get(ListaHistorialViewModel::class.java)
 
-        binding.usuarioViewModel = usuarioViewModel
-        usuarioViewModel.bindUsuario(usuario)
+        binding.usuarioViewModel = listaUsuarioViewModel
+        listaUsuarioViewModel.bindUsuario(usuario)
 
         binding.historialViewModel = listaHistoriaViewModel
 
         listaHistoriaViewModel.getHistorialByUsuarioUid(usuario.uid)
 
         binding.textFieldTelefono.setEndIconOnClickListener {
-            usuarioViewModel.modificarTelefono()
+            listaUsuarioViewModel.modificarTelefono()
             context!!.hideKeyboard(activity!!)
         }
 
@@ -87,13 +87,13 @@ class PerfilFragment : Fragment(), KodeinAware {
         ) {
             uriImagen = data.data!!
             imagenPerfil.setImageURI(uriImagen)
-            usuarioViewModel.cambiarImagenPerfil(uriImagen!!, context!!)
+            listaUsuarioViewModel.cambiarImagenPerfil(uriImagen!!, context!!)
         }
     }
 
     override fun onStop() {
         super.onStop()
-        usuarioViewModel.requestListener = null
+        listaUsuarioViewModel.requestListener = null
     }
 
 

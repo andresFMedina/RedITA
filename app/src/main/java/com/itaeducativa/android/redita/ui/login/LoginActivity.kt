@@ -1,8 +1,6 @@
 package com.itaeducativa.android.redita.ui.login
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +10,7 @@ import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.databinding.ActivityLoginBinding
 import com.itaeducativa.android.redita.network.AutenticacionListener
 import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModel
+import com.itaeducativa.android.redita.ui.usuario.ListaUsuarioViewModel
 import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
 import com.itaeducativa.android.redita.util.TextWatcherValidacionVacio
 import com.itaeducativa.android.redita.util.startMainActivity
@@ -21,7 +19,6 @@ import kotlinx.android.synthetic.main.activity_login.*
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
-import org.w3c.dom.Text
 
 class LoginActivity : AppCompatActivity(),
     AutenticacionListener, KodeinAware, RequestListener {
@@ -31,7 +28,7 @@ class LoginActivity : AppCompatActivity(),
     private val factoryUsuario: UsuarioViewModelFactory by instance()
 
     private lateinit var autenticacionViewModel: AutenticacionViewModel
-    private lateinit var usuarioViewModel: UsuarioViewModel
+    private lateinit var listaUsuarioViewModel: ListaUsuarioViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +37,12 @@ class LoginActivity : AppCompatActivity(),
             DataBindingUtil.setContentView(this, R.layout.activity_login)
         autenticacionViewModel = ViewModelProviders.of(this, factoryAutenticacion)
             .get(AutenticacionViewModel::class.java)
-        usuarioViewModel =
-            ViewModelProviders.of(this, factoryUsuario).get(UsuarioViewModel::class.java)
+        listaUsuarioViewModel =
+            ViewModelProviders.of(this, factoryUsuario).get(ListaUsuarioViewModel::class.java)
         binding.viewModel = autenticacionViewModel
 
         autenticacionViewModel.autenticacionListener = this
-        usuarioViewModel.requestListener = this
+        listaUsuarioViewModel.requestListener = this
 
 
         inputEmailLogin.editText?.addTextChangedListener(TextWatcherValidacionVacio(inputEmailLogin))
@@ -80,7 +77,7 @@ class LoginActivity : AppCompatActivity(),
 
 
     override fun onSuccess() {
-        usuarioViewModel.getUsuarioByUid(autenticacionViewModel.usuario!!.uid)
+        listaUsuarioViewModel.getUsuarioByUid(autenticacionViewModel.usuario!!.uid)
     }
 
     override fun onFailure(mensaje: String) {
@@ -94,7 +91,7 @@ class LoginActivity : AppCompatActivity(),
     override fun onStart() {
         super.onStart()
         autenticacionViewModel.usuario?.let {
-            usuarioViewModel.getUsuarioByUid(it.uid)
+            listaUsuarioViewModel.getUsuarioByUid(it.uid)
             layoutEstadoLogin.visibility = View.VISIBLE
             textViewEstadoLogin.text = getString(R.string.autenticando)
             buttonIngresar.isEnabled = false
@@ -112,7 +109,7 @@ class LoginActivity : AppCompatActivity(),
 
     override fun onSuccessRequest() {
         layoutEstadoLogin.visibility = View.GONE
-        startMainActivity(usuarioViewModel.usuario.value!!)
+        startMainActivity(listaUsuarioViewModel.usuario.value!!)
     }
 
     override fun onFailureRequest(message: String) {
@@ -126,6 +123,6 @@ class LoginActivity : AppCompatActivity(),
     override fun onStop() {
         super.onStop()
         autenticacionViewModel.autenticacionListener = null
-        usuarioViewModel.requestListener = null
+        listaUsuarioViewModel.requestListener = null
     }
 }

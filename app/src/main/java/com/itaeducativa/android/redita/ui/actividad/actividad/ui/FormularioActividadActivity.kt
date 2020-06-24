@@ -16,6 +16,7 @@ import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
+import com.itaeducativa.android.redita.ui.imagen.ImagenesDialog
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.util.*
@@ -211,6 +212,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
 
                         indexActual++
                     }
+                    ImagenesDialog().display(supportFragmentManager, imagenesUri)
                 }
                 if (data.data != null) {
                     imagenesUri.add(data.data!!)

@@ -12,5 +12,9 @@ data class Vista(
 
     var usuario: Usuario? = null
 
+    override fun toString(): String {
+        return "Vista(usuarioUid='$usuarioUid', actividadId='$actividadId', timestamp='$timestamp', vecesVisto=$vecesVisto, usuario=$usuario)"
+    }
+
 
 }

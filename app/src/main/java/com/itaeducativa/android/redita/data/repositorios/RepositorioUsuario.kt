@@ -1,6 +1,7 @@
 package com.itaeducativa.android.redita.data.repositorios
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
@@ -19,8 +20,14 @@ class RepositorioUsuario (private val firebase: FirebaseSource) {
     fun modificarTelefono(telefono: String, usuarioUid: String): Task<Void> =
         firestoreDB.collection(USUARIOS).document(usuarioUid).update("telefono", telefono)
 
+    fun modificarRolUsuario(rol: String, usuarioUid: String): Task<Void> =
+        firestoreDB.collection(USUARIOS).document(usuarioUid).update("rol", rol)
+
     fun getUsuarioByUid(uid: String): DocumentReference =
         firestoreDB.collection(USUARIOS).document(uid)
+
+    fun getUsuarios(): CollectionReference =
+        firestoreDB.collection(USUARIOS)
 
     fun cambiarUrlImagenPerfil(url: String, uid: String): Task<Void> =
         firestoreDB.collection(USUARIOS).document(uid).update("imagenPerfilUrl", url)

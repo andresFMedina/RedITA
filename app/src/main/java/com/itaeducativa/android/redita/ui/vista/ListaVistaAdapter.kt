@@ -1,5 +1,6 @@
 package com.itaeducativa.android.redita.ui.vista
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -19,7 +20,9 @@ class ListaVistaAdapter : RecyclerView.Adapter<ListaVistaAdapter.ViewHolder>() {
         val textViewMensajeVista = binding.mensajeVista
 
         fun bind(vista: Vista) {
+            binding.viewModel = vistaViewModel
             vistaViewModel.bind(vista)
+
         }
     }
 
@@ -39,9 +42,11 @@ class ListaVistaAdapter : RecyclerView.Adapter<ListaVistaAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val vista = listaVistas[position]
+        Log.d("Vista", vista.toString())
         if (vista.usuario != null) {
-            holder.textViewMensajeVista.text =
-                "${vista.usuario!!.nombreCompleto} ha visto esta actividad ${vista.vecesVisto} veces"
+            val text = "${vista.usuario!!.nombreCompleto} ha visto esta actividad ${vista.vecesVisto} veces"
+            holder.textViewMensajeVista.text = text
+
         }
     }
 
