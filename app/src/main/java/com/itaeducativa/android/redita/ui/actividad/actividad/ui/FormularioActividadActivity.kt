@@ -16,7 +16,7 @@ import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
-import com.itaeducativa.android.redita.ui.imagen.ImagenesDialog
+import com.itaeducativa.android.redita.ui.imagen.SeleccionarImagenesDialog
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.util.*
@@ -31,7 +31,7 @@ private const val ACTION_RESULT_GET_IMAGES = 0
 private const val ACTION_RESULT_GET_VIDEO = 1
 
 class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware,
-    ImagenesDialog.DialogListener {
+    SeleccionarImagenesDialog.DialogListener {
     override val kodein: Kodein by kodein()
     private val autenticacionFactory: AutenticacionViewModelFactory by instance()
     private val actividadFactory: ListaActividadesViewModelFactory by instance()
@@ -212,7 +212,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
 
                         indexActual++
                     }
-                    abrirImagenesDialog(imagenesUri)
+                    abrirSeleccionarImagenesDialog(imagenesUri)
                 }
                 if (data.data != null) {
                     imagenesUri.add(data.data!!)
@@ -229,15 +229,15 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         }
     }
 
-    private fun abrirImagenesDialog(imagenes: MutableList<Uri>) {
-        val imagenesDialog = ImagenesDialog(imagenes)
+    private fun abrirSeleccionarImagenesDialog(imagenes: MutableList<Uri>) {
+        val seleccionarImagenesDialog = SeleccionarImagenesDialog(imagenes)
         val ft = supportFragmentManager.beginTransaction()
         val prev = supportFragmentManager.findFragmentByTag("imagen_dialog")
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
-        imagenesDialog.show(ft, "imagen_dialog")
+        seleccionarImagenesDialog.show(ft, "imagen_dialog")
 
     }
 

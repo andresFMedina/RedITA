@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.dialog_seleccionar_imagenes.*
 
 private const val TAG = "imagen_dialog"
 
-class ImagenesDialog(private val imagenes: MutableList<Uri>) : DialogFragment() {
+class SeleccionarImagenesDialog(private val imagenes: MutableList<Uri>) : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
