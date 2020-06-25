@@ -16,6 +16,7 @@ import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.Notific
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.NotificacionViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
+import com.itaeducativa.android.redita.ui.usuario.ListaUsuariosFragment
 import com.itaeducativa.android.redita.ui.usuario.PerfilFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import org.kodein.di.Kodein
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         notificacionViewModel.getToken()
 
         bottomBarMenuPrincipal.menu.findItem(R.id.menuMisActividades).isVisible = usuario.rol == "Docente"
+        bottomBarMenuPrincipal.menu.findItem(R.id.menuUsuarios).isVisible = usuario.rol == "Docente"
         bottomBarMenuPrincipal.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menuInicio -> {
@@ -64,6 +66,10 @@ class MainActivity : AppCompatActivity(), KodeinAware {
                 }
                 R.id.menuMisActividades -> {
                     openFragment(MisActividadesFragment.newInstance(usuario))
+                    true
+                }
+                R.id.menuUsuarios -> {
+                    openFragment(ListaUsuariosFragment.newInstance())
                     true
                 }
                 else -> false

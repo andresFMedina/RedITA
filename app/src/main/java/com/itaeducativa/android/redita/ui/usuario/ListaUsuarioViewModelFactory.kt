@@ -6,7 +6,7 @@ import com.itaeducativa.android.redita.data.repositorios.RepositorioStorage
 import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
 
 @Suppress("UNCHECKED_CAST")
-class UsuarioViewModelFactory (
+class ListaUsuarioViewModelFactory (
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioStorage: RepositorioStorage
 ): ViewModelProvider.NewInstanceFactory(){

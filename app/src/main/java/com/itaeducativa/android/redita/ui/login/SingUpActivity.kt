@@ -16,7 +16,7 @@ import com.itaeducativa.android.redita.network.AutenticacionListener
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.ImageUploadListener
 import com.itaeducativa.android.redita.ui.usuario.ListaUsuarioViewModel
-import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
+import com.itaeducativa.android.redita.ui.usuario.ListaUsuarioViewModelFactory
 import com.itaeducativa.android.redita.util.*
 import kotlinx.android.synthetic.main.activity_sing_up.*
 import org.kodein.di.Kodein
@@ -30,7 +30,7 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
     ImageUploadListener, KodeinAware {
     override val kodein: Kodein by kodein()
     private val autenticacionFactory: AutenticacionViewModelFactory by instance()
-    private val usuarioFactory: UsuarioViewModelFactory by instance()
+    private val listaUsuarioFactory: ListaUsuarioViewModelFactory by instance()
 
     private lateinit var listaUsuarioViewModel: ListaUsuarioViewModel
     private lateinit var autenticacionViewModel: AutenticacionViewModel
@@ -47,7 +47,7 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
             .get(AutenticacionViewModel::class.java)
         binding.autenticacionViewModel = autenticacionViewModel
         listaUsuarioViewModel =
-            ViewModelProviders.of(this, usuarioFactory).get(ListaUsuarioViewModel::class.java)
+            ViewModelProviders.of(this, listaUsuarioFactory).get(ListaUsuarioViewModel::class.java)
         binding.usuarioViewModel = listaUsuarioViewModel
 
         autenticacionViewModel.autenticacionListener = this

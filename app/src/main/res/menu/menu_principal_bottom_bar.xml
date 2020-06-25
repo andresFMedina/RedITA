@@ -19,4 +19,11 @@
         android:title="@string/mis_actividades"
         android:icon="@drawable/ic_dynamic_feed_black_18dp"
         />
+
+    <item
+        android:id="@+id/menuUsuarios"
+        android:enabled="true"
+        android:title="@string/usuarios"
+        android:icon="@drawable/ic_group_white_18dp"
+        />
 </menu>

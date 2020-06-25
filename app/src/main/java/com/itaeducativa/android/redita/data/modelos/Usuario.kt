@@ -4,7 +4,7 @@ import java.io.Serializable
 
 data class Usuario (
     val nombreCompleto: String,
-    val rol: String,
+    var rol: String,
     val telefono: String,
     val imagenPerfilUrl: String,
     var email: String,

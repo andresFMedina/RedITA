@@ -12,12 +12,13 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:paddingEnd="@dimen/padding_horizontal_cardview"
-        android:paddingStart="@dimen/padding_horizontal_cardview">
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/padding_horizontal_cardview"
+            android:paddingStart="@dimen/padding_horizontal_cardview"
             android:layout_gravity="center_vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -39,6 +40,20 @@
 
                 android:text="@={viewModel.nombreCompleto}"
                 android:layout_toEndOf="@id/imageViewFotoUsuarios" />
+
+            <Button
+                android:id="@+id/buttonVerHistorial"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimaryDark"
+                android:paddingEnd="@dimen/padding_horizontal_cardview"
+                android:paddingStart="@dimen/padding_horizontal_cardview"
+                android:text="@string/ver_historial"
+                android:layout_marginStart="@dimen/margin_end_imagen_perfil"
+                android:textColor="@android:color/white"
+                android:layout_toEndOf="@id/textViewFotoUsuarios"
+                />
 
             <CheckBox
                 android:id="@+id/checkboxRolUsuario"

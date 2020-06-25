@@ -64,4 +64,6 @@
     <string name="docente">Docente</string>
     <string name="guardar">Guardar</string>
     <string name="imagen_perfil">Imagen Perfil</string>
+    <string name="usuarios">Usuarios</string>
+    <string name="ver_historial">Ver Historial</string>
 </resources>

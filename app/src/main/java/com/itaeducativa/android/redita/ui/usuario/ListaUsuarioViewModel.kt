@@ -28,6 +28,7 @@ class ListaUsuarioViewModel(
     val cantidadComentarios = MutableLiveData<String>()
 
     val listaUsuarios = MutableLiveData<List<Usuario>>()
+    val listaUsuariosAdapter = UsuarioAdapter()
 
     var requestListener: RequestListener? = null
     var imageUploadListener: ImageUploadListener? = null
@@ -93,6 +94,7 @@ class ListaUsuarioViewModel(
                 usuarios.add(usuario)
             }
             listaUsuarios.value = usuarios
+            listaUsuariosAdapter.actualizarUsuarios(usuarios)
             requestListener?.onSuccessRequest()
         }
     }

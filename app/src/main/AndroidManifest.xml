@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.vista.VistasActivity"></activity>
+        <activity android:name=".ui.historial.HistorialUsuarioActivity"></activity>
+        <activity android:name=".ui.vista.VistasActivity" />
         <activity
             android:name=".ui.actividad.actividad.ui.CrearActividadActivity"
             android:parentActivityName=".MainActivity" />

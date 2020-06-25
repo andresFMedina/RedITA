@@ -16,6 +16,7 @@ import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.ui.actividad.actividad.ui.ActividadActivity
 import com.itaeducativa.android.redita.ui.actividad.actividad.ui.CrearActividadActivity
+import com.itaeducativa.android.redita.ui.historial.HistorialUsuarioActivity
 import com.itaeducativa.android.redita.ui.login.LoginActivity
 import com.itaeducativa.android.redita.ui.login.SingUpActivity
 import com.itaeducativa.android.redita.ui.vista.VistasActivity
@@ -71,6 +72,15 @@ fun Context.startFormularioActividadActivity(actividad: Actividad?) =
         }
         it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
 
+        startActivity(it)
+    }
+
+fun Context.startListaHistorialActividad(usuario: Usuario) =
+    Intent(this, HistorialUsuarioActivity::class.java).also {
+        it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        val bundle = Bundle()
+        bundle.putSerializable("usuario", usuario)
+        it.putExtras(bundle)
         startActivity(it)
     }
 

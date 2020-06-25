@@ -35,7 +35,7 @@ private const val ACTION_RESULT_GET_IMAGES = 0
  */
 class PerfilFragment : Fragment(), KodeinAware {
     override val kodein: Kodein by kodein()
-    private val usuarioFactory: UsuarioViewModelFactory by instance()
+    private val listaUsuarioFactory: ListaUsuarioViewModelFactory by instance()
     private val historialFactory: ListaHistorialViewModelFactory by instance()
 
     private lateinit var listaUsuarioViewModel: ListaUsuarioViewModel
@@ -58,7 +58,7 @@ class PerfilFragment : Fragment(), KodeinAware {
     ): View? {
         val binding: FragmentPerfilBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_perfil, container, false)
-        listaUsuarioViewModel = ViewModelProviders.of(this, usuarioFactory).get(ListaUsuarioViewModel::class.java)
+        listaUsuarioViewModel = ViewModelProviders.of(this, listaUsuarioFactory).get(ListaUsuarioViewModel::class.java)
         listaHistoriaViewModel = ViewModelProviders.of(this, historialFactory).get(ListaHistorialViewModel::class.java)
 
         binding.usuarioViewModel = listaUsuarioViewModel

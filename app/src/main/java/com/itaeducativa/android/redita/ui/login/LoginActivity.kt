@@ -11,7 +11,7 @@ import com.itaeducativa.android.redita.databinding.ActivityLoginBinding
 import com.itaeducativa.android.redita.network.AutenticacionListener
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.usuario.ListaUsuarioViewModel
-import com.itaeducativa.android.redita.ui.usuario.UsuarioViewModelFactory
+import com.itaeducativa.android.redita.ui.usuario.ListaUsuarioViewModelFactory
 import com.itaeducativa.android.redita.util.TextWatcherValidacionVacio
 import com.itaeducativa.android.redita.util.startMainActivity
 import com.itaeducativa.android.redita.util.startSingUpActivity
@@ -25,7 +25,7 @@ class LoginActivity : AppCompatActivity(),
 
     override val kodein by kodein()
     private val factoryAutenticacion: AutenticacionViewModelFactory by instance()
-    private val factoryUsuario: UsuarioViewModelFactory by instance()
+    private val factoryListaUsuario: ListaUsuarioViewModelFactory by instance()
 
     private lateinit var autenticacionViewModel: AutenticacionViewModel
     private lateinit var listaUsuarioViewModel: ListaUsuarioViewModel
@@ -38,7 +38,7 @@ class LoginActivity : AppCompatActivity(),
         autenticacionViewModel = ViewModelProviders.of(this, factoryAutenticacion)
             .get(AutenticacionViewModel::class.java)
         listaUsuarioViewModel =
-            ViewModelProviders.of(this, factoryUsuario).get(ListaUsuarioViewModel::class.java)
+            ViewModelProviders.of(this, factoryListaUsuario).get(ListaUsuarioViewModel::class.java)
         binding.viewModel = autenticacionViewModel
 
         autenticacionViewModel.autenticacionListener = this
