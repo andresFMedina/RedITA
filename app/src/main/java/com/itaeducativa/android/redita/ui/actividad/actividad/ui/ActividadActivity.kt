@@ -71,9 +71,9 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
         }
 
         reaccion = if (intent.extras != null) {
-            intent.extras?.getSerializable("reaccion") as Reaccion
+            intent.extras?.getSerializable("reaccion") as Reaccion?
         } else {
-            savedInstanceState!!.getSerializable("reaccion") as Reaccion
+            savedInstanceState!!.getSerializable("reaccion") as Reaccion?
         }
 
         val binding: ActivityActividadBinding =

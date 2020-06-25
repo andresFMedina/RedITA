@@ -11,22 +11,25 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top_multimedia_layout"
-        android:paddingBottom="@dimen/margin_bottom_relative_layout_informacion">
+        android:layout_marginBottom="@dimen/margin_top_multimedia_layout"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/padding_horizontal_cardview"
-            android:paddingEnd="@dimen/padding_horizontal_cardview">
+            android:paddingEnd="@dimen/padding_horizontal_cardview"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imagenPerfilHistorial"
                 android:layout_width="@dimen/height_width_image_circle_actividad"
                 android:layout_height="@dimen/height_width_image_circle_actividad"
+                android:layout_marginEnd="@dimen/margin_end_imagen_perfil"
                 app:imageUrl="@{viewModel.fotoUsuario}"
-
-                />
+                android:contentDescription="@string/imagen_perfil"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/descripcionHistorial"

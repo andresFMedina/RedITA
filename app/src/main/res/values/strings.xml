@@ -63,4 +63,5 @@
     <string name="cerrar">Cerrar</string>
     <string name="docente">Docente</string>
     <string name="guardar">Guardar</string>
+    <string name="imagen_perfil">Imagen Perfil</string>
 </resources>

@@ -46,6 +46,7 @@ class ListaVistaAdapter : RecyclerView.Adapter<ListaVistaAdapter.ViewHolder>() {
         if (vista.usuario != null) {
             val text = "${vista.usuario!!.nombreCompleto} ha visto esta actividad ${vista.vecesVisto} veces"
             holder.textViewMensajeVista.text = text
+            holder.bind(vista)
 
         }
     }

@@ -20,6 +20,7 @@ class ListaHistorialAdapter : RecyclerView.Adapter<ListaHistorialAdapter.ViewHol
         val textViewHistorial = binding.descripcionHistorial
 
         fun bind(historial: Historial) {
+            binding.viewModel = historialViewModel
             historialViewModel.bind(historial)
         }
 
@@ -45,9 +46,10 @@ class ListaHistorialAdapter : RecyclerView.Adapter<ListaHistorialAdapter.ViewHol
         Log.d("Historial", historial.toString())
         holder.bind(historial)
         if (historial.actividad != null && historial.usuario != null) {
+            val text = "${historial.usuario!!.nombreCompleto} ${historial.accion} ${historial.actividad!!.nombre}"
 
-            holder.textViewHistorial.text =
-                "${historial.usuario!!.nombreCompleto} ${historial.accion} ${historial.actividad!!.nombre}"
+            holder.textViewHistorial.text =  text
+            holder.bind(historial)
         }
     }
 
