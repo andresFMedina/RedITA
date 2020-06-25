@@ -30,7 +30,8 @@ import java.util.*
 private const val ACTION_RESULT_GET_IMAGES = 0
 private const val ACTION_RESULT_GET_VIDEO = 1
 
-class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
+class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware,
+    ImagenesDialog.DialogListener {
     override val kodein: Kodein by kodein()
     private val autenticacionFactory: AutenticacionViewModelFactory by instance()
     private val actividadFactory: ListaActividadesViewModelFactory by instance()
@@ -38,14 +39,15 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
     private lateinit var autenticacionViewModel: AutenticacionViewModel
     private lateinit var listaActividadesViewModel: ListaActividadesViewModel
     private val actividadViewModel: ActividadViewModel = ActividadViewModel()
-    private val imagenesUri = mutableListOf<Uri>()
+    private var imagenesUri = mutableListOf<Uri>()
     private var videoUri: Uri? = null
 
     private var actividad: Actividad? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        actividad = if(intent.extras !=null) intent.extras?.getSerializable("actividad") as Actividad else null
+        actividad =
+            if (intent.extras != null) intent.extras?.getSerializable("actividad") as Actividad else null
 
         val binding: ActivityCrearActividadBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_crear_actividad)
@@ -147,8 +149,8 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             actividad.nombre = actividadViewModel.nombre.value!!
             actividad.descripcion = actividadViewModel.descripcion.value!!
             actividad.tipoActividad = actividadViewModel.tipoActividad.value!!
-            actividad.horaInicio = actividadViewModel.horaInicio.value!!
-            actividad.fechaInicio = actividadViewModel.fechaInicio.value!!
+            actividad.horaInicio = actividadViewModel.horaInicio.value
+            actividad.fechaInicio = actividadViewModel.fechaInicio.value
         } else {
 
             actividad = Actividad(
@@ -159,8 +161,8 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 meGusta = 0,
                 noMeGusta = 0,
                 comentarios = 0,
-                horaInicio = actividadViewModel.horaInicio.value!!,
-                fechaInicio = actividadViewModel.fechaInicio.value!!
+                horaInicio = actividadViewModel.horaInicio.value,
+                fechaInicio = actividadViewModel.fechaInicio.value
             )
             actividad.autorUid = autenticacionViewModel.usuario!!.uid
         }
@@ -201,10 +203,8 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             if (data != null) {
                 if (data.clipData != null) {
                     val cantidadImagenes = data.clipData!!.itemCount
-                    textViewEstadoImagenes.text =
-                        getString(R.string.se_han_agregado) + " " + cantidadImagenes + " imagenes"
-
                     var indexActual = 0
+                    val imagenesUri: MutableList<Uri> = mutableListOf()
 
                     while (indexActual < cantidadImagenes) {
                         val uriImagen: Uri = data.clipData!!.getItemAt(indexActual).uri
@@ -212,7 +212,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
 
                         indexActual++
                     }
-                    ImagenesDialog().display(supportFragmentManager, imagenesUri)
+                    abrirImagenesDialog(imagenesUri)
                 }
                 if (data.data != null) {
                     imagenesUri.add(data.data!!)
@@ -229,6 +229,18 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         }
     }
 
+    private fun abrirImagenesDialog(imagenes: MutableList<Uri>) {
+        val imagenesDialog = ImagenesDialog(imagenes)
+        val ft = supportFragmentManager.beginTransaction()
+        val prev = supportFragmentManager.findFragmentByTag("imagen_dialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+        imagenesDialog.show(ft, "imagen_dialog")
+
+    }
+
     override fun onStop() {
         super.onStop()
         autenticacionViewModel.autenticacionListener = null
@@ -238,5 +250,15 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
+    }
+
+    override fun onFinishDialog(imagenes: MutableList<Uri>) {
+        imagenesUri = imagenes
+        val cantidadImagenes = imagenes.size
+        val text =
+            if (cantidadImagenes > 0)
+                getString(R.string.se_han_agregado) + " " + cantidadImagenes + " imagenes"
+            else getString(R.string.no_se_han_seleccionado_imagenes)
+        textViewEstadoImagenes.text = text
     }
 }

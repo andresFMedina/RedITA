@@ -13,8 +13,8 @@ class Actividad(
     var meGusta: Int,
     var noMeGusta: Int,
     var comentarios: Int,
-    var horaInicio: String,
-    var fechaInicio: String
+    var horaInicio: String?,
+    var fechaInicio: String?
 ) : Serializable {
     var autor: Usuario? = null
     var autorUid: String? = null

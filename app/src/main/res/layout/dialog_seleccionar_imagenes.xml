@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.itaeducativa.android.redita.ui.imagen.ImagenesViewModel" />
-    </data>
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,7 +19,8 @@
                 android:paddingStart="6dp"
                 android:paddingEnd="16dp"
                 app:contentInsetStartWithNavigation="0dp"
-                app:navigationIcon="@drawable/ic_cancel_24px"
+                app:navigationIcon="@drawable/ic_cancel_white_24dp"
+
                 app:title="Selecciona las imagenes"
                 app:titleTextColor="@android:color/white" />
 
@@ -37,10 +32,10 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewImagenesSeleccionadas"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:setAdapter="@{viewModel.adapter}"
                 app:spanCount="2"
                 tools:listitem="@layout/cardview_guardar_imagen" />
 

@@ -2,54 +2,63 @@ package com.itaeducativa.android.redita.ui.imagen
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProviders
-import com.itaeducativa.android.redita.BR
 import com.itaeducativa.android.redita.R
-import com.itaeducativa.android.redita.databinding.DialogSeleccionarImagenesBinding
 import kotlinx.android.synthetic.main.dialog_seleccionar_imagenes.*
 
 private const val TAG = "imagen_dialog"
 
-class ImagenesDialog : Fragment() {
+class ImagenesDialog(private val imagenes: MutableList<Uri>) : DialogFragment() {
 
-    private lateinit var imagenesViewModel: ImagenesViewModel
-    private lateinit var imagenes: MutableList<Uri>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.AppTheme_FullScreenDialog)
+    }
 
-    /*override fun onCreateView(
+
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) {
-        val imagenesBinding: DialogSeleccionarImagenesBinding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.dialog_seleccionar_imagenes,
-            container,
-            true
-        )
+    ): View? {
+        return inflater.inflate(R.layout.dialog_seleccionar_imagenes, container, false)
+    }
 
-        imagenesBinding.viewModel = imagenesViewModel
+    override fun onStart() {
+        super.onStart()
+        if(dialog != null) {
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.MATCH_PARENT
+            dialog?.window?.setLayout(width, height)
+        }
+    }
 
 
-    }*/
-
-
-    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        toolbar.setNavigationOnClickListener { dismiss() }
+
+        toolbar.setNavigationOnClickListener {
+            val dialogListener = activity as DialogListener
+            dialogListener.onFinishDialog(mutableListOf())
+            dismiss()
+        }
         toolbar.inflateMenu(R.menu.menu_imagenes_dialog)
         toolbar.setOnMenuItemClickListener {
+            val dialogListener = activity as DialogListener
+            dialogListener.onFinishDialog(imagenes)
             dismiss()
             true
         }
+        val adapter = ImagenesAdapter(imagenes)
+        recyclerViewImagenesSeleccionadas.adapter = adapter
 
-    }*/
+    }
+
+    interface DialogListener {
+        fun onFinishDialog(imagenes: MutableList<Uri>)
+    }
 }
