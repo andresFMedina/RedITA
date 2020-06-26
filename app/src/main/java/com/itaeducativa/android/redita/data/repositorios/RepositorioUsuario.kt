@@ -4,6 +4,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Usuario
 
@@ -26,8 +27,8 @@ class RepositorioUsuario (private val firebase: FirebaseSource) {
     fun getUsuarioByUid(uid: String): DocumentReference =
         firestoreDB.collection(USUARIOS).document(uid)
 
-    fun getUsuarios(): CollectionReference =
-        firestoreDB.collection(USUARIOS)
+    fun getUsuarios(query: String = ""): Query =
+        firestoreDB.collection(USUARIOS).orderBy("nombreCompleto").startAt(query)
 
     fun cambiarUrlImagenPerfil(url: String, uid: String): Task<Void> =
         firestoreDB.collection(USUARIOS).document(uid).update("imagenPerfilUrl", url)

@@ -81,11 +81,12 @@ class ListaActividadesViewModel(
 
     fun getListaActividades(
         ordenCampo: String = "fechaCreacionTimeStamp",
-        direccion: Query.Direction = Query.Direction.DESCENDING
+        direccion: Query.Direction = Query.Direction.DESCENDING,
+        query: String = ""
     ) {
         orden.value = MAS_RECIENTE
         requestListener?.onStartRequest()
-        repositorioActividad.getActividades(ordenCampo, direccion)
+        repositorioActividad.getActividades(ordenCampo, direccion, query)
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     listaActividades.value = null
@@ -107,9 +108,13 @@ class ListaActividadesViewModel(
             }
     }
 
-    fun getActividadesByAutorUid(uid: String) {
+    fun getActividadesByAutorUid(
+        uid: String,
+        orderBy: String = "fechaCreacionTimeStamp",
+        query: String = ""
+    ) {
         requestListener?.onStartRequest()
-        repositorioActividad.getActividadesByAutorUid(uid)
+        repositorioActividad.getActividadesByAutorUid(uid, orderBy, query)
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     listaActividades.value = null

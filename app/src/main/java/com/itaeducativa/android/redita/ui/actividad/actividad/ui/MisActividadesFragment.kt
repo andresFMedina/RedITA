@@ -34,11 +34,13 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
     private val factory: ListaActividadesViewModelFactory by instance()
     private lateinit var viewModel: ListaActividadesViewModel
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             usuario = it.getSerializable(ARG_USUARIO) as Usuario
         }
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(

@@ -9,11 +9,13 @@ data class Usuario (
     val imagenPerfilUrl: String,
     var email: String,
     val uid: String,
+    var nombreEstudiante: String,
     var meGusta: Int = 0,
     var noMeGusta: Int = 0,
-    var comentarios: Int = 0
+    var comentarios: Int = 0,
+    var gradoEstudiante: String = "4B"
 ): Serializable {
 
 
-    constructor():this("","","","","","")
+    constructor():this("","","","","","","")
 }

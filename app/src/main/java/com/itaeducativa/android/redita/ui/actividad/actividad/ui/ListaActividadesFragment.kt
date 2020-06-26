@@ -110,7 +110,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
             queryListener = object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
-                    Log.i("onQueryTextChange", newText)
+                    viewModel.getListaActividades(ordenCampo = "nombre", query = newText)
                     return true
                 }
 

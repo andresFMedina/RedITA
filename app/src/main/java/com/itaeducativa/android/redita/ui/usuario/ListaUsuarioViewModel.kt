@@ -26,6 +26,8 @@ class ListaUsuarioViewModel(
     val cantidadMeGusta = MutableLiveData<String>()
     val cantidadNoMeGusta = MutableLiveData<String>()
     val cantidadComentarios = MutableLiveData<String>()
+    val nombreEstudiante = MutableLiveData<String>("")
+    val gradoEstudiante = MutableLiveData<String>("4B")
 
     val listaUsuarios = MutableLiveData<List<Usuario>>()
     val listaUsuariosAdapter = UsuarioAdapter(this)
@@ -54,7 +56,9 @@ class ListaUsuarioViewModel(
             rol = "",
             telefono = telefono.value!!,
             uid = uid,
-            imagenPerfilUrl = imagen
+            imagenPerfilUrl = imagen,
+            nombreEstudiante = nombreEstudiante.value!!,
+            gradoEstudiante = if (nombreEstudiante.value!!.isBlank()) "" else gradoEstudiante.value!!
         )
 
         requestListener?.onStartRequest()
@@ -81,10 +85,10 @@ class ListaUsuarioViewModel(
             })
     }
 
-    fun getUsuarios(){
-        repositorioUsuario.getUsuarios().addSnapshotListener { value, exception ->
+    fun getUsuarios(query: String = "") {
+        repositorioUsuario.getUsuarios(query).addSnapshotListener { value, exception ->
             requestListener?.onStartRequest()
-            if(exception != null) {
+            if (exception != null) {
                 requestListener?.onFailureRequest(exception.message!!)
                 return@addSnapshotListener
             }

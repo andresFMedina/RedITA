@@ -67,4 +67,6 @@
     <string name="usuarios">Usuarios</string>
     <string name="ver_historial">Ver Historial</string>
     <string name="buscar">Buscar</string>
+    <string name="nombre_del_estudiante">Nombre del estudiante</string>
+    <string name="grado_del_estudiante">Grado del Estudiante</string>
 </resources>

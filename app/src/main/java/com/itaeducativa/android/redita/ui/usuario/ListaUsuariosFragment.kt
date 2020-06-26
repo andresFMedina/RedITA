@@ -27,6 +27,11 @@ class ListaUsuariosFragment : Fragment(), KodeinAware, RequestListener {
     private val factory: ListaUsuarioViewModelFactory by instance()
     private lateinit var viewModel: ListaUsuarioViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,13 +100,12 @@ class ListaUsuariosFragment : Fragment(), KodeinAware, RequestListener {
 
             queryListener = object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
-                    Log.i("onQueryTextChange", newText)
+                    viewModel.getUsuarios(newText)
                     return true
                 }
 
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    Log.i("onQueryTextSubmit", query)
-                    return true
+                    return false
                 }
             }
             searchView.setOnQueryTextListener(queryListener)
