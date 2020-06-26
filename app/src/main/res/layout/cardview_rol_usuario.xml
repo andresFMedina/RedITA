@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.itaeducativa.android.redita.ui.usuario.UsuarioViewModel" />
@@ -11,49 +12,48 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        >
+        android:layout_height="100dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/padding_horizontal_cardview"
+            android:layout_gravity="center_vertical"
             android:paddingStart="@dimen/padding_horizontal_cardview"
-            android:layout_gravity="center_vertical">
+            android:paddingEnd="@dimen/padding_horizontal_cardview">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageViewFotoUsuarios"
                 android:layout_width="@dimen/height_width_image_circle_actividad"
                 android:layout_height="@dimen/height_width_image_circle_actividad"
+                android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_launcher_background"
-                app:imageUrl="@{viewModel.imagenPerfilUrl}"
-                android:layout_marginEnd="10dp" />
+                app:imageUrl="@{viewModel.imagenPerfilUrl}" />
 
             <TextView
 
                 android:id="@+id/textViewFotoUsuarios"
-                android:layout_width="wrap_content"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/imageViewFotoUsuarios"
+                android:text="@={viewModel.nombreCompleto}"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
-                android:textStyle="bold"
-
-                android:text="@={viewModel.nombreCompleto}"
-                android:layout_toEndOf="@id/imageViewFotoUsuarios" />
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/buttonVerHistorial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_gravity="center"
-                android:background="@color/colorPrimaryDark"
-                android:paddingEnd="@dimen/padding_horizontal_cardview"
-                android:paddingStart="@dimen/padding_horizontal_cardview"
-                android:text="@string/ver_historial"
                 android:layout_marginStart="@dimen/margin_end_imagen_perfil"
-                android:textColor="@android:color/white"
+                android:layout_toStartOf="@id/textViewFotoUsuarios"
                 android:layout_toEndOf="@id/textViewFotoUsuarios"
-                />
+                android:background="@color/colorPrimaryDark"
+                android:paddingStart="@dimen/padding_horizontal_cardview"
+                android:paddingEnd="@dimen/padding_horizontal_cardview"
+                android:text="@string/ver_historial"
+                android:textColor="@android:color/white" />
 
             <CheckBox
                 android:id="@+id/checkboxRolUsuario"

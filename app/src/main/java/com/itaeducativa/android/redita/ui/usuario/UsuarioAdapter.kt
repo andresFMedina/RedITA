@@ -1,5 +1,6 @@
 package com.itaeducativa.android.redita.ui.usuario
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,7 +10,9 @@ import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.databinding.CardviewRolUsuarioBinding
 import com.itaeducativa.android.redita.util.startListaHistorialActividad
 
-class UsuarioAdapter() : RecyclerView.Adapter<UsuarioAdapter.ViewHolder>() {
+class UsuarioAdapter(
+    private val listaUsuarioViewModel: ListaUsuarioViewModel
+) : RecyclerView.Adapter<UsuarioAdapter.ViewHolder>() {
 
     private lateinit var listaUsuarios: List<Usuario>
 
@@ -45,9 +48,13 @@ class UsuarioAdapter() : RecyclerView.Adapter<UsuarioAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val usuario = listaUsuarios[position]
         holder.bind(listaUsuarios[position])
-        if(usuario.rol == "Docente") holder.checkbox.isChecked = true
+        holder.checkbox.setOnCheckedChangeListener(null)
+        holder.checkbox.isChecked = usuario.rol == "Docente"
         holder.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
+            Log.d("Checado " , isChecked.toString())
+            Log.d("Boton", holder.checkbox.isChecked.toString())
             usuario.rol = if (isChecked) "Docente" else ""
+            listaUsuarioViewModel.modificarRol(usuario.rol, usuario.uid)
         }
         holder.button.setOnClickListener {
             it.context.startListaHistorialActividad(usuario)

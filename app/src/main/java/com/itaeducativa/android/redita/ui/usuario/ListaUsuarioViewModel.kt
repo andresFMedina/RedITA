@@ -28,7 +28,7 @@ class ListaUsuarioViewModel(
     val cantidadComentarios = MutableLiveData<String>()
 
     val listaUsuarios = MutableLiveData<List<Usuario>>()
-    val listaUsuariosAdapter = UsuarioAdapter()
+    val listaUsuariosAdapter = UsuarioAdapter(this)
 
     var requestListener: RequestListener? = null
     var imageUploadListener: ImageUploadListener? = null
@@ -103,8 +103,8 @@ class ListaUsuarioViewModel(
         repositorioUsuario.modificarTelefono(telefono.value!!, usuario.value!!.uid)
     }
 
-    fun modificarRol() {
-        repositorioUsuario.modificarTelefono(rol.value!!, usuario.value!!.uid)
+    fun modificarRol(rol: String, uid: String) {
+        repositorioUsuario.modificarRolUsuario(rol, uid)
     }
 
     fun cambiarImagenPerfil(uriImagen: Uri, context: Context) {

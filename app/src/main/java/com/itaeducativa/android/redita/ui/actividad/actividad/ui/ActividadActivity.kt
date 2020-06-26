@@ -131,6 +131,8 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
                 autenticacionViewModel.usuario!!.uid,
                 actividad.fechaCreacionTimeStamp
             )
+        else viewModelComentario.getComentariosEnFirestorePorActividad(actividad.fechaCreacionTimeStamp)
+
 
         supportActionBar?.title = actividad.nombre
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -239,7 +241,6 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
             yaVisto = true
         }
     }
-
 
 
     override fun onFailureRequest(message: String) {
