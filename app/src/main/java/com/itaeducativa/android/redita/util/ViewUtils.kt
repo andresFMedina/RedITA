@@ -84,6 +84,12 @@ fun Context.startListaHistorialActividad(usuario: Usuario) =
         startActivity(it)
     }
 
+fun Context.showInputMethod(activity: Activity, view: View) {
+    val inputMethodManager =
+        activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+    inputMethodManager?.showSoftInput(view, 0)
+}
+
 fun Context.hideKeyboard(activity: Activity) {
     val inputMethodManager: InputMethodManager =
         activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
