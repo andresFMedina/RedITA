@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.itaeducativa.android.redita.ui.historial.HistorialViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_top_multimedia_layout"
-        >
+        android:layout_marginBottom="@dimen/margin_top_multimedia_layout">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/padding_horizontal_cardview"
-            android:paddingEnd="@dimen/padding_horizontal_cardview"
             android:paddingTop="10dp"
+            android:paddingEnd="@dimen/padding_horizontal_cardview"
             android:paddingBottom="10dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -27,15 +27,15 @@
                 android:layout_width="@dimen/height_width_image_circle_actividad"
                 android:layout_height="@dimen/height_width_image_circle_actividad"
                 android:layout_marginEnd="@dimen/margin_end_imagen_perfil"
-                app:imageUrl="@{viewModel.fotoUsuario}"
                 android:contentDescription="@string/imagen_perfil"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                app:imageUrl="@{viewModel.fotoUsuario}" />
 
             <TextView
                 android:id="@+id/descripcionHistorial"
-                android:layout_toEndOf="@id/imagenPerfilHistorial"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/imagenPerfilHistorial" />
 
 
         </RelativeLayout>

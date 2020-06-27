@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel" />
@@ -11,27 +12,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/padding_horizontal_informacion_actividad"
-        android:paddingEnd="@dimen/padding_horizontal_informacion_actividad"
         android:layout_marginBottom="10dp"
-        >
+        android:paddingStart="@dimen/padding_horizontal_informacion_actividad"
+        android:paddingEnd="@dimen/padding_horizontal_informacion_actividad">
 
         <RelativeLayout
             android:id="@+id/layoutInformacionActividad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_bottom_relative_layout_informacion"
             android:paddingStart="@dimen/padding_horizontal_cardview"
-            android:paddingEnd="@dimen/padding_horizontal_cardview"
-            android:layout_marginBottom="@dimen/margin_bottom_relative_layout_informacion">
+            android:paddingEnd="@dimen/padding_horizontal_cardview">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/circleImagePerfilActividad"
                 android:layout_width="@dimen/height_width_image_circle_actividad"
                 android:layout_height="@dimen/height_width_image_circle_actividad"
                 android:layout_marginEnd="@dimen/margin_end_imagen_perfil"
-                app:imageUrl="@{viewModel.imagenPerfilUrl}"
                 android:scaleType="centerCrop"
-                />
+                app:imageUrl="@{viewModel.imagenPerfilUrl}" />
 
             <TextView
                 android:id="@+id/textViewNombreUsuarioActividad"
@@ -55,18 +54,18 @@
 
         <TextView
             android:id="@+id/textViewNombreActividad"
-            android:layout_below="@id/layoutInformacionActividad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/layoutInformacionActividad"
             android:text="@={viewModel.nombre}"
             android:textColor="@android:color/black"
             android:textSize="@dimen/text_size_nombre_actividad" />
 
-        <TextView
+        <com.codesgood.views.JustifiedTextView
             android:id="@+id/textViewDescripcionActividad"
-            android:layout_below="@id/textViewNombreActividad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/textViewNombreActividad"
             android:autoLink="web"
             android:text="@={viewModel.descripcion}" />
 

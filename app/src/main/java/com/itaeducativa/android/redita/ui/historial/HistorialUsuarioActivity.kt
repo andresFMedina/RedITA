@@ -68,4 +68,9 @@ class HistorialUsuarioActivity : AppCompatActivity(), RequestListener, KodeinAwa
         super.onRestoreInstanceState(savedInstanceState)
         usuario = savedInstanceState.getSerializable("usuario") as Usuario
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
 }

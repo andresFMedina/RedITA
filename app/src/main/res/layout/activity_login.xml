@@ -15,6 +15,12 @@
         android:layout_height="match_parent"
         tools:context=".ui.login.LoginActivity">
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:src="@drawable/escudoita" />
+
         <LinearLayout
             android:id="@+id/layoutLogin"
             android:layout_width="match_parent"
@@ -29,13 +35,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/usuario"
-                app:errorEnabled="true"
-                >
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:inputType="textEmailAddress"
                     android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
                     android:text="@={viewModel.email}" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -46,8 +51,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/contrasena"
                 app:endIconMode="password_toggle"
-                app:errorEnabled="true"
-                >
+                app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -62,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:background="@color/colorPrimaryDark"
+                android:background="@drawable/corners"
                 android:onClick="login"
                 android:text="@string/ingresar"
                 android:textColor="@android:color/white" />
@@ -72,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin_top_multimedia_layout"
-                android:background="@color/colorPrimaryDark"
+                android:background="@drawable/corners"
                 android:onClick="goToSignUpActivity"
                 android:text="@string/registrate"
                 android:textColor="@android:color/white" />
@@ -84,20 +88,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
             <ProgressBar
                 android:id="@+id/progressBarLogin"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"                />
+                android:layout_gravity="center" />
 
             <TextView
                 android:id="@+id/textViewEstadoLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/progressBarLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textAlignment="center" />
 
         </RelativeLayout>
 
