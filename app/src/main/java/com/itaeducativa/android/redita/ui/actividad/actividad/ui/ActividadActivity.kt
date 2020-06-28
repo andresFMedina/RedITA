@@ -104,7 +104,15 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
         binding.viewModelComentario = viewModelComentario
         binding.textoComentario = textoComentario
 
-        vistaViewModel.requestListener = this
+        esAutor = autenticacionViewModel.usuario!!.uid == actividad.autorUid
+
+        if(esAutor){
+            vistaViewModel.requestListener = null
+            yaVisto = true
+        } else {
+            vistaViewModel.requestListener = this
+        }
+        listaActividadesViewModel.requestListener = this
 
         viewModelComentario.requestListener = this
         storageViewModel.videoListener = this
@@ -124,7 +132,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
             hideKeyboard(this)
             inputComentario.setText("")
         }
-        esAutor = autenticacionViewModel.usuario!!.uid == actividad.autorUid
+
 
         if (!esAutor)
             vistaViewModel.getVistasByUsuarioYActividad(
@@ -192,6 +200,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
                 objetoReaccion(tipoReaccion, actividad.fechaCreacionTimeStamp)
 
             listaActividadesViewModel.crearReaccion(r)
+            reaccion = r
             imageButton.setImageResource(iconoLleno)
 
             return r
@@ -221,8 +230,8 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
     }
 
     override fun onSuccessRequest() {
-        vista = vistaViewModel.vista.value
         if (!yaVisto) {
+            vista = vistaViewModel.vista.value
             if (vista == null) {
                 vista = Vista(
                     usuarioUid = autenticacionViewModel.usuario!!.uid,
