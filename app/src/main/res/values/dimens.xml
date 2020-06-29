@@ -23,4 +23,5 @@
     <dimen name="textview_tu_actividad_size">20sp</dimen>
     <dimen name="margintop_textview_actividad">10dp</dimen>
     <dimen name="textsize_mi_actividad">16sp</dimen>
+    <dimen name="margin_bottom_menu_principal">70dp</dimen>
 </resources>

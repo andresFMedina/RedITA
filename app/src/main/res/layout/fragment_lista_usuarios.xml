@@ -20,6 +20,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:setAdapter="@{viewModel.listaUsuariosAdapter}"
             tools:listitem="@layout/cardview_rol_usuario"
+            android:layout_marginBottom="@dimen/margin_bottom_menu_principal"
             />
 
     </FrameLayout>

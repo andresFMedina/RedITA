@@ -29,6 +29,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:setAdapter="@{viewModel.misActividadesAdapter}"
                 tools:listitem="@layout/cardview_mis_actividades"
+                android:layout_marginBottom="@dimen/margin_bottom_menu_principal"
                 tools:itemCount="3" />
         </androidx.core.widget.NestedScrollView>
 

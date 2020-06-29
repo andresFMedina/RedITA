@@ -38,7 +38,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:setAdapter="@{viewModel.listaActividadesAdapter}"
             tools:listitem="@layout/cardview_actividad"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="@dimen/margin_bottom_menu_principal"
             />
 
         <ProgressBar

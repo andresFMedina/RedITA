@@ -181,7 +181,9 @@
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:setAdapter="@{historialViewModel.listaHistorialAdapter}"
-                tools:listitem="@layout/cardview_historial_usuario" />
+                tools:listitem="@layout/cardview_historial_usuario"
+                android:layout_marginBottom="@dimen/margin_bottom_menu_principal"
+                />
 
 
         </LinearLayout>

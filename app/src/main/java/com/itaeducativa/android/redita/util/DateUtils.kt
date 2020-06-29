@@ -5,7 +5,11 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.TimePickerDialog
 import android.app.TimePickerDialog.OnTimeSetListener
 import android.content.Context
+import android.util.Log
 import android.widget.EditText
+import com.google.firebase.Timestamp
+import java.time.LocalDate
+
 import java.util.*
 
 
@@ -22,6 +26,11 @@ private val meses = arrayOf(
     "Ocutubre",
     "Noviembre",
     "Diciembre"
+)
+
+private val amPm = arrayOf(
+    "AM",
+    "PM"
 )
 
 fun obtenerFecha(context: Context, editText: EditText) {
@@ -82,4 +91,19 @@ fun obtenerHora(context: Context, editText: EditText) {
         hora, minuto, true
     )
     recogerHora.show()
+}
+
+fun getFechaTimestamp(timestamp: String): String {
+    val fecha = Timestamp(timestamp.toLong(), 0).toDate()
+    val f = Calendar.getInstance()
+    f.time = fecha
+    val dia = f.get(Calendar.DAY_OF_MONTH)
+    val mes = meses[f.get(Calendar.MONTH)]
+    val year = f.get(Calendar.YEAR)
+    val hora = f.get(Calendar.HOUR)
+    val minutos = f.get(Calendar.MINUTE)
+    val ampm = amPm[f.get(Calendar.AM_PM)]
+    return "el $dia de $mes del $year a las $hora:${minutos} $ampm"
+
+
 }

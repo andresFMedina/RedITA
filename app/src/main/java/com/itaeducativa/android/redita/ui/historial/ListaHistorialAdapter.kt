@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.Timestamp
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Historial
 import com.itaeducativa.android.redita.databinding.CardviewHistorialUsuarioBinding
+import com.itaeducativa.android.redita.util.getFechaTimestamp
 
 class ListaHistorialAdapter : RecyclerView.Adapter<ListaHistorialAdapter.ViewHolder>() {
     lateinit var listaHistorial: List<Historial>
@@ -46,7 +48,8 @@ class ListaHistorialAdapter : RecyclerView.Adapter<ListaHistorialAdapter.ViewHol
         Log.d("Historial", historial.toString())
         holder.bind(historial)
         if (historial.actividad != null && historial.usuario != null) {
-            val text = "${historial.usuario!!.nombreCompleto} ${historial.accion} ${historial.actividad!!.nombre}"
+            val fecha = getFechaTimestamp(historial.timestampAccion)
+            val text = "${historial.usuario!!.nombreCompleto} ${historial.accion} ${historial.actividad!!.nombre} $fecha"
 
             holder.textViewHistorial.text =  text
             holder.bind(historial)
