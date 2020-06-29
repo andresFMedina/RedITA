@@ -2,16 +2,20 @@ package com.itaeducativa.android.redita.ui.vista
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Timestamp
+import com.itaeducativa.android.redita.data.modelos.Historial
 import com.itaeducativa.android.redita.data.modelos.Usuario
 
 import com.itaeducativa.android.redita.data.modelos.Vista
+import com.itaeducativa.android.redita.data.repositorios.RepositorioHistorial
 import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
 import com.itaeducativa.android.redita.data.repositorios.RepositorioVista
 import com.itaeducativa.android.redita.network.RequestListener
 
 class ListaVistaViewModel(
     private val repositorioVista: RepositorioVista,
-    private val repositorioUsuario: RepositorioUsuario
+    private val repositorioUsuario: RepositorioUsuario,
+    private val repositorioHistorial: RepositorioHistorial
 ) : ViewModel() {
     private val listaVistas = MutableLiveData<List<Vista>>()
     val vista = MutableLiveData<Vista>()
@@ -25,9 +29,11 @@ class ListaVistaViewModel(
         requestListener?.onStartRequest()
         repositorioVista.guardarVistaEnFirestore(vista).addOnSuccessListener {
             requestListener?.onSuccessRequest()
+            crearHistorial(vista)
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }
+
     }
 
     fun getVistasPorParametro(nombreParametro: String, parametro: String) {
@@ -71,5 +77,17 @@ class ListaVistaViewModel(
     fun agregarVista(vista: Vista) {
         requestListener?.onStartRequest()
         repositorioVista.agregarVista(vista)
+
+        crearHistorial(vista, Timestamp.now().seconds.toString())
+    }
+
+    fun crearHistorial(vista: Vista, timestamp: String = vista.timestamp){
+        val historial = Historial(
+            usuarioUid = vista.usuarioUid,
+            actividadId = vista.actividadId,
+            accion = "vió",
+            timestampAccion = timestamp
+        )
+        repositorioHistorial.guardarHistorialFirestore(historial)
     }
 }
