@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.databinding.CardviewMisActividadesBinding
@@ -54,7 +55,17 @@ class MisActividadesAdapter(private val listaActividadesViewModel: ListaActivida
             it.context.startFormularioActividadActivity(listaActividades[position])
         }
         holder.imageButtonEliminar.setOnClickListener {
-            listaActividadesViewModel.eliminarActividad(listaActividades[position])
+            MaterialAlertDialogBuilder(it.context, R.style.ThemeOverlay_App_MaterialAlertDialog)
+                .setTitle(it.resources.getString(R.string.titulo_dialogo))
+                .setMessage(it.resources.getString(R.string.descripcion_dialogo))
+                .setNegativeButton(it.resources.getString(R.string.cancelar_dialogo)) { dialog, which ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(it.resources.getString(R.string.aceptar_dialogo)) { dialog, which ->
+                    listaActividadesViewModel.eliminarActividad(listaActividades[position])
+                }
+                .show()
+
         }
     }
 

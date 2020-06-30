@@ -69,4 +69,8 @@
     <string name="buscar">Buscar</string>
     <string name="nombre_del_estudiante">Nombre del estudiante</string>
     <string name="grado_del_estudiante">Grado del Estudiante</string>
+    <string name="titulo_dialogo">Eliminar actividad</string>
+    <string name="descripcion_dialogo">¿Deseas eliminar esta actividad? esto eliminará todos sus comentarios y reacciones</string>
+    <string name="aceptar_dialogo">Eliminar</string>
+    <string name="cancelar_dialogo">Cancelar</string>
 </resources>
