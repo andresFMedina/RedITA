@@ -34,8 +34,11 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         query: String = ""
     ): Query {
         val collection = firestoreDB.collection(ACTIVIDADES)
-        if(query != "") collection.orderBy("nombre").startAt(query) else collection.orderBy(ordenCampo, direccion)
-        return collection
+        if (query != "") collection.orderBy("nombre").startAt(query) else collection.orderBy(
+            ordenCampo,
+            direccion
+        )
+        return collection.whereEqualTo("estaActivo", true)
     }
 
     fun getActividadesById(id: String): DocumentReference =
@@ -48,7 +51,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     ): Query {
         val collection =
             firestoreDB.collection(ACTIVIDADES).whereEqualTo(AUTOR_UID, uid)
-        if(query != "") collection.orderBy(orderBy).startAt(query)
+        if (query != "") collection.orderBy(orderBy).startAt(query)
         return collection
     }
 
@@ -59,6 +62,11 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
                 .document(actividad.fechaCreacionTimeStamp)
         return documentReference.delete()
     }
+
+    fun desactivarActividad(actividad: Actividad): Task<Void> =
+        firestoreDB.collection(ACTIVIDADES).document(actividad.fechaCreacionTimeStamp)
+            .update("estaActivo", false)
+
 
     fun sumarReaccionActividad(actividadId: String, reaccion: String): Task<Void> {
         val documentReference = firestoreDB.collection(ACTIVIDADES)

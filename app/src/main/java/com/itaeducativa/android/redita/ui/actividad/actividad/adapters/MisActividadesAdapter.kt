@@ -62,10 +62,9 @@ class MisActividadesAdapter(private val listaActividadesViewModel: ListaActivida
                     dialog.dismiss()
                 }
                 .setPositiveButton(it.resources.getString(R.string.aceptar_dialogo)) { dialog, which ->
-                    listaActividadesViewModel.eliminarActividad(listaActividades[position])
+                    listaActividadesViewModel.desactivarActividad(listaActividades[position])
                 }
                 .show()
-
         }
     }
 

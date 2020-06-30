@@ -162,7 +162,8 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 noMeGusta = 0,
                 comentarios = 0,
                 horaInicio = actividadViewModel.horaInicio.value,
-                fechaInicio = actividadViewModel.fechaInicio.value
+                fechaInicio = actividadViewModel.fechaInicio.value,
+                estaActiva = true
             )
             actividad.autorUid = autenticacionViewModel.usuario!!.uid
         }

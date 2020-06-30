@@ -181,6 +181,10 @@ class ListaActividadesViewModel(
         }
     }
 
+    fun desactivarActividad(actividad: Actividad) {
+        repositorioActividad.desactivarActividad(actividad)
+    }
+
     fun getReaccionByActividadIdYUsuarioUid(actividadId: String, usuarioUid: String) =
         repositorioReaccion.getReaccionesByActividadIdYUsuarioUid(actividadId, usuarioUid)
 
@@ -190,20 +194,7 @@ class ListaActividadesViewModel(
     }
 
     private fun crearActividadByDocumentReference(doc: QueryDocumentSnapshot): Actividad {
-        val actividad = Actividad(
-            nombre = doc.getString("nombre")!!,
-            descripcion = doc.getString("descripcion")!!,
-            fechaCreacionTimeStamp = doc.getString("fechaCreacionTimeStamp")!!,
-            tipoActividad = doc.getString("tipoActividad")!!,
-            meGusta = if (doc.getLong("meGusta") != null) doc.getLong("meGusta")
-                ?.toInt()!! else 0,
-            noMeGusta = if (doc.getLong("noMeGusta") != null) doc.getLong("noMeGusta")
-                ?.toInt()!! else 0,
-            comentarios = if (doc.getLong("comentarios") != null) doc.getLong("comentarios")
-                ?.toInt()!! else 0,
-            fechaInicio = doc.getString("fechaInicio")!!,
-            horaInicio = doc.getString("horaInicio")!!
-        )
+        val actividad = doc.toObject(Actividad::class.java)
         val autorUid = doc.getString("autorUid")!!
         actividad.autorUid = autorUid
         actividad.imagenes = doc.get("imagenes") as List<String>?
