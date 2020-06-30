@@ -14,6 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ui.archivo.ArchivoDetalladoActivity"
+            android:parentActivityName=".ui.archivo.ListaArchivosActivity" />
+        <activity
+            android:name=".ui.archivo.ListaArchivosActivity"
+            android:parentActivityName=".ui.actividad.actividad.ui.ActividadActivity" />
+        <activity
             android:name=".ui.historial.HistorialUsuarioActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ui.vista.VistasActivity" />

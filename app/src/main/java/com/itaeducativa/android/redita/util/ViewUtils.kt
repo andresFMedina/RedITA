@@ -12,10 +12,13 @@ import android.widget.Spinner
 import com.google.android.material.snackbar.Snackbar
 import com.itaeducativa.android.redita.MainActivity
 import com.itaeducativa.android.redita.data.modelos.Actividad
+import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.ui.actividad.actividad.ui.ActividadActivity
 import com.itaeducativa.android.redita.ui.actividad.actividad.ui.CrearActividadActivity
+import com.itaeducativa.android.redita.ui.archivo.ArchivoDetalladoActivity
+import com.itaeducativa.android.redita.ui.archivo.ListaArchivosActivity
 import com.itaeducativa.android.redita.ui.historial.HistorialUsuarioActivity
 import com.itaeducativa.android.redita.ui.login.LoginActivity
 import com.itaeducativa.android.redita.ui.login.SingUpActivity
@@ -37,6 +40,25 @@ fun Context.startActividadActivity(actividad: Actividad, reaccion: Reaccion?) =
     Intent(this, ActividadActivity::class.java).also {
         val bundle = Bundle()
         bundle.putSerializable("actividad", actividad)
+        bundle.putSerializable("reaccion", reaccion)
+        it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        it.putExtras(bundle)
+        startActivity(it)
+    }
+
+fun Context.startListaArchivosActivity(actividad: Actividad) =
+    Intent(this, ListaArchivosActivity::class.java).also {
+        val bundle = Bundle()
+        bundle.putSerializable("actividad", actividad)
+        it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        it.putExtras(bundle)
+        startActivity(it)
+    }
+
+fun Context.startArchivoDetalladoActivity(archivo: Archivo, reaccion: Reaccion?) =
+    Intent(this, ArchivoDetalladoActivity::class.java).also {
+        val bundle = Bundle()
+        bundle.putSerializable("archivo", archivo)
         bundle.putSerializable("reaccion", reaccion)
         it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         it.putExtras(bundle)

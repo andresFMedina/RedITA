@@ -47,12 +47,12 @@ class ListaActividadesAdapter(
 
 
         fun bind(actividad: Actividad) {
-            if (actividad.imagenes.isNullOrEmpty())
-                imageViewActividad.visibility = View.GONE
+            //if (actividad.imagenes.isNullOrEmpty())
+            imageViewActividad.visibility = View.GONE
             viewModelActividad.requestListener = adapter
             if (actividad.reaccion == null) {
                 val query = adapter.listaActividadesViewModel.getReaccionByActividadIdYUsuarioUid(
-                    actividad.fechaCreacionTimeStamp,
+                    actividad.id,
                     adapter.uidUsuarioActual
                 )
                 viewModelActividad.getReaccionByActividadIdYUsuarioUid(query)
@@ -169,7 +169,7 @@ class ListaActividadesAdapter(
         imageButtonReaccionDiferente.setImageResource(iconoVacioDiferente)
         if (reaccion == null) {
             val r: Reaccion =
-                objetoReaccion(tipoReaccion, actividad.fechaCreacionTimeStamp)
+                objetoReaccion(tipoReaccion, actividad.id)
 
             listaActividadesViewModel.crearReaccion(r)
             imageButton.setImageResource(iconoLleno)
@@ -180,7 +180,7 @@ class ListaActividadesAdapter(
             imageButton.setImageResource(iconoVacio)
             if (tipoReaccion != reaccion.tipoReaccion) {
                 val r: Reaccion =
-                    objetoReaccion(tipoReaccion, actividad.fechaCreacionTimeStamp)
+                    objetoReaccion(tipoReaccion, actividad.id)
 
                 listaActividadesViewModel.crearReaccion(r)
                 imageButton.setImageResource(iconoLleno)

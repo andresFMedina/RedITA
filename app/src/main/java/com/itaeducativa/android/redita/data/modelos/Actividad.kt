@@ -8,6 +8,7 @@ import java.util.*
 class Actividad(
     var nombre: String,
     var descripcion: String,
+    var id: String,
     var fechaCreacionTimeStamp: String,
     var tipoActividad: String,
     var meGusta: Int,
@@ -21,10 +22,8 @@ class Actividad(
     var autorUid: String? = null
     var referenciaAutor: DocumentReference? = null
     var reaccion: Reaccion? = null
-    var imagenes: List<String>? = null
-    var video: String? = null
 
 
-    constructor() : this("", "", "", "", 0, 0, 0, false, "", "")
+    constructor() : this("", "", "","", "", 0, 0, 0, false, "", "")
 }
 

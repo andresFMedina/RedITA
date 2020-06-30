@@ -156,6 +156,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             actividad = Actividad(
                 nombre = actividadViewModel.nombre.value!!,
                 descripcion = actividadViewModel.descripcion.value!!,
+                id = "actividad${Timestamp(Date()).seconds}",
                 tipoActividad = actividadViewModel.tipoActividad.value!!,
                 fechaCreacionTimeStamp = Timestamp(Date()).seconds.toString(),
                 meGusta = 0,

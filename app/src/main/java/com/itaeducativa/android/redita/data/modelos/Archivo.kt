@@ -1,5 +1,7 @@
 package com.itaeducativa.android.redita.data.modelos
 
+import java.io.Serializable
+
 
 data class Archivo(
     val id: String,
@@ -10,6 +12,6 @@ data class Archivo(
     val meGusta: Int,
     val noMeGusta: Int,
     val comentarios: Int
-) {
+): Serializable {
     constructor() : this("", "", "", "", "", 0, 0, 0)
 }

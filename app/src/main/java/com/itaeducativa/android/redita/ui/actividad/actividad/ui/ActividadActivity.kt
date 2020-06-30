@@ -28,6 +28,7 @@ import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.vista.ListaVistaViewModel
 import com.itaeducativa.android.redita.ui.vista.ListaVistaViewModelFactory
 import com.itaeducativa.android.redita.util.hideKeyboard
+import com.itaeducativa.android.redita.util.startListaArchivosActivity
 import com.itaeducativa.android.redita.util.startVistasActivity
 import kotlinx.android.synthetic.main.activity_actividad.*
 import kotlinx.android.synthetic.main.linearlayout_reacciones.view.*
@@ -97,8 +98,8 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
         listaActividadesViewModel = ViewModelProviders.of(this, listaActividadesViewModelFactory)
             .get(ListaActividadesViewModel::class.java)
 
-        if (actividad.video != null) storageViewModel.getVideoUri(actividad.video!!)
-        else videoActividad.visibility = View.GONE
+        //if (actividad.video != null) storageViewModel.getVideoUri(actividad.video!!)
+        videoActividad.visibility = View.GONE
 
         binding.viewModelActividad = viewModelActividad
         binding.viewModelComentario = viewModelComentario
@@ -258,7 +259,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
     }
 
     override fun onStartVideo() {
-        Log.d("Poniendo video", actividad.video!!)
+
     }
 
     override fun onSuccessVideo() {
@@ -304,6 +305,10 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
             // Invoke the superclass to handle it.
             super.onOptionsItemSelected(item)
         }
+    }
+
+    fun verImagenes(view: View){
+        this.startListaArchivosActivity(actividad)
     }
 
 

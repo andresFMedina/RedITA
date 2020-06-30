@@ -11,6 +11,7 @@ class ListaArchivoViewModel(
 ): ViewModel() {
 
     val listaArchivos = MutableLiveData<List<Archivo>>()
+    val listaArchivoAdapter = ListaArchivoAdapter()
     var requestListener: RequestListener? = null
 
     fun guardarArchivoFirestore(archivo: Archivo) {
@@ -35,7 +36,7 @@ class ListaArchivoViewModel(
                 archivos.add(archivo)
             }
             listaArchivos.value = archivos
-            //listaUsuariosAdapter.actualizarUsuarios(usuarios)
+            listaArchivoAdapter.actualizarArchivos(archivos)
             requestListener?.onSuccessRequest()
         }
     }
