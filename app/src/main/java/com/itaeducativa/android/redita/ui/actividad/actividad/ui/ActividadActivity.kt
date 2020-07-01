@@ -23,6 +23,8 @@ import com.itaeducativa.android.redita.ui.VideoListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.*
 import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModel
 import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModelFactory
+import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModel
+import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.vista.ListaVistaViewModel
@@ -45,6 +47,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
     private val storageViewModelFactory: StorageViewModelFactory by instance()
     private val vistaFactory: ListaVistaViewModelFactory by instance()
     private val listaActividadesViewModelFactory: ListaActividadesViewModelFactory by instance()
+    private val listaArchivoViewModelFactory: ListaArchivoViewModelFactory by instance()
 
     private lateinit var actividad: Actividad
     private var vista: Vista? = null
@@ -54,6 +57,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
     private lateinit var autenticacionViewModel: AutenticacionViewModel
     private lateinit var vistaViewModel: ListaVistaViewModel
     private lateinit var listaActividadesViewModel: ListaActividadesViewModel
+    private lateinit var listaArchivoViewModel: ListaArchivoViewModel
 
     private lateinit var viewModelComentario: ListaComentariosViewModel
     private var esAutor: Boolean = false
@@ -98,16 +102,24 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
         listaActividadesViewModel = ViewModelProviders.of(this, listaActividadesViewModelFactory)
             .get(ListaActividadesViewModel::class.java)
 
+        listaArchivoViewModel = ViewModelProviders.of(this, listaArchivoViewModelFactory)
+            .get(ListaArchivoViewModel::class.java)
+
+
         //if (actividad.video != null) storageViewModel.getVideoUri(actividad.video!!)
         videoActividad.visibility = View.GONE
 
         binding.viewModelActividad = viewModelActividad
         binding.viewModelComentario = viewModelComentario
         binding.textoComentario = textoComentario
+        binding.viewModelArchivo = listaArchivoViewModel
+
+        if(!actividad.archivos.isNullOrEmpty())
+         listaArchivoViewModel.listaArchivoAdapter.actualizarArchivos(actividad.archivos!!)
 
         esAutor = autenticacionViewModel.usuario!!.uid == actividad.autorUid
 
-        if(esAutor){
+        if (esAutor) {
             vistaViewModel.requestListener = null
             yaVisto = true
         } else {
@@ -307,7 +319,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
         }
     }
 
-    fun verImagenes(view: View){
+    fun verImagenes(view: View) {
         this.startListaArchivosActivity(actividad)
     }
 

@@ -15,6 +15,10 @@
             type="com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModel" />
 
         <variable
+            name="viewModelArchivo"
+            type="com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModel" />
+
+        <variable
             name="textoComentario"
             type="String" />
     </data>
@@ -41,6 +45,7 @@
                     layout="@layout/relative_layout_actividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     bind:viewModel="@{viewModelActividad}" />
 
                 <VideoView
@@ -52,13 +57,13 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="280dp"
                     android:layout_marginBottom="10dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
+                    app:setAdapter="@{viewModelArchivo.listaArchivoAdapter}"
                     tools:itemCount="6"
-                    tools:listitem="@layout/cardview_multimedia" />
+                    tools:listitem="@layout/cardview_archivos" />
 
                 <Button
                     android:id="@+id/buttonVerImagenes"
@@ -112,7 +117,7 @@
                 android:layout_gravity="bottom"
                 android:hint="@string/escribe_tu_comentario"
                 android:importantForAutofill="no"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:text="@={textoComentario}" />
         </com.google.android.material.textfield.TextInputLayout>
 

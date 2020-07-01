@@ -34,7 +34,7 @@ class ActividadViewModel : ViewModel() {
 
     var requestListener: RequestListener? = null
 
-    /* val imagenesAdapter by lazy {
+    /*val imagenesAdapter by lazy {
          ImagenesAdapter(imagenes.value)
      }*/
 

@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:paddingStart="@dimen/padding_horizontal_cardview"
             android:paddingEnd="@dimen/padding_horizontal_cardview"
-
+            android:paddingTop="@dimen/padding_horizontal_cardview"
             >
 
             <ImageView
