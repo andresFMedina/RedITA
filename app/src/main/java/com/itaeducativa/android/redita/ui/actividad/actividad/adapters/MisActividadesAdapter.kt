@@ -47,10 +47,10 @@ class MisActividadesAdapter(private val listaActividadesViewModel: ListaActivida
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(listaActividades[position])
-        val imagenes = listaActividades[position].imagenes
-        if (imagenes.isNullOrEmpty()) {
-            holder.imagenActividad.visibility = View.GONE
-        }
+        //val imagenes = listaActividades[position].imagenes
+        //if (imagenes.isNullOrEmpty()) {
+        holder.imagenActividad.visibility = View.GONE
+        //}
         holder.imageButtonEditar.setOnClickListener {
             it.context.startFormularioActividadActivity(listaActividades[position])
         }

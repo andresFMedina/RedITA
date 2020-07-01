@@ -35,7 +35,7 @@ class VistasActivity : AppCompatActivity(), RequestListener, KodeinAware {
         binding.viewModel = vistaViewModel
 
         vistaViewModel.requestListener = this
-        vistaViewModel.getVistasPorParametro("actividadId", actividad.fechaCreacionTimeStamp)
+        vistaViewModel.getVistasPorParametro("actividadId", actividad.id)
 
         supportActionBar?.title = "Visto por"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

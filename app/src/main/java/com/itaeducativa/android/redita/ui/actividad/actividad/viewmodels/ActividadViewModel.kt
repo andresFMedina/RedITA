@@ -1,13 +1,10 @@
 package com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.QuerySnapshot
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.modelos.Usuario
@@ -41,13 +38,12 @@ class ActividadViewModel : ViewModel() {
     fun bind(actividad: Actividad) {
         nombre.value = actividad.nombre
         descripcion.value = actividad.descripcion
-        fechaCreacionTimeStamp.value = actividad.fechaCreacionTimeStamp
+        fechaCreacionTimeStamp.value = actividad.id
         tipoActividad.value = actividad.tipoActividad
         this.actividad.value = actividad
         meGusta.value = actividad.meGusta.toString()
         noMeGusta.value = actividad.noMeGusta.toString()
         comentarios.value = actividad.comentarios.toString()
-        imagenes.value = actividad.imagenes
         horaInicio.value = actividad.horaInicio
         fechaInicio.value = actividad.fechaInicio
         if (actividad.autor == null) {

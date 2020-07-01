@@ -197,8 +197,8 @@ class ListaActividadesViewModel(
         val actividad = doc.toObject(Actividad::class.java)
         val autorUid = doc.getString("autorUid")!!
         actividad.autorUid = autorUid
-        actividad.imagenes = doc.get("imagenes") as List<String>?
-        actividad.video = doc.getString("video")
+        //actividad.imagenes = doc.get("imagenes") as List<String>?
+        //actividad.video = doc.getString("video")
 
         return actividad
     }
