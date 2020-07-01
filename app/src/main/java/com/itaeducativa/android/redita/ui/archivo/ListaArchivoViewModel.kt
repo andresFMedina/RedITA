@@ -2,6 +2,7 @@ package com.itaeducativa.android.redita.ui.archivo
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.repositorios.RepositorioArchivo
 import com.itaeducativa.android.redita.network.RequestListener
@@ -23,8 +24,8 @@ class ListaArchivoViewModel(
         }
     }
 
-    fun getArchivosByActividadId(actividadId: String) {
-        repositorioArchivo.getArchivosByActividadId(actividadId).addSnapshotListener { value, exception ->
+    fun getArchivosByActividadId(actividad: Actividad, limit: Long = 10) {
+        repositorioArchivo.getArchivosByActividadId(actividad.id, limit).addSnapshotListener { value, exception ->
             requestListener?.onStartRequest()
             if (exception != null) {
                 requestListener?.onFailureRequest(exception.message!!)
@@ -36,6 +37,7 @@ class ListaArchivoViewModel(
                 archivos.add(archivo)
             }
             listaArchivos.value = archivos
+            actividad.archivos = archivos
             listaArchivoAdapter.actualizarArchivos(archivos)
             requestListener?.onSuccessRequest()
         }

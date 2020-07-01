@@ -31,7 +31,7 @@ class ListaActividadesViewModel(
     private val repositorioHistorial: RepositorioHistorial
 ) : ViewModel() {
 
-    private val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
+    val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
     val entries = listOf(MAS_RECIENTE, MAS_ANTIGUO)
     val orden = MutableLiveData<String>()
 
@@ -121,10 +121,9 @@ class ListaActividadesViewModel(
                     requestListener?.onFailureRequest(e.message!!)
                     return@addSnapshotListener
                 }
-                Log.d("Query usuario", value.toString())
+
                 val actividades: MutableList<Actividad> = mutableListOf()
                 for (doc in value!!) {
-                    Log.d("Documento", doc.data.toString())
                     val actividad = crearActividadByDocumentReference(doc)
                     actividades.add(actividad)
                 }

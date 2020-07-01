@@ -42,7 +42,7 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener 
 
         binding.archivoViewModel = listaArchivoViewModel
 
-        listaArchivoViewModel.getArchivosByActividadId(actividad.id)
+        //listaArchivoViewModel.getArchivosByActividadId(actividad.id)
 
         supportActionBar?.title = actividad.nombre
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

@@ -33,10 +33,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/padding_top_actividad"
                 android:paddingStart="@dimen/padding_horizontal_actividad"
-                android:paddingEnd="@dimen/padding_horizontal_actividad"
-                >
+                android:paddingTop="@dimen/padding_top_actividad"
+                android:paddingEnd="@dimen/padding_horizontal_actividad">
 
                 <include
                     layout="@layout/relative_layout_actividad"
@@ -54,33 +53,32 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:setAdapter="@{viewModelActividad.imagenesAdapter}"
+
                     tools:itemCount="6"
-                    tools:listitem="@layout/cardview_multimedia"
-                    android:layout_marginBottom="10dp"
-                    />
+                    tools:listitem="@layout/cardview_multimedia" />
 
                 <Button
                     android:id="@+id/buttonVerImagenes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/corners"
                     android:onClick="verImagenes"
                     android:text="@string/ver_todas_las_imagenes"
-                    android:textColor="@android:color/white"
-                    android:layout_marginBottom="10dp"
-                    />
+                    android:textColor="@android:color/white" />
 
                 <include
                     android:id="@+id/layoutReacciones"
                     layout="@layout/linearlayout_reacciones"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
-                    bind:viewModelActividad="@{viewModelActividad}" />
+                    bind:comentarios="@{viewModelActividad.comentarios.toString()}"
+                    bind:meGusta="@{viewModelActividad.meGusta.toString()}"
+                    bind:noMeGusta="@{viewModelActividad.noMeGusta.toString()}" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
@@ -100,13 +98,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="@android:color/white"
+            android:paddingStart="@dimen/padding_horizontal_actividad"
+            android:paddingEnd="@dimen/padding_horizontal_actividad"
             app:endIconContentDescription="Enviar"
             app:endIconDrawable="@drawable/ic_send_black_24dp"
             app:endIconMode="custom"
-            app:errorEnabled="true"
-            android:paddingStart="@dimen/padding_horizontal_actividad"
-            android:paddingEnd="@dimen/padding_horizontal_actividad"
-            >
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputComentario"

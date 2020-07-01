@@ -17,8 +17,8 @@ class RepositorioArchivo(
     fun guardarArchivoFirestore(archivo: Archivo): Task<Void> =
         firestoreDB.collection(ARCHIVOS).document(archivo.id).set(archivo)
 
-    fun getArchivosByActividadId(actividadId: String): Query =
-        firestoreDB.collection(ARCHIVOS).whereEqualTo("actividadId", actividadId)
+    fun getArchivosByActividadId(actividadId: String, limit: Long): Query =
+        firestoreDB.collection(ARCHIVOS).whereEqualTo("actividadId", actividadId).limit(limit)
 
 
 }

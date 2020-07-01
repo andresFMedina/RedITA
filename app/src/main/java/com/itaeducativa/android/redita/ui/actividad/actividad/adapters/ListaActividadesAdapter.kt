@@ -47,8 +47,10 @@ class ListaActividadesAdapter(
 
 
         fun bind(actividad: Actividad) {
-            //if (actividad.imagenes.isNullOrEmpty())
-            imageViewActividad.visibility = View.GONE
+            if (actividad.archivos.isNullOrEmpty())
+                imageViewActividad.visibility = View.GONE
+            else
+                imageViewActividad.visibility = View.VISIBLE
             viewModelActividad.requestListener = adapter
             if (actividad.reaccion == null) {
                 val query = adapter.listaActividadesViewModel.getReaccionByActividadIdYUsuarioUid(
