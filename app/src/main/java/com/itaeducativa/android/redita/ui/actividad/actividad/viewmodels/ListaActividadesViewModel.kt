@@ -27,7 +27,6 @@ class ListaActividadesViewModel(
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioReaccion: RepositorioReaccion,
     private val repositorioAutenticacion: RepositorioAutenticacion,
-    private val repositorioStorage: RepositorioStorage,
     private val repositorioHistorial: RepositorioHistorial
 ) : ViewModel() {
 
@@ -55,20 +54,6 @@ class ListaActividadesViewModel(
         }.addOnSuccessListener {
             requestListener?.onSuccessRequest()
 
-        }
-    }
-
-    fun agregarImagenesAActividad(actividadId: String, rutaImagen: String, imagen: Uri) {
-        repositorioStorage.subirArchivoStorage(rutaImagen, imagen).addOnSuccessListener {
-            val urlImagen = "gs://redita.appspot.com${it.storage.path}"
-            repositorioActividad.guardarUrlImagenesEnFirestore(actividadId, urlImagen)
-        }
-    }
-
-    fun agregarVideoAActividad(actividadId: String, rutaVideo: String, video: Uri) {
-        repositorioStorage.subirArchivoStorage(rutaVideo, video).addOnSuccessListener {
-            val urlVideo = "gs://redita.appspot.com${it.storage.path}"
-            repositorioActividad.guardarUrlVideoEnFirestore(actividadId, urlVideo)
         }
     }
 

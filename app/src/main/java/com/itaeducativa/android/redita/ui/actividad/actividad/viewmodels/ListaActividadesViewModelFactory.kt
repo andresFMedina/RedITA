@@ -10,7 +10,6 @@ class ListaActividadesViewModelFactory(
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioReaccion: RepositorioReaccion,
     private val repositorioAutenticacion: RepositorioAutenticacion,
-    private val repositorioStorage: RepositorioStorage,
     private val repositorioHistorial: RepositorioHistorial
 ): ViewModelProvider.NewInstanceFactory() {
 
@@ -20,7 +19,6 @@ class ListaActividadesViewModelFactory(
             repositorioUsuario,
             repositorioReaccion,
             repositorioAutenticacion,
-            repositorioStorage,
             repositorioHistorial
         ) as T
     }
