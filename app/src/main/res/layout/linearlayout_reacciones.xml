@@ -3,8 +3,16 @@
 
     <data>
         <variable
-            name="viewModelActividad"
-            type="com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel" />
+            name="meGusta"
+            type="String" />
+
+        <variable
+            name="noMeGusta"
+            type="String" />
+        <variable
+            name="comentarios"
+            type="String" />
+
     </data>
 
     <LinearLayout
@@ -31,7 +39,7 @@
             android:textSize="16sp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_end_textview_reacciones"
-            android:text="@={viewModelActividad.meGusta}" />
+            android:text="@={meGusta}" />
 
         <ImageButton
             android:id="@+id/imageButtonNoMeGusta"
@@ -49,7 +57,7 @@
             android:textSize="16sp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_end_textview_reacciones"
-            android:text="@={viewModelActividad.noMeGusta}" />
+            android:text="@={noMeGusta}" />
 
         <ImageButton
             android:id="@+id/imageButtonComentarios"
@@ -66,6 +74,6 @@
             android:layout_width="wrap_content"
             android:textSize="16sp"
             android:layout_height="wrap_content"
-            android:text="@={viewModelActividad.comentarios}" />
+            android:text="@={comentarios}" />
     </LinearLayout>
 </layout>

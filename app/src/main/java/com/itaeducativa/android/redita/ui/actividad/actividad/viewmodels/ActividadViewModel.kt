@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.modelos.Actividad
+import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.network.RequestListener
@@ -28,12 +29,14 @@ class ActividadViewModel : ViewModel() {
     private var fueConsultado = false
     val horaInicio = MutableLiveData<String>()
     val fechaInicio = MutableLiveData<String>()
+    val listaArchivos = MutableLiveData<List<Archivo>>()
+    val primeraImagen = MutableLiveData<String>()
 
     var requestListener: RequestListener? = null
 
-    val imagenesAdapter by lazy {
-        ImagenesAdapter(imagenes.value)
-    }
+    /*val imagenesAdapter by lazy {
+         ImagenesAdapter(imagenes.value)
+     }*/
 
     fun bind(actividad: Actividad) {
         nombre.value = actividad.nombre
@@ -46,6 +49,7 @@ class ActividadViewModel : ViewModel() {
         comentarios.value = actividad.comentarios.toString()
         horaInicio.value = actividad.horaInicio
         fechaInicio.value = actividad.fechaInicio
+        listaArchivos.value = actividad.archivos
         if (actividad.autor == null) {
             bindAutor(actividad.referenciaAutor)
             imagenPerfilUrl.value = "gs://redita.appspot.com/img_profile.png"
@@ -54,6 +58,8 @@ class ActividadViewModel : ViewModel() {
 
             imagenPerfilUrl.value = actividad.autor!!.imagenPerfilUrl
         }
+
+        primeraImagen.value = listaArchivos.value?.get(0)?.url
     }
 
     fun bindAutor(referenciaAutor: DocumentReference?) {

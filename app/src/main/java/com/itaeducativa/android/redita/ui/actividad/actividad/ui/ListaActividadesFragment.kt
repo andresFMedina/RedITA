@@ -16,6 +16,8 @@ import com.itaeducativa.android.redita.databinding.FragmentListaActividadesBindi
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
+import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModel
+import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModelFactory
 import com.itaeducativa.android.redita.util.showInputMethod
 import kotlinx.android.synthetic.main.fragment_lista_actividades.*
 import org.kodein.di.Kodein
@@ -27,14 +29,13 @@ import org.kodein.di.generic.instance
 class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
     override val kodein: Kodein by kodein()
-    private val factory: ListaActividadesViewModelFactory by instance()
+    private val factoryListaActividades: ListaActividadesViewModelFactory by instance()
+    private val factoryListaArchivos: ListaArchivoViewModelFactory by instance()
 
-    private lateinit var viewModel: ListaActividadesViewModel
+    private lateinit var listaActividadViewModel: ListaActividadesViewModel
+    private lateinit var listaArchivosViewModel: ListaArchivoViewModel
 
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
+    private var seConsultaronArchivos = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,13 +51,16 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
             inflater, R.layout.fragment_lista_actividades, container, false
         )
 
-        viewModel = ViewModelProviders.of(this, factory).get(ListaActividadesViewModel::class.java)
+        listaActividadViewModel = ViewModelProviders.of(this, factoryListaActividades)
+            .get(ListaActividadesViewModel::class.java)
+        listaArchivosViewModel =
+            ViewModelProviders.of(this, factoryListaArchivos).get(ListaArchivoViewModel::class.java)
 
-        binding.viewModel = viewModel
-        viewModel.getListaActividades()
+        binding.viewModel = listaActividadViewModel
+        listaActividadViewModel.getListaActividades()
 
-        viewModel.requestListener = this
-
+        listaActividadViewModel.requestListener = this
+        listaArchivosViewModel.requestListener = this
 
         return binding.root
     }
@@ -78,6 +82,15 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
     override fun onSuccessRequest() {
         progressBarListaActividades.visibility = View.GONE
+        val listaActividades = listaActividadViewModel.listaActividades.value
+        if (listaActividades != null && !seConsultaronArchivos) {
+            for (actividad in listaActividades) {
+                listaArchivosViewModel.getArchivosByActividadId(actividad)
+            }
+            seConsultaronArchivos = true
+            listaActividadViewModel.listaActividadesAdapter.notifyDataSetChanged()
+        }
+        Log.d("Lista", listaActividades.toString())
     }
 
     override fun onFailureRequest(message: String) {
@@ -90,7 +103,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
     override fun onPause() {
         super.onPause()
-        viewModel.requestListener = null
+        listaActividadViewModel.requestListener = null
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -110,7 +123,10 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
             queryListener = object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
-                    viewModel.getListaActividades(ordenCampo = "nombre", query = newText)
+                    listaActividadViewModel.getListaActividades(
+                        ordenCampo = "nombre",
+                        query = newText
+                    )
                     return true
                 }
 

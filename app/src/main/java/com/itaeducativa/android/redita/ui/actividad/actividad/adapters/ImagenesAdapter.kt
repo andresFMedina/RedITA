@@ -10,7 +10,7 @@ import com.itaeducativa.android.redita.databinding.DialogImagenDetalladaBinding
 import com.itaeducativa.android.redita.R
 
 
-class ImagenesAdapter(private val listaImagenes: List<String>?) :
+class ImagenesAdapter(private val listaArchivos: List<String>?) :
     RecyclerView.Adapter<ImagenesAdapter.ViewHolder>() {
 
 
@@ -34,11 +34,11 @@ class ImagenesAdapter(private val listaImagenes: List<String>?) :
     }
 
     override fun getItemCount(): Int {
-        return listaImagenes?.size ?: 0
+        return listaArchivos?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(listaImagenes!![position])
+        holder.bind(listaArchivos!![position])
         holder.imageView.setOnClickListener {
             val builder = AlertDialog.Builder(it.context)
             val binding: DialogImagenDetalladaBinding =
@@ -50,7 +50,7 @@ class ImagenesAdapter(private val listaImagenes: List<String>?) :
                 )
             val view = binding.root
             builder.setView(view)
-            binding.url = listaImagenes!![position]
+            binding.url = listaArchivos!![position]
 
             val dialog = builder.create()
             binding.imageButtonCerrarDialogoImagen.setOnClickListener {

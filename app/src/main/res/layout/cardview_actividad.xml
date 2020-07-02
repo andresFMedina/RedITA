@@ -4,6 +4,7 @@
     xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModelActividad"
             type="com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel" />
@@ -17,8 +18,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:paddingTop="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,33 +33,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                android:orientation="vertical"
+                android:focusable="true"
                 android:onClick="@{(v) -> viewModelActividad.verActividad(v)}"
-                android:focusable="true">
-            <include
-                android:id="@+id/layoutActividad"
-                bind:viewModel="@{viewModelActividad}"
-                layout="@layout/relative_layout_actividad" />
+                android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imagenActividad"
-                android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:maxHeight="700dp"
-                android:layout_gravity="center"
-                app:imageUrl="@{viewModelActividad.imagenes.get(0)}"
-                android:layout_marginBottom="10dp"
-                android:contentDescription="@string/imagen_actividad" />
+                <include
+                    android:id="@+id/layoutActividad"
+                    layout="@layout/relative_layout_actividad"
+                    bind:viewModel="@{viewModelActividad}" />
+
+                <ImageView
+                    android:id="@+id/imagenActividad"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:contentDescription="@string/imagen_actividad"
+                    android:maxHeight="700dp"
+                    app:imageUrl="@{viewModelActividad.primeraImagen}" />
             </LinearLayout>
 
             <include
                 android:id="@+id/layoutReacciones"
+                layout="@layout/linearlayout_reacciones"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                layout="@layout/linearlayout_reacciones"
-                bind:viewModelActividad="@{viewModelActividad}"
-                 />
-
+                bind:comentarios="@{viewModelActividad.comentarios.toString()}"
+                bind:meGusta="@{viewModelActividad.meGusta.toString()}"
+                bind:noMeGusta="@{viewModelActividad.noMeGusta.toString()}" />
 
         </LinearLayout>
 

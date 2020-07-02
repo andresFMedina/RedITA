@@ -27,11 +27,10 @@ class ListaActividadesViewModel(
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioReaccion: RepositorioReaccion,
     private val repositorioAutenticacion: RepositorioAutenticacion,
-    private val repositorioStorage: RepositorioStorage,
     private val repositorioHistorial: RepositorioHistorial
 ) : ViewModel() {
 
-    private val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
+    val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
     val entries = listOf(MAS_RECIENTE, MAS_ANTIGUO)
     val orden = MutableLiveData<String>()
 
@@ -55,20 +54,6 @@ class ListaActividadesViewModel(
         }.addOnSuccessListener {
             requestListener?.onSuccessRequest()
 
-        }
-    }
-
-    fun agregarImagenesAActividad(actividadId: String, rutaImagen: String, imagen: Uri) {
-        repositorioStorage.subirArchivoStorage(rutaImagen, imagen).addOnSuccessListener {
-            val urlImagen = "gs://redita.appspot.com${it.storage.path}"
-            repositorioActividad.guardarUrlImagenesEnFirestore(actividadId, urlImagen)
-        }
-    }
-
-    fun agregarVideoAActividad(actividadId: String, rutaVideo: String, video: Uri) {
-        repositorioStorage.subirArchivoStorage(rutaVideo, video).addOnSuccessListener {
-            val urlVideo = "gs://redita.appspot.com${it.storage.path}"
-            repositorioActividad.guardarUrlVideoEnFirestore(actividadId, urlVideo)
         }
     }
 
@@ -121,10 +106,9 @@ class ListaActividadesViewModel(
                     requestListener?.onFailureRequest(e.message!!)
                     return@addSnapshotListener
                 }
-                Log.d("Query usuario", value.toString())
+
                 val actividades: MutableList<Actividad> = mutableListOf()
                 for (doc in value!!) {
-                    Log.d("Documento", doc.data.toString())
                     val actividad = crearActividadByDocumentReference(doc)
                     actividades.add(actividad)
                 }

@@ -11,11 +11,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.Timestamp
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
+import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.databinding.ActivityCrearActividadBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
 import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
+import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModel
+import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModelFactory
 import com.itaeducativa.android.redita.ui.imagen.SeleccionarImagenesDialog
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
@@ -35,9 +38,12 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
     override val kodein: Kodein by kodein()
     private val autenticacionFactory: AutenticacionViewModelFactory by instance()
     private val actividadFactory: ListaActividadesViewModelFactory by instance()
+    private val listaArchivoViewModelFactory: ListaArchivoViewModelFactory by instance()
 
     private lateinit var autenticacionViewModel: AutenticacionViewModel
     private lateinit var listaActividadesViewModel: ListaActividadesViewModel
+    private lateinit var listaArchivoViewModel: ListaArchivoViewModel
+
     private val actividadViewModel: ActividadViewModel = ActividadViewModel()
     private var imagenesUri = mutableListOf<Uri>()
     private var videoUri: Uri? = null
@@ -56,6 +62,10 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             .get(AutenticacionViewModel::class.java)
         listaActividadesViewModel =
             ViewModelProviders.of(this, actividadFactory).get(ListaActividadesViewModel::class.java)
+        listaArchivoViewModel =
+            ViewModelProviders.of(this, listaArchivoViewModelFactory)
+                .get(ListaArchivoViewModel::class.java)
+
 
         binding.viewModel = actividadViewModel
 
@@ -164,7 +174,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 comentarios = 0,
                 horaInicio = actividadViewModel.horaInicio.value,
                 fechaInicio = actividadViewModel.fechaInicio.value,
-                estaActiva = true
+                estaActivo = true
             )
             actividad.autorUid = autenticacionViewModel.usuario!!.uid
         }
@@ -172,21 +182,35 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         listaActividadesViewModel.guardarActividadEnFirestore(actividad)
         if (imagenesUri.isNotEmpty()) {
             for (imagen in imagenesUri) {
-                val ruta = "${System.currentTimeMillis()}.${getExtension(imagen, this)}"
-                listaActividadesViewModel.agregarImagenesAActividad(
-                    actividad.fechaCreacionTimeStamp,
-                    ruta,
-                    imagen
+                val archivo = Archivo(
+                    id = "archivo${System.currentTimeMillis()}",
+                    acitividadId = actividad.id,
+                    comentarios = 0,
+                    meGusta = 0,
+                    noMeGusta = 0,
+                    timestamp = Timestamp.now().seconds.toString(),
+                    url = "",
+                    tipo = "imagen"
                 )
+                val ruta = "${System.currentTimeMillis()}.${getExtension(imagen, this)}"
+                listaArchivoViewModel.guardarArchivoFirestore(archivo, ruta, imagen)
+
             }
         }
         if (videoUri != null) {
-            val ruta = "${System.currentTimeMillis()}.${getExtension(videoUri!!, this)}"
-            listaActividadesViewModel.agregarVideoAActividad(
-                actividad.fechaCreacionTimeStamp,
-                ruta,
-                videoUri!!
+            val archivo = Archivo(
+                id = "archivo${System.currentTimeMillis()}",
+                acitividadId = actividad.id,
+                comentarios = 0,
+                meGusta = 0,
+                noMeGusta = 0,
+                timestamp = Timestamp.now().seconds.toString(),
+                url = "",
+                tipo = "video"
             )
+            val ruta = "${System.currentTimeMillis()}.${getExtension(videoUri!!, this)}"
+            listaArchivoViewModel.guardarArchivoFirestore(archivo, ruta, videoUri!!)
+
         }
     }
 
