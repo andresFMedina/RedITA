@@ -10,10 +10,10 @@ import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.ImagenesAdapter
 import com.itaeducativa.android.redita.util.startActividadActivity
 
 class ActividadViewModel : ViewModel() {
+    var categoria = MutableLiveData<String>()
     val nombre = MutableLiveData<String>()
     val descripcion = MutableLiveData<String>()
     val autor = MutableLiveData<String>()
@@ -39,6 +39,7 @@ class ActividadViewModel : ViewModel() {
      }*/
 
     fun bind(actividad: Actividad) {
+        categoria.value = actividad.categoria
         nombre.value = actividad.nombre
         descripcion.value = actividad.descripcion
         fechaCreacionTimeStamp.value = actividad.id
@@ -59,7 +60,8 @@ class ActividadViewModel : ViewModel() {
             imagenPerfilUrl.value = actividad.autor!!.imagenPerfilUrl
         }
 
-        primeraImagen.value = listaArchivos.value?.get(0)?.url
+        if (!listaArchivos.value.isNullOrEmpty()) primeraImagen.value =
+            listaArchivos.value?.get(0)?.url
     }
 
     fun bindAutor(referenciaAutor: DocumentReference?) {

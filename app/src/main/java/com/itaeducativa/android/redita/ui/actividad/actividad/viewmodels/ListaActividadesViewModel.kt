@@ -1,11 +1,8 @@
 package com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels
 
-import android.net.Uri
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.itaeducativa.android.redita.data.modelos.Actividad
@@ -67,11 +64,12 @@ class ListaActividadesViewModel(
     fun getListaActividades(
         ordenCampo: String = "fechaCreacionTimeStamp",
         direccion: Query.Direction = Query.Direction.DESCENDING,
-        query: String = ""
+        query: String = "",
+        tipo: String = ""
     ) {
         orden.value = MAS_RECIENTE
         requestListener?.onStartRequest()
-        repositorioActividad.getActividades(ordenCampo, direccion, query)
+        repositorioActividad.getActividades(ordenCampo, direccion, query, tipo)
             .addSnapshotListener { value, e ->
                 if (e != null) {
                     listaActividades.value = null

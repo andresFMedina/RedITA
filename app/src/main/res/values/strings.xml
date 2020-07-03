@@ -29,6 +29,7 @@
     <string name="error_encontrado">Error encontrado</string>
     <string name="cargando_informacion">Cargando información…</string>
     <string name="mis_actividades">Mis Actividades</string>
+    <string name="mis_retos">Mis Retos</string>
     <string name="crear_nueva_activivdad">Crear nueva actividad</string>
     <string name="creando">Creando…</string>
     <string name="imagenes">imagenes</string>
@@ -74,4 +75,5 @@
     <string name="aceptar_dialogo">Eliminar</string>
     <string name="cancelar_dialogo">Cancelar</string>
     <string name="ver_todas_las_imagenes">Ver todas las imagenes</string>
+    <string name="categoria">Categoria</string>
 </resources>
