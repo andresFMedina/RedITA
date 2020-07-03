@@ -37,6 +37,7 @@
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="2"
+                android:padding="@dimen/fab_margin"
                 tools:listitem="@layout/cardview_guardar_imagen" />
 
         </FrameLayout>

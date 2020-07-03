@@ -1,7 +1,11 @@
 package com.itaeducativa.android.redita.data.repositorios
 
+import android.util.Log
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Actividad
 
@@ -31,14 +35,17 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     fun getActividades(
         ordenCampo: String,
         direccion: Query.Direction,
-        query: String = ""
+        query: String = "",
+        tipo: String = ""
     ): Query {
         val collection = firestoreDB.collection(ACTIVIDADES)
         if (query != "") collection.orderBy("nombre").startAt(query) else collection.orderBy(
             ordenCampo,
             direccion
         )
+        Log.i("Tipo Consulta", tipo);
         return collection.whereEqualTo("estaActivo", true)
+        //.whereEqualTo("tipoActividad", tipo)
     }
 
     fun getActividadesById(id: String): DocumentReference =

@@ -5,6 +5,8 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -32,6 +34,8 @@ import java.util.*
 
 private const val ACTION_RESULT_GET_IMAGES = 0
 private const val ACTION_RESULT_GET_VIDEO = 1
+private const val ACTIVIDAD = "Actividad"
+private const val RETO = "Reto"
 
 class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware,
     SeleccionarImagenesDialog.DialogListener {
@@ -78,16 +82,24 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         else supportActionBar?.title = actividad!!.nombre
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        inputCategoriaActividad.editText?.addTextChangedListener(
+            TextWatcherValidacionVacio(
+                inputCategoriaActividad
+            )
+        )
+
         inputNombreActividad.editText?.addTextChangedListener(
             TextWatcherValidacionVacio(
                 inputNombreActividad
             )
         )
+
         inputDescripcionActividad.editText?.addTextChangedListener(
             TextWatcherValidacionVacio(
                 inputDescripcionActividad
             )
         )
+
         inputTipoActividad.editText?.addTextChangedListener(
             TextWatcherValidacionVacio(
                 inputTipoActividad
@@ -113,6 +125,9 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             obtenerHora(this, inputHoraInicio.editText!!)
         }
 
+        val items = listOf(ACTIVIDAD, RETO)
+        val adapter = ArrayAdapter(this, R.layout.list_item, items)
+        (inputCategoriaActividad.editText as? AutoCompleteTextView)?.setAdapter(adapter)
     }
 
     override fun onStartRequest() {
@@ -134,11 +149,17 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
     }
 
     fun guardarActividad(view: View) {
+        val textoCategoriaActividad = inputCategoriaActividad.editText!!.text.toString()
         val textoNombreActividad = inputNombreActividad.editText!!.text.toString()
         val textoDescripcionActividad = inputDescripcionActividad.editText!!.text.toString()
         val textoTipoActividad = inputTipoActividad.editText!!.text.toString()
 
         lateinit var actividad: Actividad
+
+        if (textoCategoriaActividad.isEmpty()) {
+            inputCategoriaActividad.error = getString(R.string.este_campo_no_puede_estar_vacio)
+            return
+        }
 
         if (textoNombreActividad.isEmpty()) {
             inputNombreActividad.error = getString(R.string.este_campo_no_puede_estar_vacio)
@@ -156,6 +177,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         }
         if (this.actividad != null) {
             actividad = this.actividad!!
+            actividad.categoria = actividadViewModel.categoria.value!!
             actividad.nombre = actividadViewModel.nombre.value!!
             actividad.descripcion = actividadViewModel.descripcion.value!!
             actividad.tipoActividad = actividadViewModel.tipoActividad.value!!
@@ -164,6 +186,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         } else {
 
             actividad = Actividad(
+                categoria = actividadViewModel.categoria.value!!,
                 nombre = actividadViewModel.nombre.value!!,
                 descripcion = actividadViewModel.descripcion.value!!,
                 id = "actividad${Timestamp(Date()).seconds}",

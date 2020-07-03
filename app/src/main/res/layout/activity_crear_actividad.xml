@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel" />
@@ -21,134 +22,149 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_gravity="center"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
                 android:paddingStart="@dimen/padding_horizontal_form"
-                android:paddingEnd="@dimen/padding_horizontal_form"
-                android:orientation="vertical">
+                android:paddingEnd="@dimen/padding_horizontal_form">
 
                 <TextView
                     android:id="@+id/textViewEstadoImagenes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/no_se_han_seleccionado_imagenes"
-                    />
+                    android:text="@string/no_se_han_seleccionado_imagenes" />
 
                 <Button
                     android:id="@+id/buttonAgregarImagenes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@color/colorPrimaryDark"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
                     android:layout_marginBottom="@dimen/margin_top_multimedia_layout"
-                    android:text="@string/subir_imagenes"
-                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimaryDark"
                     android:onClick="elegirImagenes"
-                    />
+                    android:text="@string/subir_imagenes"
+                    android:textColor="@android:color/white" />
 
                 <TextView
                     android:id="@+id/textViewEstadoVideo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/no_se_ha_seleccionado_video"
-                    />
+                    android:text="@string/no_se_ha_seleccionado_video" />
 
                 <Button
                     android:id="@+id/buttonAgregarVideo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@color/colorPrimaryDark"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
                     android:layout_marginBottom="@dimen/margin_top_multimedia_layout"
-                    android:text="@string/subir_video"
-                    android:textColor="@android:color/white"
+                    android:background="@color/colorPrimaryDark"
                     android:onClick="elegirVideo"
-                    />
+                    android:text="@string/subir_video"
+                    android:textColor="@android:color/white" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputCategoriaActividad"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/fab_margin"
+                    android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
+                    app:errorEnabled="true">
+
+                    <android.widget.AutoCompleteTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="@string/categoria"
+                        android:text="@={viewModel.categoria}"
+                        android:inputType="none" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/inputNombreActividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    >
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/nombre_de_la_actividad"
-                        android:text="@={viewModel.nombre}"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:text="@={viewModel.nombre}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/inputDescripcionActividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    >
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:text="@={viewModel.descripcion}"
-                        android:lines="3"
-                        android:hint="@string/descripcion" />
+                        android:gravity="start"
+                        android:hint="@string/descripcion"
+                        android:inputType="textMultiLine"
+                        android:lines="10"
+                        android:minLines="10"
+                        android:overScrollMode="always"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:text="@={viewModel.descripcion}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/inputTipoActividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    >
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/tipo_de_actividad"
-                        android:text="@={viewModel.tipoActividad}"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:text="@={viewModel.tipoActividad}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/inputFechaInicio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    app:endIconMode="custom"
                     app:endIconDrawable="@drawable/ic_event_black_24dp"
-                    >
+                    app:endIconMode="custom"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/fecha_de_inicio"
                         android:focusable="false"
-                        android:text="@={viewModel.fechaInicio}"
-                        android:inputType="date" />
+                        android:hint="@string/fecha_de_inicio"
+                        android:inputType="date"
+                        android:text="@={viewModel.fechaInicio}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/inputHoraInicio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:errorEnabled="true"
-                    app:endIconMode="custom"
                     app:endIconDrawable="@drawable/ic_schedule_black_24dp"
-                    >
+                    app:endIconMode="custom"
+                    app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/hora_de_inicio"
                         android:focusable="false"
-                        android:text="@={viewModel.horaInicio}"
-                        android:inputType="date" />
+                        android:hint="@string/hora_de_inicio"
+                        android:inputType="date"
+                        android:text="@={viewModel.horaInicio}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
@@ -156,9 +172,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:onClick="guardarActividad"
-                    android:background="@color/colorPrimaryDark"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
+                    android:background="@color/colorPrimaryDark"
+                    android:onClick="guardarActividad"
                     android:text="@string/crear_nueva_activivdad"
                     android:textColor="@android:color/white" />
 

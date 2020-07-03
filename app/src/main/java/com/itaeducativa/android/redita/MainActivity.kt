@@ -24,6 +24,9 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
+private const val ACTIVIDAD = "Actividad"
+private const val RETO = "Reto"
+
 class MainActivity : AppCompatActivity(), KodeinAware {
     override val kodein: Kodein by kodein()
     private val autenticacionFactory: AutenticacionViewModelFactory by instance()
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         bottomBarMenuPrincipal.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menuInicio -> {
-                    openFragment(ListaActividadesFragment.newInstance())
+                    openFragment(ListaActividadesFragment.newInstance(ACTIVIDAD))
                     true
                 }
                 R.id.menuPerfil -> {
@@ -70,6 +73,10 @@ class MainActivity : AppCompatActivity(), KodeinAware {
                 }
                 R.id.menuUsuarios -> {
                     openFragment(ListaUsuariosFragment.newInstance())
+                    true
+                }
+                R.id.menuMisRetos -> {
+                    openFragment(ListaActividadesFragment.newInstance(RETO))
                     true
                 }
                 else -> false

@@ -25,6 +25,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
+private const val ARG_TIPO = "tipo"
 
 class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
@@ -36,9 +37,13 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
     private lateinit var listaArchivosViewModel: ListaArchivoViewModel
 
     private var seConsultaronArchivos = false
+    private var tipo: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        arguments?.let {
+            tipo = it.getSerializable(ARG_TIPO) as String
+        }
         setHasOptionsMenu(true)
     }
 
@@ -57,7 +62,9 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
             ViewModelProviders.of(this, factoryListaArchivos).get(ListaArchivoViewModel::class.java)
 
         binding.viewModel = listaActividadViewModel
-        listaActividadViewModel.getListaActividades()
+        listaActividadViewModel.getListaActividades(
+            tipo = tipo!!
+        )
 
         listaActividadViewModel.requestListener = this
         listaArchivosViewModel.requestListener = this
@@ -76,8 +83,13 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance() =
+        fun newInstance(tipo: String) =
             ListaActividadesFragment()
+                .apply {
+                    arguments = Bundle().apply {
+                        putSerializable(ARG_TIPO, tipo)
+                    }
+                }
     }
 
     override fun onSuccessRequest() {

@@ -7,22 +7,24 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/fab_margin">
 
         <ImageView
             android:id="@+id/imageViewImagen"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:contentDescription="@string/imagen_actividad" />
 
         <ImageButton
             android:id="@+id/imageButtonCerrarDialogoImagen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_cancel_24px"
             android:layout_gravity="end|top"
-            android:contentDescription="@string/cerrar" />
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/cerrar"
+            android:src="@drawable/ic_cancel_24px" />
 
     </FrameLayout>
 </layout>

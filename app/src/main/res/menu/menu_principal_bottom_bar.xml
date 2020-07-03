@@ -4,26 +4,28 @@
         android:id="@+id/menuInicio"
         android:enabled="true"
         android:icon="@drawable/ic_home_white_18dp"
-        android:title="@string/inicio"
-        />
+        android:title="@string/inicio" />
     <item
         android:id="@+id/menuPerfil"
         android:enabled="true"
         android:icon="@drawable/ic_account_box_white_18dp"
-        android:title="@string/perfil"
-        />
+        android:title="@string/perfil" />
 
     <item
         android:id="@+id/menuMisActividades"
         android:enabled="true"
-        android:title="@string/mis_actividades"
         android:icon="@drawable/ic_dynamic_feed_black_18dp"
-        />
+        android:title="@string/mis_actividades" />
+
+    <item
+        android:id="@+id/menuMisRetos"
+        android:enabled="true"
+        android:icon="@drawable/ic_poll"
+        android:title="@string/mis_retos" />
 
     <item
         android:id="@+id/menuUsuarios"
         android:enabled="true"
-        android:title="@string/usuarios"
         android:icon="@drawable/ic_group_white_18dp"
-        />
+        android:title="@string/usuarios" />
 </menu>
