@@ -1,15 +1,14 @@
 package com.itaeducativa.android.redita.ui.archivo
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.databinding.ActivityListaArchivosBinding
 import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.util.showSnackbar
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -42,7 +41,7 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener 
 
         binding.archivoViewModel = listaArchivoViewModel
 
-        //listaArchivoViewModel.getArchivosByActividadId(actividad.id)
+        listaArchivoViewModel.getArchivosByActividadId(actividad)
 
         supportActionBar?.title = actividad.nombre
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -63,5 +62,10 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener 
     override fun onSupportNavigateUp(): Boolean {
         finish()
         return true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        listaArchivoViewModel.requestListener = null
     }
 }

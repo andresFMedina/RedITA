@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels
+package com.itaeducativa.android.redita.ui.comentario.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.itaeducativa.android.redita.data.modelos.Comentario
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.network.RequestListener
+import com.itaeducativa.android.redita.util.getFechaTimestamp
 
 class ComentarioViewModel : ViewModel() {
     val comentario = MutableLiveData<String>()
@@ -18,7 +19,7 @@ class ComentarioViewModel : ViewModel() {
 
     fun bind(comentario: Comentario) {
         this.comentario.value = comentario.comentario
-        fecha.value = comentario.fecha.toDate().toString()
+        fecha.value = getFechaTimestamp(comentario.fecha)
         objetoComentario.value = comentario
         if (comentario.usuarioReference != null) {
             bindUsuario(comentario.usuarioReference)

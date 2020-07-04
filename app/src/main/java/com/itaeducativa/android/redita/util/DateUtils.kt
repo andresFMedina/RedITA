@@ -103,7 +103,11 @@ fun getFechaTimestamp(timestamp: String): String {
     val hora = f.get(Calendar.HOUR)
     val minutos = f.get(Calendar.MINUTE)
     val ampm = amPm[f.get(Calendar.AM_PM)]
-    return "el $dia de $mes del $year a las $hora:${minutos} $ampm"
+
+    val minutosFormateados: String = if (minutos < 10) "0$minutos" else minutos.toString()
+    val horasFormateadas: String = if (hora < 10) "0$hora" else hora.toString()
+
+    return "el $dia de $mes del $year a las $horasFormateadas:$minutosFormateados $ampm"
 
 
 }

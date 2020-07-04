@@ -3,11 +3,11 @@ package com.itaeducativa.android.redita
 import android.app.Application
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.repositorios.*
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.NotificacionViewModelFactory
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.StorageViewModelFactory
-import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModelFactory
-import com.itaeducativa.android.redita.ui.actividad.reaccion.ReaccionViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.NotificacionViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.StorageViewModelFactory
+import com.itaeducativa.android.redita.ui.comentario.viewmodels.ListaComentariosViewModelFactory
+import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModelFactory
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModelFactory
 import com.itaeducativa.android.redita.ui.historial.ListaHistorialViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
@@ -34,6 +34,7 @@ class FirebaseApplication : Application(), KodeinAware {
         bind() from provider { AutenticacionViewModelFactory(instance()) }
         bind() from singleton { RepositorioUsuario(instance()) }
         bind() from provider { ListaUsuarioViewModelFactory(instance(), instance()) }
+        bind() from singleton { RepositorioPublicacion(instance()) }
         bind() from singleton { RepositorioActividad(instance()) }
         bind() from provider {
             ListaActividadesViewModelFactory(

@@ -22,7 +22,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     fun guardarActividadEnFirestore(actividad: Actividad): Task<Void> {
         val documentReference =
             firestoreDB.collection(ACTIVIDADES)
-                .document(actividad.fechaCreacionTimeStamp)
+                .document(actividad.id)
         return documentReference.set(actividad)
     }
 
@@ -59,7 +59,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         val collection =
             firestoreDB.collection(ACTIVIDADES).whereEqualTo(AUTOR_UID, uid)
         if (query != "") collection.orderBy(orderBy).startAt(query)
-        return collection
+        return collection.whereEqualTo("estaActivo", true)
     }
 
 

@@ -5,6 +5,9 @@ import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Comentario
 
+private const val COMENTARIOS = "comentarios"
+private const val PUBLICACION_ID = "publicacionId"
+
 class RepositorioComentario
     (private val firebase: FirebaseSource) {
 
@@ -12,16 +15,15 @@ class RepositorioComentario
         firebase.firestoreDB
     }
 
-    private val ACTIVIDADES = "actividades"
-    private val COMENTARIOS = "comentarios"
 
-    fun agregarComentarioEnFirestorePorActividad(comentario: Comentario): Task<Void> =
-        firestoreDB.collection(COMENTARIOS).document(comentario.fecha.seconds.toString())
+    fun agregarComentarioEnFirestorePorPublicacion(comentario: Comentario): Task<Void> =
+        firestoreDB.collection(COMENTARIOS).document(comentario.fecha)
             .set(comentario)
 
     fun getComentariosEnFirestorePorActividad(referenciaDocumentoActividad: String): Query =
         firestoreDB.collection(COMENTARIOS)
-            .whereEqualTo("actividadId", referenciaDocumentoActividad).orderBy("fecha", Query.Direction.DESCENDING)
+            .whereEqualTo(PUBLICACION_ID, referenciaDocumentoActividad)
+            .orderBy("fecha", Query.Direction.DESCENDING)
 
 
 }

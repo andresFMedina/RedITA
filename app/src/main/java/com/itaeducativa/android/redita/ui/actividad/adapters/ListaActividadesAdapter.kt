@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.actividad.adapters
+package com.itaeducativa.android.redita.ui.actividad.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,8 +15,8 @@ import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.databinding.CardviewActividadBinding
 import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ActividadViewModel
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModel
 import com.itaeducativa.android.redita.util.startActividadActivity
 import java.util.*
 

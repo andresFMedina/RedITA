@@ -8,7 +8,7 @@ data class Archivo(
     val timestamp: String,
     val url: String,
     val tipo: String,
-    val acitividadId: String,
+    val actividadId: String,
     val meGusta: Int,
     val noMeGusta: Int,
     val comentarios: Int

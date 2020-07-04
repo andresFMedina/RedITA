@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.actividad.ui
+package com.itaeducativa.android.redita.ui.actividad.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -20,9 +20,9 @@ import com.itaeducativa.android.redita.data.modelos.Vista
 import com.itaeducativa.android.redita.databinding.ActivityActividadBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.VideoListener
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.*
-import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModel
-import com.itaeducativa.android.redita.ui.actividad.comentario.viewmodels.ListaComentariosViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.*
+import com.itaeducativa.android.redita.ui.comentario.viewmodels.ListaComentariosViewModel
+import com.itaeducativa.android.redita.ui.comentario.viewmodels.ListaComentariosViewModelFactory
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModel
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
@@ -114,8 +114,8 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
         binding.textoComentario = textoComentario
         binding.viewModelArchivo = listaArchivoViewModel
 
-        if(!actividad.archivos.isNullOrEmpty())
-         listaArchivoViewModel.listaArchivoAdapter.actualizarArchivos(actividad.archivos!!)
+        if (!actividad.archivos.isNullOrEmpty())
+            listaArchivoViewModel.listaArchivoAdapter.actualizarArchivos(actividad.archivos!!)
 
         esAutor = autenticacionViewModel.usuario!!.uid == actividad.autorUid
 
@@ -134,14 +134,19 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
 
         editTextComentario.setEndIconOnClickListener {
             val uid: String = autenticacionViewModel.usuario!!.uid
-            val timestamp = actividad.fechaCreacionTimeStamp
             textoComentario = inputComentario.text.toString().trim()
             if (textoComentario.isEmpty()) {
                 inputComentario.error = getString(R.string.debes_escribir_un_comentario)
                 return@setEndIconOnClickListener
             }
-            val comentario = Comentario(textoComentario, Timestamp(Date()), uid, timestamp)
-            viewModelComentario.agregarComentariosEnFirestorePorActividad(comentario)
+            val comentario = Comentario(
+                textoComentario,
+                Timestamp.now().seconds.toString(),
+                uid,
+                actividad.id,
+                "actividades"
+            )
+            viewModelComentario.agregarComentariosEnFirestorePorPublicacion(comentario)
             hideKeyboard(this)
             inputComentario.setText("")
         }
@@ -152,7 +157,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
                 autenticacionViewModel.usuario!!.uid,
                 actividad.fechaCreacionTimeStamp
             )
-        else viewModelComentario.getComentariosEnFirestorePorActividad(actividad.fechaCreacionTimeStamp)
+        else viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
 
 
         supportActionBar?.title = actividad.nombre
@@ -253,13 +258,13 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
                     vecesVisto = 1
                 )
                 vistaViewModel.guardarVistaEnFirestore(vista!!)
-                viewModelComentario.getComentariosEnFirestorePorActividad(actividad.fechaCreacionTimeStamp)
+                viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
                 yaVisto = true
                 return
             }
 
             vistaViewModel.agregarVista(vista!!)
-            viewModelComentario.getComentariosEnFirestorePorActividad(actividad.fechaCreacionTimeStamp)
+            viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
             yaVisto = true
         }
     }
