@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.actividad.adapters
+package com.itaeducativa.android.redita.ui.actividad.adapters
 
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter

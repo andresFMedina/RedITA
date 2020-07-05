@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.actividad.ui
+package com.itaeducativa.android.redita.ui.actividad.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -16,9 +16,9 @@ import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.databinding.ActivityCrearActividadBinding
 import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ActividadViewModel
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModel
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModelFactory
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModel
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModelFactory
 import com.itaeducativa.android.redita.ui.imagen.SeleccionarImagenesDialog
@@ -189,9 +189,9 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 categoria = actividadViewModel.categoria.value!!,
                 nombre = actividadViewModel.nombre.value!!,
                 descripcion = actividadViewModel.descripcion.value!!,
-                id = "actividad${Timestamp(Date()).seconds}",
+                id = "actividad${Timestamp.now().seconds}",
                 tipoActividad = actividadViewModel.tipoActividad.value!!,
-                fechaCreacionTimeStamp = Timestamp(Date()).seconds.toString(),
+                fechaCreacionTimeStamp = Timestamp.now().seconds.toString(),
                 meGusta = 0,
                 noMeGusta = 0,
                 comentarios = 0,
@@ -207,7 +207,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             for (imagen in imagenesUri) {
                 val archivo = Archivo(
                     id = "archivo${System.currentTimeMillis()}",
-                    acitividadId = actividad.id,
+                    actividadId = actividad.id,
                     comentarios = 0,
                     meGusta = 0,
                     noMeGusta = 0,
@@ -223,7 +223,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         if (videoUri != null) {
             val archivo = Archivo(
                 id = "archivo${System.currentTimeMillis()}",
-                acitividadId = actividad.id,
+                actividadId = actividad.id,
                 comentarios = 0,
                 meGusta = 0,
                 noMeGusta = 0,

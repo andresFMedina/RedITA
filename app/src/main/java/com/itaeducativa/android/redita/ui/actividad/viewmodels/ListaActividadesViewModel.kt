@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels
+package com.itaeducativa.android.redita.ui.actividad.viewmodels
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
@@ -10,8 +10,9 @@ import com.itaeducativa.android.redita.data.modelos.Historial
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.ListaActividadesAdapter
-import com.itaeducativa.android.redita.ui.actividad.actividad.adapters.MisActividadesAdapter
+
+import com.itaeducativa.android.redita.ui.actividad.adapters.ListaActividadesAdapter
+import com.itaeducativa.android.redita.ui.actividad.adapters.MisActividadesAdapter
 import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 
 
@@ -58,14 +59,14 @@ class ListaActividadesViewModel(
         this.orden.value = orden as String
         val direccion =
             if (this.orden.value!! == MAS_RECIENTE) Query.Direction.DESCENDING else Query.Direction.ASCENDING
-        getListaActividades(direccion = direccion)
+        //getListaActividades(direccion = direccion)
     }
 
     fun getListaActividades(
         ordenCampo: String = "fechaCreacionTimeStamp",
         direccion: Query.Direction = Query.Direction.DESCENDING,
         query: String = "",
-        tipo: String = ""
+        tipo: String
     ) {
         orden.value = MAS_RECIENTE
         requestListener?.onStartRequest()

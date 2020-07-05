@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel" />
+            type="com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

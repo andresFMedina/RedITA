@@ -1,8 +1,7 @@
-package com.itaeducativa.android.redita.ui.actividad.reaccion
+package com.itaeducativa.android.redita.ui.reaccion
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.gms.tasks.Task
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.repositorios.RepositorioReaccion
 import com.itaeducativa.android.redita.network.RequestListener

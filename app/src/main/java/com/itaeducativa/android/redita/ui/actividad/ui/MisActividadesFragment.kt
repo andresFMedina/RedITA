@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.actividad.ui
+package com.itaeducativa.android.redita.ui.actividad.ui
 
 import android.app.SearchManager
 import android.content.Context
@@ -14,8 +14,8 @@ import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.databinding.FragmentMisActividadesBinding
 import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModel
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModelFactory
 import com.itaeducativa.android.redita.util.showInputMethod
 import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 import org.kodein.di.Kodein

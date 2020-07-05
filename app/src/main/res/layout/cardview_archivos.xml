@@ -30,7 +30,9 @@
                 android:layout_gravity="center"
                 android:contentDescription="@string/imagen_actividad"
                 android:scaleType="centerCrop"
-                app:imageUrl="@{viewModel.archivo.url}" />
+                app:imageUrl="@{viewModel.archivo.url}"
+                android:onClick="@{(v) -> viewModel.verArchivoDetalladoActivity(v)}"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"

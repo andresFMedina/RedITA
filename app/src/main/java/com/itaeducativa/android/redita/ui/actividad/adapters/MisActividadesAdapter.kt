@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.actividad.adapters
+package com.itaeducativa.android.redita.ui.actividad.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +10,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.databinding.CardviewMisActividadesBinding
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ActividadViewModel
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ActividadViewModel
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModel
 import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 
 class MisActividadesAdapter(private val listaActividadesViewModel: ListaActividadesViewModel) :

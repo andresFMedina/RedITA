@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels
+package com.itaeducativa.android.redita.ui.actividad.viewmodels
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData

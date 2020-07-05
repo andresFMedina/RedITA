@@ -18,17 +18,17 @@
             android:parentActivityName=".ui.archivo.ListaArchivosActivity" />
         <activity
             android:name=".ui.archivo.ListaArchivosActivity"
-            android:parentActivityName=".ui.actividad.actividad.ui.ActividadActivity" />
+            android:parentActivityName=".ui.actividad.ui.ActividadActivity" />
         <activity
             android:name=".ui.historial.HistorialUsuarioActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ui.vista.VistasActivity" />
         <activity
-            android:name=".ui.actividad.actividad.ui.CrearActividadActivity"
+            android:name=".ui.actividad.ui.CrearActividadActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ui.login.SingUpActivity" />
         <activity
-            android:name=".ui.actividad.actividad.ui.ActividadActivity"
+            android:name=".ui.actividad.ui.ActividadActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ui.login.LoginActivity">
             <intent-filter>

@@ -1,6 +1,7 @@
 package com.itaeducativa.android.redita.ui.archivo
 
 import android.net.Uri
+import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.itaeducativa.android.redita.data.modelos.Actividad
@@ -8,6 +9,7 @@ import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.repositorios.RepositorioArchivo
 import com.itaeducativa.android.redita.data.repositorios.RepositorioStorage
 import com.itaeducativa.android.redita.network.RequestListener
+import com.itaeducativa.android.redita.util.startArchivoDetalladoActivity
 
 class ListaArchivoViewModel(
     private val repositorioArchivo: RepositorioArchivo,
@@ -54,5 +56,6 @@ class ListaArchivoViewModel(
             repositorioArchivo.guardarUrlArchivoFirestore(archivoId, urlImagen)
         }
     }
+
 
 }

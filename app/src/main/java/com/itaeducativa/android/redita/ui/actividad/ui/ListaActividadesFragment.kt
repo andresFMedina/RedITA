@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.actividad.ui
+package com.itaeducativa.android.redita.ui.actividad.ui
 
 import android.app.SearchManager
 import android.content.Context
@@ -14,8 +14,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.databinding.FragmentListaActividadesBinding
 import com.itaeducativa.android.redita.network.RequestListener
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModel
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.ListaActividadesViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModel
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModelFactory
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModel
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModelFactory
 import com.itaeducativa.android.redita.util.showInputMethod
@@ -37,12 +37,12 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
     private lateinit var listaArchivosViewModel: ListaArchivoViewModel
 
     private var seConsultaronArchivos = false
-    private var tipo: String? = ""
+    private lateinit var tipo: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            tipo = it.getSerializable(ARG_TIPO) as String
+            tipo = it.getString(ARG_TIPO)!!
         }
         setHasOptionsMenu(true)
     }
@@ -63,7 +63,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
         binding.viewModel = listaActividadViewModel
         listaActividadViewModel.getListaActividades(
-            tipo = tipo!!
+            tipo = tipo
         )
 
         listaActividadViewModel.requestListener = this
@@ -87,7 +87,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
             ListaActividadesFragment()
                 .apply {
                     arguments = Bundle().apply {
-                        putSerializable(ARG_TIPO, tipo)
+                        putString(ARG_TIPO, tipo)
                     }
                 }
     }
@@ -137,7 +137,8 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
                 override fun onQueryTextChange(newText: String): Boolean {
                     listaActividadViewModel.getListaActividades(
                         ordenCampo = "nombre",
-                        query = newText
+                        query = newText,
+                        tipo = tipo
                     )
                     return true
                 }

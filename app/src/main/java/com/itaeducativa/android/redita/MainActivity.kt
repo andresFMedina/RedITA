@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.itaeducativa.android.redita.data.modelos.Usuario
-import com.itaeducativa.android.redita.ui.actividad.actividad.ui.ListaActividadesFragment
-import com.itaeducativa.android.redita.ui.actividad.actividad.ui.MisActividadesFragment
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.NotificacionViewModel
-import com.itaeducativa.android.redita.ui.actividad.actividad.viewmodels.NotificacionViewModelFactory
+import com.itaeducativa.android.redita.ui.actividad.ui.ListaActividadesFragment
+import com.itaeducativa.android.redita.ui.actividad.ui.MisActividadesFragment
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.NotificacionViewModel
+import com.itaeducativa.android.redita.ui.actividad.viewmodels.NotificacionViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.usuario.ListaUsuariosFragment
@@ -23,6 +23,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import org.kodein.di.newInstance
 
 private const val ACTIVIDAD = "Actividad"
 private const val RETO = "Reto"
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
                 else -> false
             }
         }
-        openFragment(ListaActividadesFragment())
+        openFragment(ListaActividadesFragment.newInstance(ACTIVIDAD))
 
     }
 

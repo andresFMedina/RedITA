@@ -1,4 +1,4 @@
-package com.itaeducativa.android.redita.ui.actividad.reaccion
+package com.itaeducativa.android.redita.ui.reaccion
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
