@@ -59,14 +59,14 @@ class ListaActividadesViewModel(
         this.orden.value = orden as String
         val direccion =
             if (this.orden.value!! == MAS_RECIENTE) Query.Direction.DESCENDING else Query.Direction.ASCENDING
-        getListaActividades(direccion = direccion)
+        //getListaActividades(direccion = direccion)
     }
 
     fun getListaActividades(
         ordenCampo: String = "fechaCreacionTimeStamp",
         direccion: Query.Direction = Query.Direction.DESCENDING,
         query: String = "",
-        tipo: String = ""
+        tipo: String
     ) {
         orden.value = MAS_RECIENTE
         requestListener?.onStartRequest()

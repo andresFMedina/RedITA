@@ -36,16 +36,16 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         ordenCampo: String,
         direccion: Query.Direction,
         query: String = "",
-        tipo: String = ""
+        categoria: String
     ): Query {
         val collection = firestoreDB.collection(ACTIVIDADES)
         if (query != "") collection.orderBy("nombre").startAt(query) else collection.orderBy(
             ordenCampo,
             direccion
         )
-        Log.i("Tipo Consulta", tipo);
-        return collection.whereEqualTo("estaActivo", true)
-        //.whereEqualTo("tipoActividad", tipo)
+        Log.i("Tipo Consulta", categoria);
+        val q: Query = collection.whereEqualTo("estaActivo", true)
+        return q.whereEqualTo("categoria", categoria)
     }
 
     fun getActividadesById(id: String): DocumentReference =
