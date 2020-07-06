@@ -7,17 +7,19 @@ import androidx.lifecycle.ViewModel
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.repositorios.RepositorioArchivo
+import com.itaeducativa.android.redita.data.repositorios.RepositorioAutenticacion
 import com.itaeducativa.android.redita.data.repositorios.RepositorioStorage
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.util.startArchivoDetalladoActivity
 
 class ListaArchivoViewModel(
     private val repositorioArchivo: RepositorioArchivo,
-    private val repositorioStorage: RepositorioStorage
+    private val repositorioStorage: RepositorioStorage,
+    private val repositorioAutenticacion: RepositorioAutenticacion
 ) : ViewModel() {
 
     val listaArchivos = MutableLiveData<List<Archivo>>()
-    val listaArchivoAdapter = ListaArchivoAdapter()
+    val listaArchivoAdapter = ListaArchivoAdapter(repositorioAutenticacion.currentUser()!!.uid)
     var requestListener: RequestListener? = null
 
     fun guardarArchivoFirestore(archivo: Archivo, ruta: String, uri: Uri) {

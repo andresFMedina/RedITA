@@ -41,7 +41,6 @@ class FirebaseApplication : Application(), KodeinAware {
                 instance(),
                 instance(),
                 instance(),
-                instance(),
                 instance()
             )
         }
@@ -69,7 +68,7 @@ class FirebaseApplication : Application(), KodeinAware {
         bind() from singleton { RepositorioHistorial(instance()) }
         bind() from provider { ListaHistorialViewModelFactory(instance(), instance(), instance()) }
         bind() from singleton { RepositorioArchivo(instance()) }
-        bind() from provider { ListaArchivoViewModelFactory(instance(), instance()) }
+        bind() from provider { ListaArchivoViewModelFactory(instance(), instance(), instance()) }
     }
 
 }

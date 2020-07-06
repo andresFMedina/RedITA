@@ -30,7 +30,6 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
-import java.util.*
 
 private const val ACTION_RESULT_GET_IMAGES = 0
 private const val ACTION_RESULT_GET_VIDEO = 1

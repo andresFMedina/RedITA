@@ -1,6 +1,7 @@
 package com.itaeducativa.android.redita.ui.archivo
 
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -9,15 +10,21 @@ import com.google.firebase.Timestamp
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.modelos.Comentario
+import com.itaeducativa.android.redita.data.modelos.Publicacion
+import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.databinding.ActivityArchivoDetalladoBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.comentario.viewmodels.ListaComentariosViewModel
 import com.itaeducativa.android.redita.ui.comentario.viewmodels.ListaComentariosViewModelFactory
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
+import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModel
+import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModelFactory
 import com.itaeducativa.android.redita.util.hideKeyboard
+import kotlinx.android.synthetic.main.activity_actividad.*
 import kotlinx.android.synthetic.main.activity_archivo_detallado.*
 import kotlinx.android.synthetic.main.cardview_archivos.view.*
+import kotlinx.android.synthetic.main.linearlayout_reacciones.view.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -28,12 +35,17 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
 
     private val factoryComentarios: ListaComentariosViewModelFactory by instance()
     private val factoryAutenticacion: AutenticacionViewModelFactory by instance()
+    private val factoryReaccion: ReaccionViewModelFactory by instance()
 
     private lateinit var archivoViewModel: ArchivoViewModel
     private lateinit var listaComentariosViewModel: ListaComentariosViewModel
     private lateinit var autenticacionViewModel: AutenticacionViewModel
+    private lateinit var reaccionViewModel: ReaccionViewModel
 
     private lateinit var archivo: Archivo
+
+    private lateinit var imageMeGusta: ImageButton
+    private lateinit var imageNoMeGusta: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,12 +59,20 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
 
         archivoViewModel = ArchivoViewModel()
         listaComentariosViewModel =
-            ViewModelProviders.of(this, factoryComentarios).get(ListaComentariosViewModel::class.java)
+            ViewModelProviders.of(this, factoryComentarios)
+                .get(ListaComentariosViewModel::class.java)
 
-        autenticacionViewModel = ViewModelProviders.of(this, factoryAutenticacion).get(AutenticacionViewModel::class.java)
+        autenticacionViewModel = ViewModelProviders.of(this, factoryAutenticacion)
+            .get(AutenticacionViewModel::class.java)
+
+        reaccionViewModel =
+            ViewModelProviders.of(this, factoryReaccion).get(ReaccionViewModel::class.java)
 
         binding.archivoViewModel = archivoViewModel
         binding.listaComentarioViewModel = listaComentariosViewModel
+
+        imageMeGusta = layoutReacciones.imageButtonMeGusta
+        imageNoMeGusta = layoutReacciones.imageButtonNoMeGusta
 
         archivoViewModel.bind(archivo)
 
@@ -77,9 +97,37 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
             inputComentarioArchivo.setText("")
         }
 
-        cardviewArchivo.imageViewImagen.setOnClickListener {
+        reaccionViewModel.getReaccionByPublicacionIdYUsuarioUid(
+            archivo.id,
+            archivo,
+            autenticacionViewModel.usuario!!.uid
+        )
+
+        imageMeGusta.setOnClickListener {
+            val reaccion = Reaccion(
+                timestamp = Timestamp.now().seconds.toString(),
+                tipoPublicacion = "actividades",
+                usuarioUid = autenticacionViewModel.usuario!!.uid,
+                tipoReaccion = "meGusta",
+                publicacionId = archivo.id
+
+            )
+            onReaccion(reaccion, archivo.reaccion, archivo)
 
         }
+        imageNoMeGusta.setOnClickListener {
+            val reaccion = Reaccion(
+                timestamp = Timestamp.now().seconds.toString(),
+                tipoPublicacion = "actividades",
+                usuarioUid = autenticacionViewModel.usuario!!.uid,
+                tipoReaccion = "noMeGusta",
+                publicacionId = archivo.id
+
+            )
+            onReaccion(reaccion, archivo.reaccion, archivo)
+
+        }
+
     }
 
     override fun onStartRequest() {
@@ -87,6 +135,12 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
     }
 
     override fun onSuccessRequest() {
+        if (archivo.reaccion != null) {
+            when (archivo.reaccion!!.tipoReaccion) {
+                "meGusta" -> imageMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp)
+                "noMeGusta" -> imageNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp)
+            }
+        }
     }
 
     override fun onFailureRequest(message: String) {
@@ -108,8 +162,21 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
         return true
     }
 
-
-
+    fun onReaccion(
+        reaccionNueva: Reaccion,
+        reaccionVieja: Reaccion?,
+        publicacion: Publicacion
+    ) {
+        if (reaccionVieja != null) {
+            reaccionViewModel.eliminarReaccion(reaccionVieja)
+            if (reaccionNueva.tipoReaccion != reaccionVieja.tipoReaccion) reaccionViewModel.crearReaccion(
+                reaccionNueva,
+                publicacion
+            )
+            return
+        }
+        reaccionViewModel.crearReaccion(reaccionNueva, publicacion)
+    }
 
 
 }

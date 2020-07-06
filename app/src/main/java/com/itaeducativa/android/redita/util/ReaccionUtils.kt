@@ -2,55 +2,50 @@ package com.itaeducativa.android.redita.util
 
 import android.widget.ImageButton
 import com.google.firebase.Timestamp
-import com.itaeducativa.android.redita.data.modelos.Actividad
+import com.itaeducativa.android.redita.R
+import com.itaeducativa.android.redita.data.modelos.Publicacion
 import com.itaeducativa.android.redita.data.modelos.Reaccion
-import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModel
-import java.util.*
+import com.itaeducativa.android.redita.ui.reaccion.ReaccionListener
 
-/*fun imageButtonsEvent(
-    imageButton: ImageButton,
-    iconoVacio: Int,
-    iconoLleno: Int,
-    imageButtonReaccionDiferente: ImageButton,
-    iconoVacioDiferente: Int,
+
+fun reaccionHandler(
+    publicacionId: String,
+    publicacion: Publicacion,
+    tipoPublicacion: String,
+    usuarioUid: String,
     reaccion: Reaccion?,
-    actividad: Actividad,
-    tipoReaccion: String,
-    reaccionViewModel: ReaccionViewModel,
-    usuarioUid: String
-): Reaccion? {
-    imageButtonReaccionDiferente.setImageResource(iconoVacioDiferente)
-    if (reaccion == null) {
-        val r: Reaccion =
-            objetoReaccion(tipoReaccion, actividad.id, usuarioUid)
-
-        reaccionViewModel.crearReaccion(r)
-        imageButton.setImageResource(iconoLleno)
-
-        return r
-    } else {
-        reaccionViewModel.eliminarReaccion(reaccion)
-        imageButton.setImageResource(iconoVacio)
-        if (tipoReaccion != reaccion.tipoReaccion) {
-            val r: Reaccion =
-                objetoReaccion(tipoReaccion, actividad.id, usuarioUid)
-
-            reaccionViewModel.crearReaccion(r)
-            imageButton.setImageResource(iconoLleno)
-            return r
+    imageButtonMeGusta: ImageButton,
+    imageButtonNoMeGusta: ImageButton,
+    reaccionListener: ReaccionListener?
+) {
+    if (reaccion != null) {
+        when (reaccion.tipoReaccion) {
+            "meGusta" -> imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp)
+            "noMeGusta" -> imageButtonNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp)
         }
-
-        return null
     }
+        imageButtonMeGusta.setOnClickListener {
+            val nuevaReaccion = Reaccion(
+                tipoReaccion = "meGusta",
+                usuarioUid = usuarioUid,
+                publicacionId = publicacionId,
+                timestamp = Timestamp.now().seconds.toString(),
+                tipoPublicacion = tipoPublicacion
+            )
+            reaccionListener?.onReaccion(nuevaReaccion, reaccion, publicacion)
+        }
+        imageButtonNoMeGusta.setOnClickListener {
+            val nuevaReaccion = Reaccion(
+                tipoReaccion = "noMeGusta",
+                usuarioUid = usuarioUid,
+                publicacionId = publicacionId,
+                timestamp = Timestamp.now().seconds.toString(),
+                tipoPublicacion = tipoPublicacion
+            )
+            reaccionListener?.onReaccion(nuevaReaccion, reaccion, publicacion)
+        }
 
 
 }
-
-private fun objetoReaccion(tipoReaccion: String, actividadId: String, usuarioUid: String): Reaccion =
-    Reaccion(
-        usuarioUid = usuarioUid,
-        tipoReaccion = tipoReaccion,
-        actividadId = actividadId,
-        timestamp = Timestamp(Date()).seconds.toString()
-    )
-    */
+    
+    
