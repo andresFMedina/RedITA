@@ -16,11 +16,10 @@ class Actividad(
     var estaActivo: Boolean,
     var horaInicio: String?,
     var fechaInicio: String?
-) : Serializable {
+) : Publicacion(), Serializable {
     var autor: Usuario? = null
     var autorUid: String? = null
     var referenciaAutor: DocumentReference? = null
-    var reaccion: Reaccion? = null
     var archivos: MutableList<Archivo>? = null
 
 

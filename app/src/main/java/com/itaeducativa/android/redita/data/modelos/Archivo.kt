@@ -12,6 +12,6 @@ data class Archivo(
     val meGusta: Int,
     val noMeGusta: Int,
     val comentarios: Int
-): Serializable {
+): Publicacion(), Serializable {
     constructor() : this("", "", "", "", "", 0, 0, 0)
 }

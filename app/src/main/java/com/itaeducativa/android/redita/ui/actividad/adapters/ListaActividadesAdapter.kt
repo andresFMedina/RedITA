@@ -16,17 +16,17 @@ import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.databinding.CardviewActividadBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.viewmodels.ActividadViewModel
-import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModel
+import com.itaeducativa.android.redita.ui.reaccion.ReaccionListener
 import com.itaeducativa.android.redita.util.startActividadActivity
-import java.util.*
 
 
 class ListaActividadesAdapter(
-    private val listaActividadesViewModel: ListaActividadesViewModel,
     private val uidUsuarioActual: String
 ) : RecyclerView.Adapter<ListaActividadesAdapter.ViewHolder>(),
     RequestListener {
     private lateinit var listaActividades: List<Actividad>
+
+    var reaccionListener: ReaccionListener? = null
 
 
     class ViewHolder(
@@ -52,13 +52,6 @@ class ListaActividadesAdapter(
             else
                 imageViewActividad.visibility = View.VISIBLE
             viewModelActividad.requestListener = adapter
-            if (actividad.reaccion == null) {
-                val query = adapter.listaActividadesViewModel.getReaccionByActividadIdYUsuarioUid(
-                    actividad.id,
-                    adapter.uidUsuarioActual
-                )
-                viewModelActividad.getReaccionByActividadIdYUsuarioUid(query)
-            }
             viewModelActividad.bind(actividad)
 
             binding.viewModelActividad = viewModelActividad
@@ -101,7 +94,15 @@ class ListaActividadesAdapter(
             }
         }
         holder.imageButtonMeGusta.setOnClickListener {
-            holder.viewModelActividad.reaccion.value = imageButtonsEvent(
+            val nuevaReaccion = Reaccion(
+                tipoReaccion = "meGusta",
+                usuarioUid = uidUsuarioActual,
+                publicacionId = listaActividades[position].id,
+                timestamp = Timestamp.now().seconds.toString(),
+                tipoPublicacion = "actividades"
+            )
+            reaccionListener?.onReaccion(nuevaReaccion, reaccion, listaActividades[position])
+            /*holder.viewModelActividad.reaccion.value = imageButtonsEvent(
                 imageButton = holder.imageButtonMeGusta,
                 iconoVacio = R.drawable.ic_thumb_up_black_24dp,
                 iconoLleno = R.drawable.ic_thumb_up_black_filled_24dp,
@@ -110,10 +111,18 @@ class ListaActividadesAdapter(
                 reaccion = holder.viewModelActividad.reaccion.value,
                 actividad = listaActividades[position],
                 tipoReaccion = "meGusta"
-            )
+            )*/
         }
         holder.imageButtonNoMeGusta.setOnClickListener {
-            holder.viewModelActividad.reaccion.value = imageButtonsEvent(
+            val nuevaReaccion = Reaccion(
+                tipoReaccion = "noMeGusta",
+                usuarioUid = uidUsuarioActual,
+                publicacionId = listaActividades[position].id,
+                timestamp = Timestamp.now().seconds.toString(),
+                tipoPublicacion = "actividades"
+            )
+            reaccionListener?.onReaccion(nuevaReaccion, reaccion, listaActividades[position])
+            /*holder.viewModelActividad.reaccion.value = imageButtonsEvent(
                 imageButton = holder.imageButtonNoMeGusta,
                 iconoVacio = R.drawable.ic_thumb_down_black_24dp,
                 iconoLleno = R.drawable.ic_thumb_down_black_filled_24dp,
@@ -122,23 +131,14 @@ class ListaActividadesAdapter(
                 reaccion = holder.viewModelActividad.reaccion.value,
                 actividad = listaActividades[position],
                 tipoReaccion = "noMeGusta"
-            )
+            )*/
         }
         holder.imageButtonComentarios.setOnClickListener {
             it.context.startActividadActivity(
-                listaActividades[position],
-                holder.viewModelActividad.reaccion.value
+                listaActividades[position]
             )
         }
     }
-
-    private fun objetoReaccion(tipoReaccion: String, actividadId: String): Reaccion =
-        Reaccion(
-            usuarioUid = uidUsuarioActual,
-            tipoReaccion = tipoReaccion,
-            actividadId = actividadId,
-            timestamp = Timestamp(Date()).seconds.toString()
-        )
 
 
     fun actualizarActividades(actividades: List<Actividad>) {
@@ -158,38 +158,38 @@ class ListaActividadesAdapter(
         Log.e("error", message)
     }
 
-    private fun imageButtonsEvent(
-        imageButton: ImageButton,
-        iconoVacio: Int,
-        iconoLleno: Int,
-        imageButtonReaccionDiferente: ImageButton,
-        iconoVacioDiferente: Int,
-        reaccion: Reaccion?,
-        actividad: Actividad,
-        tipoReaccion: String
-    ): Reaccion? {
-        imageButtonReaccionDiferente.setImageResource(iconoVacioDiferente)
-        if (reaccion == null) {
-            val r: Reaccion =
-                objetoReaccion(tipoReaccion, actividad.id)
+    /*  private fun imageButtonsEvent(
+          imageButton: ImageButton,
+          iconoVacio: Int,
+          iconoLleno: Int,
+          imageButtonReaccionDiferente: ImageButton,
+          iconoVacioDiferente: Int,
+          reaccion: Reaccion?,
+          actividad: Actividad,
+          tipoReaccion: String
+      ): Reaccion? {
+          imageButtonReaccionDiferente.setImageResource(iconoVacioDiferente)
+          if (reaccion == null) {
+              val r: Reaccion =
+                  objetoReaccion(tipoReaccion, actividad.id)
 
-            listaActividadesViewModel.crearReaccion(r)
-            imageButton.setImageResource(iconoLleno)
+              listaActividadesViewModel.crearReaccion(r)
+              imageButton.setImageResource(iconoLleno)
 
-            return r
-        } else {
-            listaActividadesViewModel.eliminarReaccion(reaccion)
-            imageButton.setImageResource(iconoVacio)
-            if (tipoReaccion != reaccion.tipoReaccion) {
-                val r: Reaccion =
-                    objetoReaccion(tipoReaccion, actividad.id)
+              return r
+          } else {
+              listaActividadesViewModel.eliminarReaccion(reaccion)
+              imageButton.setImageResource(iconoVacio)
+              if (tipoReaccion != reaccion.tipoReaccion) {
+                  val r: Reaccion =
+                      objetoReaccion(tipoReaccion, actividad.id)
 
-                listaActividadesViewModel.crearReaccion(r)
-                imageButton.setImageResource(iconoLleno)
-                return r
-            }
+                  listaActividadesViewModel.crearReaccion(r)
+                  imageButton.setImageResource(iconoLleno)
+                  return r
+              }
 
-            return null
-        }
-    }
+              return null
+          }
+      }*/
 }
