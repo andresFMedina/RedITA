@@ -12,12 +12,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.itaeducativa.android.redita.R
+import com.itaeducativa.android.redita.data.modelos.Publicacion
+import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.databinding.FragmentListaActividadesBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModel
 import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModelFactory
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModel
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModelFactory
+import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
+import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
+import com.itaeducativa.android.redita.ui.reaccion.ReaccionListener
+import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModel
+import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModelFactory
 import com.itaeducativa.android.redita.util.showInputMethod
 import kotlinx.android.synthetic.main.fragment_lista_actividades.*
 import org.kodein.di.Kodein
@@ -27,17 +34,22 @@ import org.kodein.di.generic.instance
 
 private const val ARG_TIPO = "tipo"
 
-class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
+class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, ReaccionListener {
 
     override val kodein: Kodein by kodein()
     private val factoryListaActividades: ListaActividadesViewModelFactory by instance()
     private val factoryListaArchivos: ListaArchivoViewModelFactory by instance()
+    private val factoryReacion: ReaccionViewModelFactory by instance()
+    private val factoryAutenticacion: AutenticacionViewModelFactory by instance()
 
     private lateinit var listaActividadViewModel: ListaActividadesViewModel
     private lateinit var listaArchivosViewModel: ListaArchivoViewModel
+    private lateinit var reaccionViewModel: ReaccionViewModel
+    private lateinit var autenticacionViewModel: AutenticacionViewModel
 
     private var seConsultaronArchivos = false
     private lateinit var tipo: String
+    private lateinit var usuarioUid: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +72,12 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
             .get(ListaActividadesViewModel::class.java)
         listaArchivosViewModel =
             ViewModelProviders.of(this, factoryListaArchivos).get(ListaArchivoViewModel::class.java)
+        reaccionViewModel =
+            ViewModelProviders.of(this, factoryReacion).get(ReaccionViewModel::class.java)
+        autenticacionViewModel = ViewModelProviders.of(this, factoryAutenticacion)
+            .get(AutenticacionViewModel::class.java)
+
+        listaActividadViewModel.listaActividadesAdapter.reaccionListener = this
 
         binding.viewModel = listaActividadViewModel
         listaActividadViewModel.getListaActividades(
@@ -68,6 +86,8 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
         listaActividadViewModel.requestListener = this
         listaArchivosViewModel.requestListener = this
+
+        usuarioUid = autenticacionViewModel.usuario!!.uid
 
         return binding.root
     }
@@ -98,6 +118,11 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
         if (listaActividades != null && !seConsultaronArchivos) {
             for (actividad in listaActividades) {
                 listaArchivosViewModel.getArchivosByActividadId(actividad)
+                reaccionViewModel.getReaccionByPublicacionIdYUsuarioUid(
+                    actividad.id,
+                    actividad,
+                    usuarioUid
+                )
             }
             seConsultaronArchivos = true
             listaActividadViewModel.listaActividadesAdapter.notifyDataSetChanged()
@@ -158,6 +183,22 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener {
             })
         }
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onReaccion(
+        reaccionNueva: Reaccion,
+        reaccionVieja: Reaccion?,
+        publicacion: Publicacion
+    ) {
+        if (reaccionVieja != null) {
+            reaccionViewModel.eliminarReaccion(reaccionVieja)
+            if (reaccionNueva.tipoReaccion != reaccionVieja.tipoReaccion) reaccionViewModel.crearReaccion(
+                reaccionNueva,
+                publicacion
+            )
+            return
+        }
+        reaccionViewModel.crearReaccion(reaccionNueva, publicacion)
     }
 
 

@@ -33,11 +33,10 @@ fun Context.startMainActivity(usuario: Usuario) =
         startActivity(it)
     }
 
-fun Context.startActividadActivity(actividad: Actividad, reaccion: Reaccion?) =
+fun Context.startActividadActivity(actividad: Actividad) =
     Intent(this, ActividadActivity::class.java).also {
         val bundle = Bundle()
         bundle.putSerializable("actividad", actividad)
-        bundle.putSerializable("reaccion", reaccion)
         it.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         it.putExtras(bundle)
         startActivity(it)

@@ -5,8 +5,9 @@ import java.io.Serializable
 data class Reaccion(
     val tipoReaccion: String,
     val usuarioUid: String,
-    val actividadId: String,
-    val timestamp: String
+    val publicacionId: String,
+    val timestamp: String,
+    val tipoPublicacion: String
 ) : Serializable {
-    constructor() : this("", "", "", "")
+    constructor() : this("", "", "", "","")
 }

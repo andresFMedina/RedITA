@@ -51,6 +51,7 @@ class ActividadViewModel : ViewModel() {
         horaInicio.value = actividad.horaInicio
         fechaInicio.value = actividad.fechaInicio
         listaArchivos.value = actividad.archivos
+        reaccion.value = actividad.reaccion
         if (actividad.autor == null) {
             bindAutor(actividad.referenciaAutor)
             imagenPerfilUrl.value = "gs://redita.appspot.com/img_profile.png"
@@ -62,6 +63,7 @@ class ActividadViewModel : ViewModel() {
 
         if (!listaArchivos.value.isNullOrEmpty()) primeraImagen.value =
             listaArchivos.value?.get(0)?.url
+        if(reaccion.value != null) this.actividad.value!!.reaccion
     }
 
     fun bindAutor(referenciaAutor: DocumentReference?) {
@@ -79,25 +81,8 @@ class ActividadViewModel : ViewModel() {
         }
     }
 
-    fun getReaccionByActividadIdYUsuarioUid(query: Query) {
-        if (reaccion.value == null && !fueConsultado) {
-            requestListener?.onStartRequest()
-            query.get().addOnCompleteListener {
-                if (it.isSuccessful) {
-                    fueConsultado = true
-                    requestListener?.onSuccessRequest()
-                    reaccion.value = it.result?.firstOrNull()?.toObject(Reaccion::class.java)
-                    actividad.value?.reaccion = reaccion.value
-                } else {
-                    requestListener?.onFailureRequest("Falló")
-                }
-            }
-        }
-    }
-
-
     fun verActividad(view: View) {
-        view.context.startActividadActivity(actividad.value!!, reaccion.value)
+        view.context.startActividadActivity(actividad.value!!)
     }
 
 }

@@ -6,11 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.itaeducativa.android.redita.data.modelos.Actividad
-import com.itaeducativa.android.redita.data.modelos.Historial
-import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.network.RequestListener
-
 import com.itaeducativa.android.redita.ui.actividad.adapters.ListaActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.adapters.MisActividadesAdapter
 import com.itaeducativa.android.redita.util.startFormularioActividadActivity
@@ -35,7 +32,6 @@ class ListaActividadesViewModel(
     var requestListener: RequestListener? = null
     val listaActividadesAdapter by lazy {
         ListaActividadesAdapter(
-            this,
             repositorioAutenticacion.currentUser()!!.uid
         )
     }
@@ -81,7 +77,6 @@ class ListaActividadesViewModel(
                 val actividades: MutableList<Actividad> = mutableListOf()
                 for (doc in value!!) {
                     val actividad = crearActividadByDocumentReference(doc)
-
                     val referenciaAutor = repositorioUsuario.getUsuarioByUid(actividad.autorUid!!)
                     actividad.referenciaAutor = referenciaAutor
                     actividades.add(actividad)
@@ -127,49 +122,14 @@ class ListaActividadesViewModel(
         }
     }
 
-    fun crearReaccion(reaccion: Reaccion) {
-        requestListener?.onStartRequest()
-        repositorioReaccion.crearReaccion(reaccion).addOnSuccessListener {
-            requestListener?.onSuccessRequest()
-            repositorioActividad.sumarReaccionActividad(reaccion.actividadId, reaccion.tipoReaccion)
-            repositorioUsuario.sumarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
-            val historial = Historial(
-                usuarioUid = reaccion.usuarioUid,
-                actividadId = reaccion.actividadId,
-                accion = when (reaccion.tipoReaccion) {
-                    "noMeGusta" -> "No le gustó"
-                    "meGusta" -> "Le gustó"
-                    else -> ""
-                },
-                timestampAccion = reaccion.timestamp
-            )
-            repositorioHistorial.guardarHistorialFirestore(historial)
-        }.addOnFailureListener {
-            requestListener?.onFailureRequest(it.message!!)
-        }
-    }
 
-    fun eliminarReaccion(reaccion: Reaccion) {
-        requestListener?.onStartRequest()
-        repositorioReaccion.eliminarReaccion(reaccion.timestamp).addOnSuccessListener {
-            repositorioActividad.restarReaccionActividad(
-                reaccion.actividadId,
-                reaccion.tipoReaccion
-            )
-            repositorioUsuario.restarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
-            repositorioHistorial.eliminarHistorial(reaccion.timestamp)
-            requestListener?.onSuccessRequest()
-        }.addOnFailureListener {
-            requestListener?.onFailureRequest(it.message!!)
-        }
-    }
 
     fun desactivarActividad(actividad: Actividad) {
         repositorioActividad.desactivarActividad(actividad)
     }
 
     fun getReaccionByActividadIdYUsuarioUid(actividadId: String, usuarioUid: String) =
-        repositorioReaccion.getReaccionesByActividadIdYUsuarioUid(actividadId, usuarioUid)
+        repositorioReaccion.getReaccionesByPublicacionIdYUsuarioUid(actividadId, usuarioUid)
 
 
     fun goToCrearActividad(view: View) {
