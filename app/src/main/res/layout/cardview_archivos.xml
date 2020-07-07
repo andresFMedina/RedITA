@@ -41,10 +41,15 @@
                 android:background="@android:color/white">
 
                 <include
+                    android:id="@+id/layoutReacciones"
                     bind:comentarios="@{viewModel.comentarios}"
                     bind:meGusta="@{viewModel.meGusta}"
                     bind:noMeGusta="@{viewModel.noMeGusta}"
-                    layout="@layout/linearlayout_reacciones" />
+                    layout="@layout/linearlayout_reacciones"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    />
             </LinearLayout>
 
         </FrameLayout>

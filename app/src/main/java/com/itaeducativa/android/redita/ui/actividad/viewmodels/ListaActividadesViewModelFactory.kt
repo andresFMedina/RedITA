@@ -9,8 +9,7 @@ class ListaActividadesViewModelFactory(
     private val repositorioActividad: RepositorioActividad,
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioReaccion: RepositorioReaccion,
-    private val repositorioAutenticacion: RepositorioAutenticacion,
-    private val repositorioHistorial: RepositorioHistorial
+    private val repositorioAutenticacion: RepositorioAutenticacion
 ): ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -18,8 +17,7 @@ class ListaActividadesViewModelFactory(
             repositorioActividad,
             repositorioUsuario,
             repositorioReaccion,
-            repositorioAutenticacion,
-            repositorioHistorial
+            repositorioAutenticacion
         ) as T
     }
 }

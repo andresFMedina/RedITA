@@ -21,8 +21,7 @@ class ListaActividadesViewModel(
     private val repositorioActividad: RepositorioActividad,
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioReaccion: RepositorioReaccion,
-    private val repositorioAutenticacion: RepositorioAutenticacion,
-    private val repositorioHistorial: RepositorioHistorial
+    private val repositorioAutenticacion: RepositorioAutenticacion
 ) : ViewModel() {
 
     val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
