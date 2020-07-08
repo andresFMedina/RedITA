@@ -24,6 +24,13 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         return documentReference.set(actividad)
     }
 
+    fun guardarNombreActividadFirestore(nombre: String, actividadId: String): Task<Void> {
+        val data = hashMapOf(
+            "nombre" to nombre
+        )
+        return firestoreDB.collection(NOMBRES_ACTIVIDADES).document(actividadId).set(data)
+    }
+
     fun guardarUrlImagenesEnFirestore(actividadId: String, urlImagen: String): Task<Void> {
         val documentReference =
             firestoreDB.collection(ACTIVIDADES).document(actividadId)
@@ -38,7 +45,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     ): Query {
         val collection = firestoreDB.collection(ACTIVIDADES).orderBy(ordenCampo, direccion)
         var q = collection.whereEqualTo("estaActivo", true)
-        if(query.isNotBlank()) q = collection.whereEqualTo("nombre", query)
+        if (query.isNotBlank()) q = collection.whereEqualTo("nombre", query)
         return q.whereEqualTo("categoria", categoria)
     }
 
@@ -67,6 +74,9 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     fun desactivarActividad(actividad: Actividad): Task<Void> =
         firestoreDB.collection(ACTIVIDADES).document(actividad.fechaCreacionTimeStamp)
             .update("estaActivo", false)
+
+    fun eliminarNombre(actividadId: String): Task<Void> =
+        firestoreDB.collection(NOMBRES_ACTIVIDADES).document(actividadId).delete()
 
     fun getNombresActividad(): CollectionReference =
         firestoreDB.collection(NOMBRES_ACTIVIDADES)

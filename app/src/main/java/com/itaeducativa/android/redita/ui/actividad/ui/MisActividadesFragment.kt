@@ -5,7 +5,8 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.SearchView
+import androidx.appcompat.widget.SearchView
+
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -127,7 +128,6 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
                 }
             }
             searchView.setOnQueryTextListener(queryListener)
-            searchView.isIconifiedByDefault = false
             searchView.requestFocus()
             searchView.setOnQueryTextFocusChangeListener(View.OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {

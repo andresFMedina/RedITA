@@ -1,6 +1,7 @@
 package com.itaeducativa.android.redita.ui.actividad.viewmodels
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -49,6 +50,7 @@ class ListaActividadesViewModel(
         repositorioActividad.guardarActividadEnFirestore(actividad).addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }.addOnSuccessListener {
+            repositorioActividad.guardarNombreActividadFirestore(actividad.nombre, actividad.id)
             requestListener?.onSuccessRequest()
 
         }
@@ -128,7 +130,9 @@ class ListaActividadesViewModel(
 
 
     fun desactivarActividad(actividad: Actividad) {
-        repositorioActividad.desactivarActividad(actividad)
+        repositorioActividad.desactivarActividad(actividad).addOnSuccessListener {
+            repositorioActividad.eliminarNombre(actividad.id)
+        }
     }
 
     fun getNombresActividades(context: Context){

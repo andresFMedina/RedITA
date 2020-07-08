@@ -3,14 +3,12 @@ package com.itaeducativa.android.redita.ui.usuario
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.SearchView
-import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.databinding.FragmentListaUsuariosBinding
 import com.itaeducativa.android.redita.network.RequestListener
@@ -109,7 +107,6 @@ class ListaUsuariosFragment : Fragment(), KodeinAware, RequestListener {
                 }
             }
             searchView.setOnQueryTextListener(queryListener)
-            searchView.isIconifiedByDefault = false
             searchView.requestFocus()
             searchView.setOnQueryTextFocusChangeListener(View.OnFocusChangeListener { view, hasFocus ->
                 if (hasFocus) {
