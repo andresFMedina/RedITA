@@ -14,6 +14,8 @@ class UsuarioViewModel : ViewModel() {
     val cantidadMeGusta = MutableLiveData<String>()
     val cantidadNoMeGusta = MutableLiveData<String>()
     val cantidadComentarios = MutableLiveData<String>()
+    val nombreEstudiante = MutableLiveData<String>()
+    val gradoEstudiante = MutableLiveData<String>()
 
     fun bindUsuario(usuario: Usuario) {
         this.usuario.value = usuario
@@ -25,5 +27,7 @@ class UsuarioViewModel : ViewModel() {
         cantidadMeGusta.value = usuario.meGusta.toString()
         cantidadNoMeGusta.value = usuario.noMeGusta.toString()
         cantidadComentarios.value = usuario.comentarios.toString()
+        nombreEstudiante.value = usuario.nombreEstudiante
+        gradoEstudiante.value = usuario.gradoEstudiante
     }
 }

@@ -1,5 +1,7 @@
 package com.itaeducativa.android.redita.ui.actividad.viewmodels
 
+import android.content.Context
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +12,7 @@ import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.adapters.ListaActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.adapters.MisActividadesAdapter
+import com.itaeducativa.android.redita.ui.actividad.adapters.NombresActividadesAdapter
 import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 
 
@@ -39,12 +42,15 @@ class ListaActividadesViewModel(
         MisActividadesAdapter(this)
     }
 
+    var nombresActividadesAdapter: NombresActividadesAdapter? = null
+
 
     fun guardarActividadEnFirestore(actividad: Actividad) {
         requestListener?.onStartRequest()
         repositorioActividad.guardarActividadEnFirestore(actividad).addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }.addOnSuccessListener {
+            repositorioActividad.guardarNombreActividadFirestore(actividad.nombre, actividad.id)
             requestListener?.onSuccessRequest()
 
         }
@@ -124,11 +130,30 @@ class ListaActividadesViewModel(
 
 
     fun desactivarActividad(actividad: Actividad) {
-        repositorioActividad.desactivarActividad(actividad)
+        repositorioActividad.desactivarActividad(actividad).addOnSuccessListener {
+            repositorioActividad.eliminarNombre(actividad.id)
+        }
     }
 
-    fun getReaccionByActividadIdYUsuarioUid(actividadId: String, usuarioUid: String) =
-        repositorioReaccion.getReaccionesByPublicacionIdYUsuarioUid(actividadId, usuarioUid)
+    fun getNombresActividades(context: Context){
+        requestListener?.onStartRequest()
+        repositorioActividad.getNombresActividad().addSnapshotListener { value, exception ->
+            if(exception != null){
+                requestListener?.onFailureRequest(exception.message!!)
+                return@addSnapshotListener
+            }
+            val nombres: MutableList<String> = mutableListOf()
+            for (doc in value!!) {
+                val nombre = doc.getString("nombre")
+                nombres.add(nombre!!)
+            }
+            nombresActividadesAdapter = NombresActividadesAdapter(context, nombres)
+            requestListener?.onSuccessRequest()
+
+        }
+    }
+
+
 
 
     fun goToCrearActividad(view: View) {

@@ -2,16 +2,14 @@ package com.itaeducativa.android.redita.data.repositorios
 
 import android.util.Log
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Actividad
 
 private const val AUTOR_UID = "autorUid"
 private const val ACTIVIDADES = "actividades"
 private const val FECHA_CREACION = "fechaCreacionTimeStamp"
+private const val NOMBRES_ACTIVIDADES = "nombresActividades"
 
 class RepositorioActividad(private val firebase: FirebaseSource) {
     private val firestoreDB: FirebaseFirestore by lazy {
@@ -26,6 +24,13 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         return documentReference.set(actividad)
     }
 
+    fun guardarNombreActividadFirestore(nombre: String, actividadId: String): Task<Void> {
+        val data = hashMapOf(
+            "nombre" to nombre
+        )
+        return firestoreDB.collection(NOMBRES_ACTIVIDADES).document(actividadId).set(data)
+    }
+
     fun guardarUrlImagenesEnFirestore(actividadId: String, urlImagen: String): Task<Void> {
         val documentReference =
             firestoreDB.collection(ACTIVIDADES).document(actividadId)
@@ -38,13 +43,9 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         query: String = "",
         categoria: String
     ): Query {
-        val collection = firestoreDB.collection(ACTIVIDADES)
-        if (query != "") collection.orderBy("nombre").startAt(query) else collection.orderBy(
-            ordenCampo,
-            direccion
-        )
-        Log.i("Tipo Consulta", categoria);
-        val q: Query = collection.whereEqualTo("estaActivo", true)
+        val collection = firestoreDB.collection(ACTIVIDADES).orderBy(ordenCampo, direccion)
+        var q = collection.whereEqualTo("estaActivo", true)
+        if (query.isNotBlank()) q = collection.whereEqualTo("nombre", query)
         return q.whereEqualTo("categoria", categoria)
     }
 
@@ -53,7 +54,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
 
     fun getActividadesByAutorUid(
         uid: String,
-        orderBy: String = "fechaCreacionTimeStamp",
+        orderBy: String = FECHA_CREACION,
         query: String = ""
     ): Query {
         val collection =
@@ -74,30 +75,11 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         firestoreDB.collection(ACTIVIDADES).document(actividad.fechaCreacionTimeStamp)
             .update("estaActivo", false)
 
+    fun eliminarNombre(actividadId: String): Task<Void> =
+        firestoreDB.collection(NOMBRES_ACTIVIDADES).document(actividadId).delete()
 
-    fun sumarReaccionActividad(actividadId: String, reaccion: String): Task<Void> {
-        val documentReference = firestoreDB.collection(ACTIVIDADES)
-            .document(actividadId)
-        return documentReference.update(reaccion, FieldValue.increment(1))
-    }
-
-    fun restarReaccionActividad(actividadId: String, reaccion: String): Task<Void> {
-        val documentReference = firestoreDB.collection(ACTIVIDADES)
-            .document(actividadId)
-        return documentReference.update(reaccion, FieldValue.increment(-1))
-    }
-
-    fun sumarComentarios(actividadId: String): Task<Void> {
-        val documentReference = firestoreDB.collection(ACTIVIDADES)
-            .document(actividadId)
-        return documentReference.update("comentarios", FieldValue.increment(1))
-    }
-
-    fun guardarUrlVideoEnFirestore(actividadId: String, urlVideo: String): Task<Void> {
-        val documentReference =
-            firestoreDB.collection(ACTIVIDADES).document(actividadId)
-        return documentReference.update("video", urlVideo)
-    }
+    fun getNombresActividad(): CollectionReference =
+        firestoreDB.collection(NOMBRES_ACTIVIDADES)
 
 
 }

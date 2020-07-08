@@ -76,6 +76,9 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
 
         archivoViewModel.bind(archivo)
 
+        reaccionViewModel.requestListener = this
+        listaComentariosViewModel.requestListener = this
+
         listaComentariosViewModel.getComentariosEnFirestorePorPublicacion(archivo.id)
 
         editTextComentarioArchivo.setEndIconOnClickListener {
@@ -92,7 +95,7 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
                 archivo.id,
                 "archivos"
             )
-            listaComentariosViewModel.agregarComentariosEnFirestorePorPublicacion(comentario)
+            listaComentariosViewModel.agregarComentariosEnFirestorePorPublicacion(comentario, archivo)
             hideKeyboard(this)
             inputComentarioArchivo.setText("")
         }
@@ -125,7 +128,6 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
 
             )
             onReaccion(reaccion, archivo.reaccion, archivo)
-
         }
 
     }
@@ -168,7 +170,7 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
         publicacion: Publicacion
     ) {
         if (reaccionVieja != null) {
-            reaccionViewModel.eliminarReaccion(reaccionVieja)
+            reaccionViewModel.eliminarReaccion(reaccionVieja, publicacion)
             if (reaccionNueva.tipoReaccion != reaccionVieja.tipoReaccion) reaccionViewModel.crearReaccion(
                 reaccionNueva,
                 publicacion

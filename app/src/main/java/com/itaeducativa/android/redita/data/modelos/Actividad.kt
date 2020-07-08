@@ -10,9 +10,6 @@ class Actividad(
     var id: String,
     var fechaCreacionTimeStamp: String,
     var tipoActividad: String,
-    var meGusta: Int,
-    var noMeGusta: Int,
-    var comentarios: Int,
     var estaActivo: Boolean,
     var horaInicio: String?,
     var fechaInicio: String?
@@ -23,7 +20,7 @@ class Actividad(
     var archivos: MutableList<Archivo>? = null
 
 
-    constructor() : this("", "", "", "", "", "", 0, 0, 0, false, "", "")
+    constructor() : this("", "", "", "", "", "",false, "", "")
 
     override fun toString(): String {
         return "Actividad(categoria='$categoria', nombre='$nombre', descripcion='$descripcion', id='$id', fechaCreacionTimeStamp='$fechaCreacionTimeStamp', tipoActividad='$tipoActividad', meGusta=$meGusta, noMeGusta=$noMeGusta, comentarios=$comentarios, estaActiva=$estaActivo, horaInicio=$horaInicio, fechaInicio=$fechaInicio, autor=$autor, autorUid=$autorUid, referenciaAutor=$referenciaAutor, reaccion=$reaccion, archivos=${archivos.toString()})"
