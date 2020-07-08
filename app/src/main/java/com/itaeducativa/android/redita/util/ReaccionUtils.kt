@@ -18,6 +18,8 @@ fun reaccionHandler(
     imageButtonNoMeGusta: ImageButton,
     reaccionListener: ReaccionListener?
 ) {
+    imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_up_black_24dp)
+    imageButtonNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_24dp)
     if (reaccion != null) {
         when (reaccion.tipoReaccion) {
             "meGusta" -> imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp)

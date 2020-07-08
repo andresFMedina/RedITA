@@ -191,9 +191,6 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 id = "actividad${Timestamp.now().seconds}",
                 tipoActividad = actividadViewModel.tipoActividad.value!!,
                 fechaCreacionTimeStamp = Timestamp.now().seconds.toString(),
-                meGusta = 0,
-                noMeGusta = 0,
-                comentarios = 0,
                 horaInicio = actividadViewModel.horaInicio.value,
                 fechaInicio = actividadViewModel.fechaInicio.value,
                 estaActivo = true
@@ -207,9 +204,6 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 val archivo = Archivo(
                     id = "archivo${System.currentTimeMillis()}",
                     actividadId = actividad.id,
-                    comentarios = 0,
-                    meGusta = 0,
-                    noMeGusta = 0,
                     timestamp = Timestamp.now().seconds.toString(),
                     url = "",
                     tipo = "imagen"
@@ -223,9 +217,6 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             val archivo = Archivo(
                 id = "archivo${System.currentTimeMillis()}",
                 actividadId = actividad.id,
-                comentarios = 0,
-                meGusta = 0,
-                noMeGusta = 0,
                 timestamp = Timestamp.now().seconds.toString(),
                 url = "",
                 tipo = "video"

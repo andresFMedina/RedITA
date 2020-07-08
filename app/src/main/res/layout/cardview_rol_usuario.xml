@@ -12,7 +12,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="120dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -62,6 +62,17 @@
                 android:layout_below="@id/textViewFotoUsuarios"
                 android:layout_toEndOf="@id/imageViewFotoUsuarios"
                 android:text="@string/docente" />
+
+            <TextView
+
+                android:id="@+id/textViewAcudienteDe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/imageViewFotoUsuarios"
+                android:layout_below="@id/checkboxRolUsuario"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                />
 
         </RelativeLayout>
 

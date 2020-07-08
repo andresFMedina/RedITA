@@ -22,6 +22,7 @@ class UsuarioAdapter(
         ) : RecyclerView.ViewHolder(binding.root) {
         val checkbox = binding.checkboxRolUsuario
         val button = binding.buttonVerHistorial
+        val textViewAcudiente = binding.textViewAcudienteDe
         val usuarioViewModel = UsuarioViewModel()
 
         fun bind(usuario: Usuario) {
@@ -58,6 +59,11 @@ class UsuarioAdapter(
         }
         holder.button.setOnClickListener {
             it.context.startListaHistorialActividad(usuario)
+        }
+
+        if(usuario.nombreEstudiante.isNotBlank()) {
+            val text = "Acudiente de ${usuario.nombreEstudiante} de ${usuario.gradoEstudiante}"
+            holder.textViewAcudiente.text = text
         }
 
     }

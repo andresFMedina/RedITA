@@ -110,6 +110,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
         listaActividadesViewModel.requestListener = this
 
         viewModelComentario.requestListener = this
+        reaccionViewModel.requestListener = this
         storageViewModel.videoListener = this
 
 
@@ -128,7 +129,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
                 actividad.id,
                 "actividades"
             )
-            viewModelComentario.agregarComentariosEnFirestorePorPublicacion(comentario)
+            viewModelComentario.agregarComentariosEnFirestorePorPublicacion(comentario, actividad)
             hideKeyboard(this)
             inputComentario.setText("")
         }
@@ -184,7 +185,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
         publicacion: Publicacion
     ) {
         if (reaccionVieja != null) {
-            reaccionViewModel.eliminarReaccion(reaccionVieja)
+            reaccionViewModel.eliminarReaccion(reaccionVieja, publicacion)
             if (reaccionNueva.tipoReaccion != reaccionVieja.tipoReaccion) reaccionViewModel.crearReaccion(
                 reaccionNueva,
                 publicacion
@@ -247,6 +248,8 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
             viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
             yaVisto = true
         }
+        imageMeGusta.setImageResource(R.drawable.ic_thumb_up_black_24dp)
+        imageNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_24dp)
         if (actividad.reaccion != null) {
             when (actividad.reaccion!!.tipoReaccion) {
                 "meGusta" -> imageMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp)

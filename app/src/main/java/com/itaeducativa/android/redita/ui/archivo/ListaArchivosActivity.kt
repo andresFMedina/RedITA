@@ -59,6 +59,7 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
             .get(AutenticacionViewModel::class.java)
 
         listaArchivoViewModel.requestListener = this
+        reaccionViewModel.requestListener = this
 
         binding.archivoViewModel = listaArchivoViewModel
 
@@ -110,7 +111,7 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
         publicacion: Publicacion
     ) {
         if (reaccionVieja != null) {
-            reaccionViewModel.eliminarReaccion(reaccionVieja)
+            reaccionViewModel.eliminarReaccion(reaccionVieja, publicacion)
             if (reaccionNueva.tipoReaccion != reaccionVieja.tipoReaccion) reaccionViewModel.crearReaccion(
                 reaccionNueva,
                 publicacion

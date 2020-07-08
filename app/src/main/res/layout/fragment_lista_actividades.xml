@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesViewModel" />
@@ -20,14 +21,11 @@
             android:id="@+id/item_quantity_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
             android:layout_marginStart="8dp"
             android:gravity="center_vertical"
             android:paddingStart="4dp"
-            android:textSize="16sp"
-            android:layout_gravity="top|end"
-            app:entries="@{viewModel.entries}"
-            app:newValue="@{viewModel.orden}"
-            app:onItemSelected="@{(newValue) -> viewModel.onItemSelected(newValue)}" />
+            android:textSize="16sp" />
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -35,19 +33,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="50dp"
+            android:layout_marginBottom="@dimen/margin_bottom_menu_principal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:setAdapter="@{viewModel.listaActividadesAdapter}"
-            tools:listitem="@layout/cardview_actividad"
-            android:layout_marginBottom="@dimen/margin_bottom_menu_principal"
-            />
+            tools:listitem="@layout/cardview_actividad" />
 
         <ProgressBar
             android:id="@+id/progressBarListaActividades"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

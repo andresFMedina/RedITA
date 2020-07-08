@@ -61,14 +61,20 @@ class ReaccionViewModel(
     fun crearReaccion(reaccion: Reaccion, publicacion: Publicacion) {
         requestListener?.onStartRequest()
         repositorioReaccion.crearReaccion(reaccion).addOnSuccessListener {
-            requestListener?.onSuccessRequest()
             repositorioPublicacion.aumentarInteraccion(
                 reaccion.tipoPublicacion,
                 reaccion.publicacionId,
                 reaccion.tipoReaccion
-            )
+            ).addOnSuccessListener {
+                when (reaccion.tipoReaccion) {
+                    "noMeGusta" -> publicacion.noMeGusta++
+                    "meGusta" -> publicacion.meGusta++
+                }
+                requestListener?.onSuccessRequest()
+            }
             publicacion.reaccion = reaccion
             repositorioUsuario.sumarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
+
             val historial = Historial(
                 usuarioUid = reaccion.usuarioUid,
                 actividadId = reaccion.publicacionId,
@@ -80,21 +86,29 @@ class ReaccionViewModel(
                 timestampAccion = reaccion.timestamp
             )
             repositorioHistorial.guardarHistorialFirestore(historial)
+            requestListener?.onSuccessRequest()
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }
     }
 
-    fun eliminarReaccion(reaccion: Reaccion) {
+    fun eliminarReaccion(reaccion: Reaccion, publicacion: Publicacion) {
         requestListener?.onStartRequest()
         repositorioReaccion.eliminarReaccion(reaccion.timestamp).addOnSuccessListener {
             repositorioPublicacion.disminuirInteraccion(
                 reaccion.tipoPublicacion,
                 reaccion.publicacionId,
                 reaccion.tipoReaccion
-            )
+            ).addOnSuccessListener {
+                when (reaccion.tipoReaccion) {
+                    "noMeGusta" -> publicacion.noMeGusta--
+                    "meGusta" -> publicacion.meGusta--
+                }
+                requestListener?.onSuccessRequest()
+            }
             repositorioUsuario.restarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
             repositorioHistorial.eliminarHistorial(reaccion.timestamp)
+
             requestListener?.onSuccessRequest()
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
@@ -106,17 +120,18 @@ class ReaccionViewModel(
         publicacion: Publicacion,
         usuarioUid: String
     ) {
-        repositorioReaccion.getReaccionesByPublicacionIdYUsuarioUid(publicacionId, usuarioUid).addSnapshotListener { snapshot, exception ->
-            requestListener?.onStartRequest()
-            if (exception != null) {
-                requestListener?.onFailureRequest(exception.message!!)
-                return@addSnapshotListener
-            }
+        repositorioReaccion.getReaccionesByPublicacionIdYUsuarioUid(publicacionId, usuarioUid)
+            .addSnapshotListener { snapshot, exception ->
+                requestListener?.onStartRequest()
+                if (exception != null) {
+                    requestListener?.onFailureRequest(exception.message!!)
+                    return@addSnapshotListener
+                }
 
-            val reaccion: Reaccion? = snapshot?.firstOrNull()?.toObject(Reaccion::class.java)
-            publicacion.reaccion = reaccion
-            requestListener?.onSuccessRequest()
-        }
+                val reaccion: Reaccion? = snapshot?.firstOrNull()?.toObject(Reaccion::class.java)
+                publicacion.reaccion = reaccion
+                requestListener?.onSuccessRequest()
+            }
 
     }
 }

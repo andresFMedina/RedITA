@@ -8,10 +8,7 @@ data class Archivo(
     val timestamp: String,
     val url: String,
     val tipo: String,
-    val actividadId: String,
-    val meGusta: Int,
-    val noMeGusta: Int,
-    val comentarios: Int
+    val actividadId: String
 ): Publicacion(), Serializable {
-    constructor() : this("", "", "", "", "", 0, 0, 0)
+    constructor() : this("", "", "", "", "")
 }

@@ -97,32 +97,7 @@ class ListaActividadesAdapter(
             imageButtonNoMeGusta = holder.imageButtonNoMeGusta,
             reaccionListener = reaccionListener
         )
-        /*if (reaccion != null) {
-            when (reaccion.tipoReaccion) {
-                "meGusta" -> holder.imageButtonMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp)
-                "noMeGusta" -> holder.imageButtonNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp)
-            }
-        }
-        holder.imageButtonMeGusta.setOnClickListener {
-            val nuevaReaccion = Reaccion(
-                tipoReaccion = "meGusta",
-                usuarioUid = uidUsuarioActual,
-                publicacionId = actividad.id,
-                timestamp = Timestamp.now().seconds.toString(),
-                tipoPublicacion = "actividades"
-            )
-            reaccionListener?.onReaccion(nuevaReaccion, reaccion, actividad)
-        }
-        holder.imageButtonNoMeGusta.setOnClickListener {
-            val nuevaReaccion = Reaccion(
-                tipoReaccion = "noMeGusta",
-                usuarioUid = uidUsuarioActual,
-                publicacionId = actividad.id,
-                timestamp = Timestamp.now().seconds.toString(),
-                tipoPublicacion = "actividades"
-            )
-            reaccionListener?.onReaccion(nuevaReaccion, reaccion, actividad)
-        }*/
+
         holder.imageButtonComentarios.setOnClickListener {
             it.context.startActividadActivity(
                 actividad

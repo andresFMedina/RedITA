@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.EventListener
 import com.itaeducativa.android.redita.data.modelos.Comentario
 import com.itaeducativa.android.redita.data.modelos.Historial
+import com.itaeducativa.android.redita.data.modelos.Publicacion
 import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.comentario.adapters.ListaComentariosAdapter
@@ -25,7 +26,7 @@ class ListaComentariosViewModel(
 
     var requestListener: RequestListener? = null
 
-    fun agregarComentariosEnFirestorePorPublicacion(comentario: Comentario) {
+    fun agregarComentariosEnFirestorePorPublicacion(comentario: Comentario, publicacion: Publicacion) {
         requestListener?.onStartRequest()
         repositorioComentario.agregarComentarioEnFirestorePorPublicacion(comentario)
             .addOnFailureListener {
@@ -46,6 +47,7 @@ class ListaComentariosViewModel(
                     comentario.publicacionId,
                     "comentarios"
                 ).addOnSuccessListener {
+                    publicacion.comentarios++
                     requestListener?.onSuccessRequest()
                 }.addOnFailureListener {
                     requestListener?.onFailureRequest(it.message!!)
