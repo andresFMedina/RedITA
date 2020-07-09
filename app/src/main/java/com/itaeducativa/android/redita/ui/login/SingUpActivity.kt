@@ -23,6 +23,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import java.net.CacheResponse
 
 private const val ACTION_RESULT_GET_IMAGES = 0
 
@@ -145,7 +146,7 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
         progressBarSingUp.visibility = View.VISIBLE
     }
 
-    override fun onSuccessRequest() {
+    override fun onSuccessRequest(response: Any?) {
         this.startMainActivity(listaUsuarioViewModel.usuario.value!!)
     }
 

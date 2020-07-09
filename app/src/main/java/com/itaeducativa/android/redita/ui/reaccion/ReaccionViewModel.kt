@@ -1,6 +1,5 @@
 package com.itaeducativa.android.redita.ui.reaccion
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.itaeducativa.android.redita.data.modelos.Historial
 import com.itaeducativa.android.redita.data.modelos.Publicacion
@@ -19,44 +18,7 @@ class ReaccionViewModel(
 ) : ViewModel() {
 
     var requestListener: RequestListener? = null
-    var listaReacciones = MutableLiveData<List<Reaccion>>()
 
-
-    fun getReaccionesByUsuario(usuarioUid: String) {
-        requestListener?.onStartRequest()
-        repositorioReaccion.getReaccionesByUsuarioUid(usuarioUid)
-            .addSnapshotListener { value, exception ->
-                if (exception != null) {
-                    requestListener?.onFailureRequest(exception.message!!)
-                    return@addSnapshotListener
-                }
-
-                val reacciones: MutableList<Reaccion> = mutableListOf()
-                for (doc in value!!) {
-                    val reaccion = doc.toObject(Reaccion::class.java)
-                    reacciones.add(reaccion)
-                }
-                listaReacciones.value = reacciones
-            }
-    }
-
-    fun getReaccionesByActividad(actividadId: String) {
-        requestListener?.onStartRequest()
-        repositorioReaccion.getReaccionesByActividadId(actividadId)
-            .addSnapshotListener { value, exception ->
-                if (exception != null) {
-                    requestListener?.onFailureRequest(exception.message!!)
-                    return@addSnapshotListener
-                }
-
-                val reacciones: MutableList<Reaccion> = mutableListOf()
-                for (doc in value!!) {
-                    val reaccion = doc.toObject(Reaccion::class.java)
-                    reacciones.add(reaccion)
-                }
-                listaReacciones.value = reacciones
-            }
-    }
 
     fun crearReaccion(reaccion: Reaccion, publicacion: Publicacion) {
         requestListener?.onStartRequest()
@@ -70,7 +32,6 @@ class ReaccionViewModel(
                     "noMeGusta" -> publicacion.noMeGusta++
                     "meGusta" -> publicacion.meGusta++
                 }
-                requestListener?.onSuccessRequest()
             }
             publicacion.reaccion = reaccion
             repositorioUsuario.sumarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
@@ -86,7 +47,8 @@ class ReaccionViewModel(
                 timestampAccion = reaccion.timestamp
             )
             repositorioHistorial.guardarHistorialFirestore(historial)
-            requestListener?.onSuccessRequest()
+            val r: Reaccion? = reaccion
+            requestListener?.onSuccessRequest(r)
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }
@@ -104,12 +66,12 @@ class ReaccionViewModel(
                     "noMeGusta" -> publicacion.noMeGusta--
                     "meGusta" -> publicacion.meGusta--
                 }
-                requestListener?.onSuccessRequest()
+                //requestListener?.onSuccessRequest()
             }
             repositorioUsuario.restarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
             repositorioHistorial.eliminarHistorial(reaccion.timestamp)
 
-            requestListener?.onSuccessRequest()
+            //requestListener?.onSuccessRequest()
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }
@@ -130,7 +92,7 @@ class ReaccionViewModel(
 
                 val reaccion: Reaccion? = snapshot?.firstOrNull()?.toObject(Reaccion::class.java)
                 publicacion.reaccion = reaccion
-                requestListener?.onSuccessRequest()
+                requestListener?.onSuccessRequest(reaccion)
             }
 
     }

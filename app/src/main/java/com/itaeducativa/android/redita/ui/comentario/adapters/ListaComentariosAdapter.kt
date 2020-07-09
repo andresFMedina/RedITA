@@ -11,7 +11,7 @@ import com.itaeducativa.android.redita.databinding.CardviewComentarioBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.comentario.viewmodels.ComentarioViewModel
 
-class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.ViewHolder>(), RequestListener {
+class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.ViewHolder>() {
     private lateinit var listaComentarios: List<Comentario>
 
     class ViewHolder(private val binding: CardviewComentarioBinding, private val adapter: ListaComentariosAdapter) :
@@ -21,7 +21,6 @@ class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.Vie
             ComentarioViewModel()
 
         fun bind(comentario: Comentario) {
-            viewModel.requestListener = adapter
             viewModel.bind(comentario)
             binding.viewModel = viewModel
         }
@@ -54,15 +53,5 @@ class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.Vie
         notifyDataSetChanged()
     }
 
-    override fun onStartRequest() {
 
-    }
-
-    override fun onSuccessRequest() {
-        notifyDataSetChanged()
-    }
-
-    override fun onFailureRequest(message: String) {
-        Log.e("Error", message)
-    }
 }

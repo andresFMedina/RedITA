@@ -25,7 +25,7 @@ class ListaArchivoViewModel(
     fun guardarArchivoFirestore(archivo: Archivo, ruta: String, uri: Uri) {
         requestListener?.onStartRequest()
         repositorioArchivo.guardarArchivoFirestore(archivo).addOnSuccessListener {
-            requestListener?.onSuccessRequest()
+            requestListener?.onSuccessRequest(archivo)
             subirArchivoStorage(archivo.id, ruta, uri)
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
@@ -48,7 +48,7 @@ class ListaArchivoViewModel(
                 listaArchivos.value = archivos
                 actividad.archivos = archivos
                 listaArchivoAdapter.actualizarArchivos(archivos)
-                requestListener?.onSuccessRequest()
+                requestListener?.onSuccessRequest(listaArchivos)
             }
     }
 

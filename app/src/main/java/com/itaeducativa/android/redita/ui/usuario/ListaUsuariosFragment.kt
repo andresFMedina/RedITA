@@ -17,6 +17,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
+import java.net.CacheResponse
 
 
 class ListaUsuariosFragment : Fragment(), KodeinAware, RequestListener {
@@ -68,7 +69,7 @@ class ListaUsuariosFragment : Fragment(), KodeinAware, RequestListener {
 
     }
 
-    override fun onSuccessRequest() {
+    override fun onSuccessRequest(response: Any?) {
 
     }
 

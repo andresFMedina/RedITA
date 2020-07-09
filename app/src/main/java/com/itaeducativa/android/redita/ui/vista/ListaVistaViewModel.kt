@@ -28,7 +28,8 @@ class ListaVistaViewModel(
     fun guardarVistaEnFirestore(vista: Vista) {
         requestListener?.onStartRequest()
         repositorioVista.guardarVistaEnFirestore(vista).addOnSuccessListener {
-            requestListener?.onSuccessRequest()
+            val v: Vista? = vista
+            requestListener?.onSuccessRequest(v)
             crearHistorial(vista)
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
@@ -53,7 +54,7 @@ class ListaVistaViewModel(
                             vistas.add(vista)
                             listaVistas.value = vistas
                             listaVistaAdapter.actualizarVistas(vistas)
-                            requestListener?.onSuccessRequest()
+                            requestListener?.onSuccessRequest(vistas)
                         }
 
                 }
@@ -70,7 +71,7 @@ class ListaVistaViewModel(
                     return@addSnapshotListener
                 }
                 vista.value = value?.firstOrNull()?.toObject(Vista::class.java)
-                requestListener?.onSuccessRequest()
+                requestListener?.onSuccessRequest(vista.value)
             }
     }
 

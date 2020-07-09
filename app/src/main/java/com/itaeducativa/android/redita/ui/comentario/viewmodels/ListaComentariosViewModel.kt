@@ -41,6 +41,7 @@ class ListaComentariosViewModel(
                     )
 
                     repositorioHistorial.guardarHistorialFirestore(historial)
+                    requestListener?.onSuccessRequest(comentario)
                 }
                 repositorioPublicacion.aumentarInteraccion(
                     comentario.tipoPublicacion,
@@ -48,14 +49,11 @@ class ListaComentariosViewModel(
                     "comentarios"
                 ).addOnSuccessListener {
                     publicacion.comentarios++
-                    requestListener?.onSuccessRequest()
                 }.addOnFailureListener {
                     requestListener?.onFailureRequest(it.message!!)
                 }
                 repositorioUsuario.sumarInteraccion("comentarios", comentario.usuarioUid)
-                    .addOnSuccessListener {
-                        requestListener?.onSuccessRequest()
-                    }.addOnFailureListener {
+                    .addOnFailureListener {
                         requestListener?.onFailureRequest(it.message!!)
                     }
             }
@@ -80,7 +78,7 @@ class ListaComentariosViewModel(
                     comentarios.add(comentario)
                 }
                 listaComentarios.value = comentarios
-                requestListener?.onSuccessRequest()
+                requestListener?.onSuccessRequest(comentarios)
                 listaComentariosAdapter.actualizarComentarios(listaComentarios.value as MutableList<Comentario>)
             })
     }

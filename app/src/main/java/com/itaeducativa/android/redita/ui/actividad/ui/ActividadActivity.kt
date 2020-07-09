@@ -38,7 +38,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
-class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, KodeinAware {
+class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
     override val kodein: Kodein by kodein()
     private val factory: ListaComentariosViewModelFactory by instance()
     private val autenticacionFactory: AutenticacionViewModelFactory by instance()
@@ -111,7 +111,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
 
         viewModelComentario.requestListener = this
         reaccionViewModel.requestListener = this
-        storageViewModel.videoListener = this
+
 
 
 
@@ -228,55 +228,48 @@ class ActividadActivity : AppCompatActivity(), RequestListener, VideoListener, K
 
     }
 
-    override fun onSuccessRequest() {
-        if (!yaVisto) {
-            vista = vistaViewModel.vista.value
-            if (vista == null) {
-                vista = Vista(
-                    usuarioUid = autenticacionViewModel.usuario!!.uid,
-                    actividadId = actividad.fechaCreacionTimeStamp,
-                    timestamp = Timestamp.now().seconds.toString(),
-                    vecesVisto = 1
-                )
-                vistaViewModel.guardarVistaEnFirestore(vista!!)
-                viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
-                yaVisto = true
-                return
-            }
-
-            vistaViewModel.agregarVista(vista!!)
-            viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
-            yaVisto = true
+    override fun onSuccessRequest(response: Any?) {
+        when(response){
+            is Vista? -> contabilizarVista(response)
+            is Reaccion? -> getReaccion(response)
         }
+    }
+
+    private fun getReaccion(reaccion: Reaccion?) {
         imageMeGusta.setImageResource(R.drawable.ic_thumb_up_black_24dp)
         imageNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_24dp)
-        if (actividad.reaccion != null) {
-            when (actividad.reaccion!!.tipoReaccion) {
+        if (reaccion != null) {
+            when (reaccion.tipoReaccion) {
                 "meGusta" -> imageMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp)
                 "noMeGusta" -> imageNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp)
             }
         }
     }
 
+    private fun contabilizarVista(vista: Vista?) {
+
+        if (vista == null) {
+            val vistaNueva = Vista(
+                usuarioUid = autenticacionViewModel.usuario!!.uid,
+                actividadId = actividad.fechaCreacionTimeStamp,
+                timestamp = Timestamp.now().seconds.toString(),
+                vecesVisto = 1
+            )
+            vistaViewModel.guardarVistaEnFirestore(vistaNueva)
+            viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
+            vistaViewModel.vista.value = vistaNueva
+            return
+        }
+
+        vistaViewModel.vista.value
+        vistaViewModel.agregarVista(vista)
+        viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
+    }
+
 
     override fun onFailureRequest(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         Log.e("Error query", message)
-    }
-
-    override fun onStartVideo() {
-
-    }
-
-    override fun onSuccessVideo() {
-        val mediaController = MediaController(this)
-        mediaController.setMediaPlayer(videoActividad)
-        videoActividad.setMediaController(mediaController)
-        videoActividad.setVideoURI(storageViewModel.uri.value!!)
-    }
-
-    override fun onFailureVideo(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onStop() {

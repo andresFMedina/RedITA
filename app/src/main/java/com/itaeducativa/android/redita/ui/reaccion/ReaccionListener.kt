@@ -5,4 +5,5 @@ import com.itaeducativa.android.redita.data.modelos.Reaccion
 
 interface ReaccionListener {
     fun onReaccion(reaccionNueva: Reaccion, reaccionVieja: Reaccion?, publicacion: Publicacion)
+
 }

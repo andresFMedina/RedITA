@@ -13,6 +13,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import java.net.CacheResponse
 
 class VistasActivity : AppCompatActivity(), RequestListener, KodeinAware {
     override val kodein: Kodein by kodein()
@@ -45,7 +46,7 @@ class VistasActivity : AppCompatActivity(), RequestListener, KodeinAware {
 
     }
 
-    override fun onSuccessRequest() {
+    override fun onSuccessRequest(response: Any?) {
 
     }
 

@@ -56,7 +56,7 @@ class ListaHistorialViewModel(
                             historiales.add(historial)
                             listaHistorial.value = historiales
                             listaHistorialAdapter.actualizarHistorial(historiales)
-                            requestListener?.onSuccessRequest()
+                            requestListener?.onSuccessRequest(historiales)
                         }
                 }
 

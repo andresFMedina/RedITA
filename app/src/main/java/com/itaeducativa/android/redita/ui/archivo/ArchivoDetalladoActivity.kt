@@ -29,6 +29,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import java.net.CacheResponse
 
 class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListener {
     override val kodein: Kodein by kodein()
@@ -136,9 +137,17 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
 
     }
 
-    override fun onSuccessRequest() {
-        if (archivo.reaccion != null) {
-            when (archivo.reaccion!!.tipoReaccion) {
+    override fun onSuccessRequest(response: Any?) {
+        when(response) {
+            is Reaccion? -> getReaccion(response)
+        }
+    }
+
+    private fun getReaccion(reaccion: Reaccion?) {
+        imageMeGusta.setImageResource(R.drawable.ic_thumb_up_black_24dp)
+        imageNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_24dp)
+        if (reaccion != null) {
+            when (reaccion.tipoReaccion) {
                 "meGusta" -> imageMeGusta.setImageResource(R.drawable.ic_thumb_up_black_filled_24dp)
                 "noMeGusta" -> imageNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_filled_24dp)
             }

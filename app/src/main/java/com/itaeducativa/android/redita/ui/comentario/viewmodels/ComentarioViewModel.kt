@@ -40,7 +40,7 @@ class ComentarioViewModel : ViewModel() {
 
             objetoComentario.value!!.usuario = value!!.toObject(Usuario::class.java)
             objetoComentario.value!!.usuarioReference = null
-            requestListener?.onSuccessRequest()
+            requestListener?.onSuccessRequest(objetoComentario.value!!.usuario)
         }
     }
 }

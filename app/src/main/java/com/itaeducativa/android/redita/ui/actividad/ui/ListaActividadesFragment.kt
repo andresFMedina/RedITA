@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.R
+import com.itaeducativa.android.redita.data.modelos.Actividad
+import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.modelos.Publicacion
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.databinding.FragmentListaActividadesBinding
@@ -140,26 +142,26 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
                 }
     }
 
-    override fun onSuccessRequest() {
-        if (listaActividadViewModel.nombresActividadesAdapter != null) autocomplete.setAdapter(
-            listaActividadViewModel.nombresActividadesAdapter
-        )
+    override fun onSuccessRequest(response: Any?) {
+        when (response) {
+            is List<*> -> {
+                if (response.isNotEmpty()) {
+                    val primerItem = response[0]
 
-        progressBarListaActividades.visibility = View.GONE
-        val listaActividades = listaActividadViewModel.listaActividades.value
-        if (listaActividades != null && !seConsultaronArchivos) {
-            for (actividad in listaActividades) {
-                listaArchivosViewModel.getArchivosByActividadId(actividad)
-                reaccionViewModel.getReaccionByPublicacionIdYUsuarioUid(
-                    actividad.id,
-                    actividad,
-                    usuarioUid
-                )
+                    when (primerItem) {
+                        is Actividad -> {
+                            obtenerObjetosActividad()
+                        }
+                        is String -> autocomplete.setAdapter(
+                            listaActividadViewModel.nombresActividadesAdapter
+                        )
+                    }
+                }
             }
-            seConsultaronArchivos = true
-            listaActividadViewModel.listaActividadesAdapter.notifyDataSetChanged()
+            is Reaccion? -> reaccionConsultada(response)
         }
-        Log.d("Lista", listaActividades.toString())
+        progressBarListaActividades.visibility = View.GONE
+
     }
 
 
@@ -175,6 +177,22 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
     override fun onPause() {
         super.onPause()
         listaActividadViewModel.requestListener = null
+    }
+
+    fun obtenerObjetosActividad() {
+        val listaActividades = listaActividadViewModel.listaActividades.value
+        if (listaActividades != null) {
+            for (actividad in listaActividades) {
+                listaArchivosViewModel.getArchivosByActividadId(actividad)
+                reaccionViewModel.getReaccionByPublicacionIdYUsuarioUid(
+                    actividad.id,
+                    actividad,
+                    usuarioUid
+                )
+            }
+            Log.d("Lista", listaActividades.toString())
+            listaActividadViewModel.listaActividadesAdapter.notifyDataSetChanged()
+        }
     }
 
     @SuppressLint("RestrictedApi")
@@ -224,6 +242,15 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
             return
         }
         reaccionViewModel.crearReaccion(reaccionNueva, publicacion)
+    }
+
+    fun reaccionConsultada(reaccion: Reaccion?) {
+        if (reaccion != null) {
+            val listaActividades = listaActividadViewModel.listaActividades.value
+            val index =
+                listaActividades?.indexOfFirst { actividad -> actividad.id == reaccion.publicacionId }
+            listaActividadViewModel.listaActividadesAdapter.notifyItemChanged(index!!)
+        }
     }
 
     override fun onClose(): Boolean {
