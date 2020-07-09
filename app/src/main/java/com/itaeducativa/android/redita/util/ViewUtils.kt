@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.itaeducativa.android.redita.MainActivity
 import com.itaeducativa.android.redita.data.modelos.Actividad
@@ -119,6 +120,12 @@ fun Context.fileChooser(activity: Activity) = Intent().also {
     it.setType("image/*");
     it.setAction(Intent.ACTION_GET_CONTENT)
     activity.startActivityForResult(it, ACTION_RESULT_GET_IMAGES)
+}
+
+fun Context.fileChooser(fragment: Fragment) = Intent().also {
+    it.setType("image/*");
+    it.setAction(Intent.ACTION_GET_CONTENT)
+    fragment.startActivityForResult(it, ACTION_RESULT_GET_IMAGES)
 }
 
 fun Context.videoChooser(activity: Activity) = Intent().also {
