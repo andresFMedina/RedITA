@@ -17,7 +17,7 @@ class StorageViewModel(
         videoListener?.onStartVideo()
         repositorioStorage.getReferenciaVideoDeUrl(urlVideo).addOnSuccessListener {
             uri.value = it
-            videoListener?.onSuccessVideo()
+            videoListener?.onSuccessVideo(it)
         }.addOnFailureListener {
             videoListener?.onFailureVideo(it.message!!)
         }

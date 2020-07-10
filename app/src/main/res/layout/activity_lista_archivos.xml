@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="archivoViewModel"
             type="com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModel" />
@@ -14,13 +15,29 @@
         android:layout_height="match_parent"
         tools:context=".ui.archivo.ListaArchivosActivity">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/cardview_archivos"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:setAdapter="@{archivoViewModel.listaArchivoAdapter}"
-            />
+            android:orientation="vertical"
+            >
+
+            <!--<com.itaeducativa.android.redita.ui.video.VideoPlayerRecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </com.itaeducativa.android.redita.ui.video.VideoPlayerRecyclerView>-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:setAdapter="@{archivoViewModel.listaArchivoAdapter}"
+                app:spanCount="2"
+                tools:listitem="@layout/cardview_archivos" />
+        </LinearLayout>
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

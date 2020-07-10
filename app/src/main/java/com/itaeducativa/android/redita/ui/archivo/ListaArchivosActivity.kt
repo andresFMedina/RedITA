@@ -5,11 +5,12 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.request.RequestOptions
 import com.itaeducativa.android.redita.R
-import com.itaeducativa.android.redita.data.modelos.Actividad
-import com.itaeducativa.android.redita.data.modelos.Archivo
-import com.itaeducativa.android.redita.data.modelos.Publicacion
-import com.itaeducativa.android.redita.data.modelos.Reaccion
+import com.itaeducativa.android.redita.data.modelos.*
 import com.itaeducativa.android.redita.databinding.ActivityListaArchivosBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.login.AutenticacionViewModel
@@ -17,10 +18,16 @@ import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionListener
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModel
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModelFactory
+import com.itaeducativa.android.redita.ui.video.VerticalSpacingItemDecorator
+import com.itaeducativa.android.redita.ui.video.VideoPlayerRecyclerAdapter
+import com.itaeducativa.android.redita.ui.video.VideoPlayerRecyclerView
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+
+
+private const val URL_IMAGE = "https://s3.ca-central-1.amazonaws.com/codingwithmitch/media/VideoPlayerRecyclerView/Sending+Data+to+a+New+Activity+with+Intent+Extras.png"
 
 class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener, ReaccionListener {
     override val kodein: Kodein by kodein()
@@ -36,6 +43,8 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
     private lateinit var actividad: Actividad
 
     private var seConsultoReaccion: Boolean = false
+
+    //private lateinit var mRecyclerView: VideoPlayerRecyclerView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,6 +71,8 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
         listaArchivoViewModel.requestListener = this
         reaccionViewModel.requestListener = this
 
+        //mRecyclerView = binding.recyclerView
+
         binding.archivoViewModel = listaArchivoViewModel
 
         listaArchivoViewModel.getArchivosByActividadId(actividad)
@@ -84,6 +95,7 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
                     is Archivo -> {
                         //progressBarListaActividades.visibility = View.GONE
                         obtenerObjetosArchivo()
+                        //initRecyclerView()
                     }
                 }
             }
@@ -145,5 +157,34 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
         }
         reaccionViewModel.crearReaccion(reaccionNueva, publicacion)
     }
+
+    /*private fun initRecyclerView() {
+        val archivos: List<Archivo> =  listaArchivoViewModel.listaArchivos.value!!
+        val layoutManager = LinearLayoutManager(this)
+        mRecyclerView.setLayoutManager(layoutManager)
+        val itemDecorator = VerticalSpacingItemDecorator(10)
+        mRecyclerView.addItemDecoration(itemDecorator)
+        val mediaObjects: MutableList<MediaObject> = mutableListOf()
+        for(archivo in archivos){
+            if(archivo.tipo == "video"){
+                val mediaObject = MediaObject("", archivo.url, URL_IMAGE, "")
+                mediaObjects.add(mediaObject)
+            }
+        }
+
+
+        mRecyclerView.setMediaObjects(mediaObjects)
+        val adapter =
+            VideoPlayerRecyclerAdapter(mediaObjects, initGlide()!!)
+        mRecyclerView.setAdapter(adapter)
+    }
+
+    private fun initGlide(): RequestManager? {
+        val options: RequestOptions = RequestOptions()
+            .placeholder(R.drawable.white_background)
+            .error(R.drawable.white_background)
+        return Glide.with(this)
+            .setDefaultRequestOptions(options)
+    }*/
 
 }

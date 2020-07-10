@@ -92,9 +92,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         listaActividadViewModel.listaActividadesAdapter.reaccionListener = this
 
         binding.viewModel = listaActividadViewModel
-        listaActividadViewModel.getListaActividades(
-            tipo = tipo
-        )
+
 
         listaActividadViewModel.requestListener = this
         listaArchivosViewModel.requestListener = this
@@ -121,6 +119,16 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         super.onStart()
         listaActividadViewModel.getNombresActividades(context!!)
     }
+
+    override fun onResume() {
+        super.onResume()
+        listaActividadViewModel.requestListener = this
+        listaActividadViewModel.getListaActividades(
+            tipo = tipo
+        )
+    }
+
+
 
     companion object {
         /**
