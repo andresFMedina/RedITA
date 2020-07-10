@@ -56,8 +56,8 @@ class MisActividadesAdapter(private val listaActividadesViewModel: ListaActivida
         }
         holder.imageButtonEliminar.setOnClickListener {
             MaterialAlertDialogBuilder(it.context, R.style.ThemeOverlay_App_MaterialAlertDialog)
-                .setTitle(it.resources.getString(R.string.titulo_dialogo))
-                .setMessage(it.resources.getString(R.string.descripcion_dialogo))
+                .setTitle(it.resources.getString(R.string.titulo_dialogo_actividad))
+                .setMessage(it.resources.getString(R.string.descripcion_dialogo_actividad))
                 .setNegativeButton(it.resources.getString(R.string.cancelar_dialogo)) { dialog, which ->
                     dialog.dismiss()
                 }

@@ -29,7 +29,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="220dp"
                 android:paddingStart="@dimen/padding_horizontal_cardview"
                 android:paddingEnd="@dimen/padding_horizontal_cardview"
                 android:paddingTop="@dimen/padding_horizontal_cardview"

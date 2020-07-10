@@ -9,7 +9,8 @@ class ListaComentariosViewModelFactory(
     private val repositorioComentario: RepositorioComentario,
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioHistorial: RepositorioHistorial,
-    private val repositorioPublicacion: RepositorioPublicacion
+    private val repositorioPublicacion: RepositorioPublicacion,
+    private val repositorioAutenticacion: RepositorioAutenticacion
 ) : ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -17,7 +18,8 @@ class ListaComentariosViewModelFactory(
             repositorioComentario,
             repositorioUsuario,
             repositorioPublicacion,
-            repositorioHistorial
+            repositorioHistorial,
+            repositorioAutenticacion
         ) as T
     }
 }

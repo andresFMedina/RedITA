@@ -15,14 +15,15 @@ class ListaComentariosViewModel(
     private val repositorioComentario: RepositorioComentario,
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioPublicacion: RepositorioPublicacion,
-    private val repositorioHistorial: RepositorioHistorial
+    private val repositorioHistorial: RepositorioHistorial,
+    private val repositorioAutenticacion: RepositorioAutenticacion
 ) :
     ViewModel() {
 
     private val listaComentarios = MutableLiveData<List<Comentario>>()
 
     val listaComentariosAdapter: ListaComentariosAdapter =
-        ListaComentariosAdapter()
+        ListaComentariosAdapter(repositorioAutenticacion.currentUser()!!.uid, this)
 
     var requestListener: RequestListener? = null
 
@@ -81,5 +82,9 @@ class ListaComentariosViewModel(
                 requestListener?.onSuccessRequest(comentarios)
                 listaComentariosAdapter.actualizarComentarios(listaComentarios.value as MutableList<Comentario>)
             })
+    }
+
+    fun eliminarComentario(comentario: Comentario){
+        repositorioComentario.eliminarComentario(comentario)
     }
 }

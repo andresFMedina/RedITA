@@ -1,21 +1,30 @@
 package com.itaeducativa.android.redita.ui.comentario.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Comentario
 import com.itaeducativa.android.redita.databinding.CardviewComentarioBinding
-import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.comentario.viewmodels.ComentarioViewModel
+import com.itaeducativa.android.redita.ui.comentario.viewmodels.ListaComentariosViewModel
 
-class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.ViewHolder>() {
+class ListaComentariosAdapter(
+    private val uidUsuario: String,
+    private val listaComentariosViewModel: ListaComentariosViewModel
+) : RecyclerView.Adapter<ListaComentariosAdapter.ViewHolder>() {
     private lateinit var listaComentarios: List<Comentario>
 
-    class ViewHolder(private val binding: CardviewComentarioBinding, private val adapter: ListaComentariosAdapter) :
+    class ViewHolder(
+        private val binding: CardviewComentarioBinding,
+        private val adapter: ListaComentariosAdapter
+    ) :
         RecyclerView.ViewHolder(binding.root) {
+
+        val buttonEliminarComentario = binding.imageButtonEliminarComentario
 
         private val viewModel =
             ComentarioViewModel()
@@ -28,6 +37,8 @@ class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.Vie
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+
         val binding: CardviewComentarioBinding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
             R.layout.cardview_comentario,
@@ -41,11 +52,29 @@ class ListaComentariosAdapter : RecyclerView.Adapter<ListaComentariosAdapter.Vie
     }
 
     override fun getItemCount(): Int {
-        return if(::listaComentarios.isInitialized) listaComentarios.size else 0
+        return if (::listaComentarios.isInitialized) listaComentarios.size else 0
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(listaComentarios[position])
+        val comentario = listaComentarios[position]
+        if (uidUsuario == comentario.usuarioUid) {
+            holder.buttonEliminarComentario.visibility = View.VISIBLE
+
+            holder.buttonEliminarComentario.setOnClickListener {
+                MaterialAlertDialogBuilder(it.context, R.style.ThemeOverlay_App_MaterialAlertDialog)
+                    .setTitle(it.resources.getString(R.string.titulo_dialogo_comentario))
+                    .setMessage(it.resources.getString(R.string.descripcion_dialogo_comentario))
+                    .setNegativeButton(it.resources.getString(R.string.cancelar_dialogo)) { dialog, which ->
+                        dialog.dismiss()
+                    }
+                    .setPositiveButton(it.resources.getString(R.string.aceptar_dialogo)) { dialog, which ->
+                        listaComentariosViewModel
+                            .eliminarComentario(comentario)
+                    }
+                    .show()
+            }
+        }
+        holder.bind(comentario)
     }
 
     fun actualizarComentarios(comentarios: List<Comentario>) {
