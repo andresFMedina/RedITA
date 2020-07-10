@@ -19,8 +19,7 @@ class ListaComentariosAdapter(
     private lateinit var listaComentarios: List<Comentario>
 
     class ViewHolder(
-        private val binding: CardviewComentarioBinding,
-        private val adapter: ListaComentariosAdapter
+        private val binding: CardviewComentarioBinding
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -46,8 +45,7 @@ class ListaComentariosAdapter(
             false
         )
         return ViewHolder(
-            binding,
-            this
+            binding
         )
     }
 
@@ -64,10 +62,10 @@ class ListaComentariosAdapter(
                 MaterialAlertDialogBuilder(it.context, R.style.ThemeOverlay_App_MaterialAlertDialog)
                     .setTitle(it.resources.getString(R.string.titulo_dialogo_comentario))
                     .setMessage(it.resources.getString(R.string.descripcion_dialogo_comentario))
-                    .setNegativeButton(it.resources.getString(R.string.cancelar_dialogo)) { dialog, which ->
+                    .setNegativeButton(it.resources.getString(R.string.cancelar_dialogo)) { dialog, _ ->
                         dialog.dismiss()
                     }
-                    .setPositiveButton(it.resources.getString(R.string.aceptar_dialogo)) { dialog, which ->
+                    .setPositiveButton(it.resources.getString(R.string.aceptar_dialogo)) { _, _ ->
                         listaComentariosViewModel
                             .eliminarComentario(comentario)
                     }

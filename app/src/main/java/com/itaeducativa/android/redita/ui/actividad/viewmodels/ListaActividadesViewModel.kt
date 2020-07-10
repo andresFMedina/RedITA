@@ -13,6 +13,7 @@ import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.adapters.ListaActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.adapters.MisActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.adapters.NombresActividadesAdapter
+import com.itaeducativa.android.redita.ui.actividad.adapters.NombresAdapter
 import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 
 
@@ -38,7 +39,7 @@ class ListaActividadesViewModel(
         MisActividadesAdapter(this)
     }
 
-    var nombresActividadesAdapter: NombresActividadesAdapter? = null
+    var nombresActividadesAdapter: NombresAdapter? = null
 
 
     fun guardarActividadEnFirestore(actividad: Actividad) {
@@ -117,17 +118,16 @@ class ListaActividadesViewModel(
     }*/
 
 
-
     fun desactivarActividad(actividad: Actividad) {
         repositorioActividad.desactivarActividad(actividad).addOnSuccessListener {
             repositorioActividad.eliminarNombre(actividad.id)
         }
     }
 
-    fun getNombresActividades(context: Context){
+    fun getNombresActividades(context: Context) {
         requestListener?.onStartRequest()
         repositorioActividad.getNombresActividad().addSnapshotListener { value, exception ->
-            if(exception != null){
+            if (exception != null) {
                 requestListener?.onFailureRequest(exception.message!!)
                 return@addSnapshotListener
             }
@@ -136,11 +136,10 @@ class ListaActividadesViewModel(
                 val nombre = doc.getString("nombre")
                 nombres.add(nombre!!)
             }
-            nombresActividadesAdapter = NombresActividadesAdapter(context, nombres)
+            nombresActividadesAdapter = NombresAdapter(context, nombres)
+            requestListener?.onSuccessRequest(nombres.toList())
         }
     }
-
-
 
 
     fun goToCrearActividad(view: View) {

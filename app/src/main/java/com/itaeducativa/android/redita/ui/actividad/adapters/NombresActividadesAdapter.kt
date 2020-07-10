@@ -12,21 +12,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class NombresActividadesAdapter(context: Context, listaNombresFull: MutableList<String>) :
+class NombresActividadesAdapter(context: Context, private val listaNombresFull: MutableList<String>) :
     ArrayAdapter<String>(context, 0, listaNombresFull) {
-
-
-    private var listaNombres: MutableList<String>? = null
-
-    init {
-        listaNombres = mutableListOf()
-        listaNombres?.addAll(listaNombresFull)
-    }
 
     override fun getFilter(): Filter {
         return filtroNombre
     }
-
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val productName = getItem(position)
@@ -70,10 +61,10 @@ class NombresActividadesAdapter(context: Context, listaNombresFull: MutableList<
             constraint: CharSequence?,
             results: FilterResults
         ) {
-            val productNameList: MutableList<String> = results.values as MutableList<String>
-            if(productNameList.isEmpty()){
+            val listaNombres: MutableList<String>? = results.values as MutableList<String>
+            if(listaNombres.isNullOrEmpty()){
                 clear()
-                listaNombres?.addAll(productNameList)
+                listaNombres?.addAll(listaNombres)
             }
             notifyDataSetChanged()
         }

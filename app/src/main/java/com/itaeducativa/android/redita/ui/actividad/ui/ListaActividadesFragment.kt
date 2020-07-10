@@ -115,17 +115,14 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        listaActividadViewModel.getNombresActividades(context!!)
-    }
-
     override fun onResume() {
         super.onResume()
         listaActividadViewModel.requestListener = this
         listaActividadViewModel.getListaActividades(
             tipo = tipo
         )
+        listaActividadViewModel.getNombresActividades(context!!)
+
     }
 
 
@@ -154,9 +151,8 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         when (response) {
             is List<*> -> {
                 if (response.isNotEmpty()) {
-                    val primerItem = response[0]
 
-                    when (primerItem) {
+                    when (response[0]) {
                         is Actividad -> {
                             obtenerObjetosActividad()
                         }
@@ -264,7 +260,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
     override fun onClose(): Boolean {
         this.context!!.hideKeyboard(activity!!)
         listaActividadViewModel.getListaActividades(tipo = tipo)
-        return false
+        return true
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -281,11 +277,11 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         val item = parent!!.getItemAtPosition(position) as String
         when (item) {
             MAS_ANTIGUO -> listaActividadViewModel.getListaActividades(
-                direccion = Query.Direction.DESCENDING,
+                direccion = Query.Direction.ASCENDING,
                 tipo = tipo
             )
             MAS_RECIENTE -> listaActividadViewModel.getListaActividades(
-                direccion = Query.Direction.ASCENDING,
+                direccion = Query.Direction.DESCENDING,
                 tipo = tipo
             )
         }
