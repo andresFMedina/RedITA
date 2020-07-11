@@ -74,13 +74,15 @@ class PerfilFragment : Fragment(), KodeinAware {
         }
 
         binding.buttonCambiarImagenPerfil.setOnClickListener {
-            context!!.fileChooser(activity!!)
+            context!!.fileChooser(this)
         }
 
         return binding.root
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+
+   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ACTION_RESULT_GET_IMAGES && resultCode == Activity.RESULT_OK &&
             data != null && data.data != null

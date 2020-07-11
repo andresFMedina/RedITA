@@ -50,7 +50,7 @@ class HistorialUsuarioActivity : AppCompatActivity(), RequestListener, KodeinAwa
 
     }
 
-    override fun onSuccessRequest() {
+    override fun onSuccessRequest(response: Any?) {
 
     }
 

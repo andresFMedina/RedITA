@@ -77,7 +77,7 @@ class ActividadViewModel : ViewModel() {
             autor.value = actividad.value!!.autor!!.nombreCompleto
             actividad.value!!.referenciaAutor = null
             imagenPerfilUrl.value = actividad.value!!.autor!!.imagenPerfilUrl
-            requestListener?.onSuccessRequest()
+            requestListener?.onSuccessRequest(actividad.value!!.autor)
         }
     }
 

@@ -9,10 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.Timestamp
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
-import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.databinding.CardviewActividadBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.viewmodels.ActividadViewModel
@@ -23,8 +21,8 @@ import com.itaeducativa.android.redita.util.startActividadActivity
 
 class ListaActividadesAdapter(
     private val uidUsuarioActual: String
-) : RecyclerView.Adapter<ListaActividadesAdapter.ViewHolder>(),
-    RequestListener {
+) : RecyclerView.Adapter<ListaActividadesAdapter.ViewHolder>()
+     {
     private lateinit var listaActividades: List<Actividad>
 
     var reaccionListener: ReaccionListener? = null
@@ -51,7 +49,6 @@ class ListaActividadesAdapter(
                 imageViewActividad.visibility = View.GONE
             else
                 imageViewActividad.visibility = View.VISIBLE
-            viewModelActividad.requestListener = adapter
             viewModelActividad.bind(actividad)
 
             binding.viewModelActividad = viewModelActividad
@@ -80,10 +77,14 @@ class ListaActividadesAdapter(
         val actividad = listaActividades[position]
         holder.bind(actividad)
 
-        val formatoFecha =
-            "${actividad.fechaInicio} a las ${actividad.horaInicio}"
+        if (!actividad.fechaInicio.isNullOrBlank()) {
+            val formatoFecha =
+                "${actividad.fechaInicio} a las ${actividad.horaInicio}"
 
-        holder.textViewFechaYHora.text = formatoFecha
+            holder.textViewFechaYHora.text = formatoFecha
+        } else {
+            holder.textViewFechaYHora.visibility = View.GONE
+        }
 
         val reaccion = actividad.reaccion
 
@@ -109,18 +110,6 @@ class ListaActividadesAdapter(
     fun actualizarActividades(actividades: List<Actividad>) {
         this.listaActividades = actividades
         notifyDataSetChanged()
-    }
-
-    override fun onStartRequest() {
-
-    }
-
-    override fun onSuccessRequest() {
-        notifyDataSetChanged()
-    }
-
-    override fun onFailureRequest(message: String) {
-        Log.e("error", message)
     }
 
 }

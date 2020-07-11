@@ -6,12 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.itaeducativa.android.redita.MainActivity
-import com.itaeducativa.android.redita.data.modelos.Actividad
-import com.itaeducativa.android.redita.data.modelos.Archivo
-import com.itaeducativa.android.redita.data.modelos.Reaccion
-import com.itaeducativa.android.redita.data.modelos.Usuario
+import com.itaeducativa.android.redita.data.modelos.*
 import com.itaeducativa.android.redita.ui.actividad.ui.ActividadActivity
 import com.itaeducativa.android.redita.ui.actividad.ui.CrearActividadActivity
 import com.itaeducativa.android.redita.ui.archivo.ArchivoDetalladoActivity
@@ -33,7 +31,7 @@ fun Context.startMainActivity(usuario: Usuario) =
         startActivity(it)
     }
 
-fun Context.startActividadActivity(actividad: Actividad) =
+fun Context.startActividadActivity(actividad: Publicacion) =
     Intent(this, ActividadActivity::class.java).also {
         val bundle = Bundle()
         bundle.putSerializable("actividad", actividad)
@@ -119,6 +117,12 @@ fun Context.fileChooser(activity: Activity) = Intent().also {
     it.setType("image/*");
     it.setAction(Intent.ACTION_GET_CONTENT)
     activity.startActivityForResult(it, ACTION_RESULT_GET_IMAGES)
+}
+
+fun Context.fileChooser(fragment: Fragment) = Intent().also {
+    it.setType("image/*");
+    it.setAction(Intent.ACTION_GET_CONTENT)
+    fragment.startActivityForResult(it, ACTION_RESULT_GET_IMAGES)
 }
 
 fun Context.videoChooser(activity: Activity) = Intent().also {

@@ -16,6 +16,9 @@ class ArchivoViewModel : ViewModel() {
 
     fun bind(archivo: Archivo) {
         this.archivo.value = archivo
+        if (archivo.tipo == "imagen") {
+            this.archivo.value?.urlImagen = archivo.url
+        }
         meGusta.value = archivo.meGusta.toString()
         noMeGusta.value = archivo.noMeGusta.toString()
         comentarios.value = archivo.comentarios.toString()

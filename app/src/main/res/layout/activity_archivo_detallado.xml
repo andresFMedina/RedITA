@@ -27,11 +27,53 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/cardviewArchivo"
-                layout="@layout/cardview_archivos"
-                bind:viewModel="@{archivoViewModel}"
-                />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:paddingStart="@dimen/padding_horizontal_cardview"
+                android:paddingEnd="@dimen/padding_horizontal_cardview"
+                android:paddingTop="@dimen/padding_horizontal_cardview"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/layoutMultimedia"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp">
+                <ImageView
+                    android:id="@+id/imageViewImagen"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/imagen_actividad"
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{archivoViewModel.archivo.urlImagen}"
+                    />
+                <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                    android:id="@+id/video_view"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="220dp"/>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/layoutMultimedia"
+                    android:background="@android:color/white">
+
+                    <include
+                        android:id="@+id/layoutReacciones"
+                        bind:comentarios="@{archivoViewModel.comentarios}"
+                        bind:meGusta="@{archivoViewModel.meGusta}"
+                        bind:noMeGusta="@{archivoViewModel.noMeGusta}"
+                        layout="@layout/linearlayout_reacciones"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        />
+                </LinearLayout>
+
+            </RelativeLayout>
 
 
             <androidx.recyclerview.widget.RecyclerView

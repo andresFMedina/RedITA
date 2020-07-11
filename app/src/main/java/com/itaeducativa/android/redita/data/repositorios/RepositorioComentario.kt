@@ -25,5 +25,6 @@ class RepositorioComentario
             .whereEqualTo(PUBLICACION_ID, referenciaDocumentoActividad)
             .orderBy("fecha", Query.Direction.DESCENDING)
 
-
+    fun eliminarComentario(comentario: Comentario) =
+        firestoreDB.collection(COMENTARIOS).document(comentario.fecha).delete()
 }

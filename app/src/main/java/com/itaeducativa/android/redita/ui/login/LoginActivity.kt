@@ -107,7 +107,7 @@ class LoginActivity : AppCompatActivity(),
         textViewEstadoLogin.text = getString(R.string.cargando_informacion)
     }
 
-    override fun onSuccessRequest() {
+    override fun onSuccessRequest(response: Any?) {
         layoutEstadoLogin.visibility = View.GONE
         startMainActivity(listaUsuarioViewModel.usuario.value!!)
     }

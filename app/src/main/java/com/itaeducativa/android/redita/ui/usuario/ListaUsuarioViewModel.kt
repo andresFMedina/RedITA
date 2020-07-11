@@ -63,7 +63,7 @@ class ListaUsuarioViewModel(
 
         requestListener?.onStartRequest()
         repositorioUsuario.guardarUsuario(usuario.value!!).addOnSuccessListener {
-            requestListener?.onSuccessRequest()
+            requestListener?.onSuccessRequest(usuario.value)
         }.addOnFailureListener { exception ->
             requestListener?.onFailureRequest(exception.message!!)
         }
@@ -80,7 +80,7 @@ class ListaUsuarioViewModel(
                     return@EventListener
                 }
                 usuario.value = value!!.toObject(Usuario::class.java)
-                requestListener?.onSuccessRequest()
+                requestListener?.onSuccessRequest(usuario.value)
 
             })
     }
@@ -99,7 +99,7 @@ class ListaUsuarioViewModel(
             }
             listaUsuarios.value = usuarios
             listaUsuariosAdapter.actualizarUsuarios(usuarios)
-            requestListener?.onSuccessRequest()
+            requestListener?.onSuccessRequest(usuarios)
         }
     }
 

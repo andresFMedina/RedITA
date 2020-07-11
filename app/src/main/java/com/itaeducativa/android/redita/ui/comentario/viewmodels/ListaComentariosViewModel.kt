@@ -15,14 +15,15 @@ class ListaComentariosViewModel(
     private val repositorioComentario: RepositorioComentario,
     private val repositorioUsuario: RepositorioUsuario,
     private val repositorioPublicacion: RepositorioPublicacion,
-    private val repositorioHistorial: RepositorioHistorial
+    private val repositorioHistorial: RepositorioHistorial,
+    private val repositorioAutenticacion: RepositorioAutenticacion
 ) :
     ViewModel() {
 
     private val listaComentarios = MutableLiveData<List<Comentario>>()
 
     val listaComentariosAdapter: ListaComentariosAdapter =
-        ListaComentariosAdapter()
+        ListaComentariosAdapter(repositorioAutenticacion.currentUser()!!.uid, this)
 
     var requestListener: RequestListener? = null
 
@@ -41,6 +42,7 @@ class ListaComentariosViewModel(
                     )
 
                     repositorioHistorial.guardarHistorialFirestore(historial)
+                    requestListener?.onSuccessRequest(comentario)
                 }
                 repositorioPublicacion.aumentarInteraccion(
                     comentario.tipoPublicacion,
@@ -48,14 +50,11 @@ class ListaComentariosViewModel(
                     "comentarios"
                 ).addOnSuccessListener {
                     publicacion.comentarios++
-                    requestListener?.onSuccessRequest()
                 }.addOnFailureListener {
                     requestListener?.onFailureRequest(it.message!!)
                 }
                 repositorioUsuario.sumarInteraccion("comentarios", comentario.usuarioUid)
-                    .addOnSuccessListener {
-                        requestListener?.onSuccessRequest()
-                    }.addOnFailureListener {
+                    .addOnFailureListener {
                         requestListener?.onFailureRequest(it.message!!)
                     }
             }
@@ -80,8 +79,12 @@ class ListaComentariosViewModel(
                     comentarios.add(comentario)
                 }
                 listaComentarios.value = comentarios
-                requestListener?.onSuccessRequest()
+                requestListener?.onSuccessRequest(comentarios)
                 listaComentariosAdapter.actualizarComentarios(listaComentarios.value as MutableList<Comentario>)
             })
+    }
+
+    fun eliminarComentario(comentario: Comentario){
+        repositorioComentario.eliminarComentario(comentario)
     }
 }

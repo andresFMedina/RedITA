@@ -16,9 +16,6 @@ import com.itaeducativa.android.redita.ui.actividad.adapters.NombresActividadesA
 import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 
 
-private const val MAS_RECIENTE = "Más reciente"
-private const val MAS_ANTIGUO = "Más antiguo"
-
 @Suppress("UNCHECKED_CAST")
 class ListaActividadesViewModel(
     private val repositorioActividad: RepositorioActividad,
@@ -28,7 +25,6 @@ class ListaActividadesViewModel(
 ) : ViewModel() {
 
     val listaActividades: MutableLiveData<List<Actividad>> = MutableLiveData()
-    val entries = listOf(MAS_RECIENTE, MAS_ANTIGUO)
     val orden = MutableLiveData<String>()
 
     var requestListener: RequestListener? = null
@@ -51,16 +47,9 @@ class ListaActividadesViewModel(
             requestListener?.onFailureRequest(it.message!!)
         }.addOnSuccessListener {
             repositorioActividad.guardarNombreActividadFirestore(actividad.nombre, actividad.id)
-            requestListener?.onSuccessRequest()
+            requestListener?.onSuccessRequest(actividad)
 
         }
-    }
-
-    fun onItemSelected(orden: Any) {
-        this.orden.value = orden as String
-        val direccion =
-            if (this.orden.value!! == MAS_RECIENTE) Query.Direction.DESCENDING else Query.Direction.ASCENDING
-        //getListaActividades(direccion = direccion)
     }
 
     fun getListaActividades(
@@ -69,7 +58,6 @@ class ListaActividadesViewModel(
         query: String = "",
         tipo: String
     ) {
-        orden.value = MAS_RECIENTE
         requestListener?.onStartRequest()
         repositorioActividad.getActividades(ordenCampo, direccion, query, tipo)
             .addSnapshotListener { value, e ->
@@ -87,7 +75,7 @@ class ListaActividadesViewModel(
                     actividades.add(actividad)
                 }
                 listaActividades.value = actividades
-                requestListener?.onSuccessRequest()
+                requestListener?.onSuccessRequest(actividades)
                 listaActividadesAdapter.actualizarActividades(listaActividades.value as MutableList<Actividad>)
             }
     }
@@ -113,19 +101,20 @@ class ListaActividadesViewModel(
                 }
 
                 listaActividades.value = actividades
-                requestListener?.onSuccessRequest()
                 misActividadesAdapter.actualizarActividades(actividades)
+                requestListener?.onSuccessRequest(actividades)
+
             }
     }
 
-    fun eliminarActividad(actividad: Actividad) {
+    /*fun eliminarActividad(actividad: Actividad) {
         requestListener?.onStartRequest()
         repositorioActividad.eliminarActividad(actividad).addOnSuccessListener {
             requestListener?.onSuccessRequest()
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }
-    }
+    }*/
 
 
 
@@ -148,8 +137,6 @@ class ListaActividadesViewModel(
                 nombres.add(nombre!!)
             }
             nombresActividadesAdapter = NombresActividadesAdapter(context, nombres)
-            requestListener?.onSuccessRequest()
-
         }
     }
 
@@ -164,8 +151,6 @@ class ListaActividadesViewModel(
         val actividad = doc.toObject(Actividad::class.java)
         val autorUid = doc.getString("autorUid")!!
         actividad.autorUid = autorUid
-        //actividad.imagenes = doc.get("imagenes") as List<String>?
-        //actividad.video = doc.getString("video")
 
         return actividad
     }

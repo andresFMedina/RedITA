@@ -23,6 +23,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.android.x.kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
+import java.net.CacheResponse
 
 
 private const val ARG_USUARIO = "usuario"
@@ -88,7 +89,7 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
 
     }
 
-    override fun onSuccessRequest() {
+    override fun onSuccessRequest(response: Any?) {
 
     }
 
