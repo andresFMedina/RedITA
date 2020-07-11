@@ -1,8 +1,10 @@
 package com.itaeducativa.android.redita.data.repositorios
 
-import android.util.Log
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.*
+import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Actividad
 
@@ -24,17 +26,18 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         return documentReference.set(actividad)
     }
 
-    fun guardarNombreActividadFirestore(nombre: String, actividadId: String): Task<Void> {
+    fun guardarNombreActividadFirestore(
+        nombre: String,
+        actividadId: String,
+        categoriaActividad: String,
+        uidAutor: String
+    ): Task<Void> {
         val data = hashMapOf(
-            "nombre" to nombre
+            "nombre" to nombre,
+            "categoriaActividad" to categoriaActividad,
+            "uidAutor" to uidAutor
         )
         return firestoreDB.collection(NOMBRES_ACTIVIDADES).document(actividadId).set(data)
-    }
-
-    fun guardarUrlImagenesEnFirestore(actividadId: String, urlImagen: String): Task<Void> {
-        val documentReference =
-            firestoreDB.collection(ACTIVIDADES).document(actividadId)
-        return documentReference.update("imagenes", FieldValue.arrayUnion(urlImagen))
     }
 
     fun getActividades(
@@ -59,7 +62,6 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     ): Query {
         val collection =
             firestoreDB.collection(ACTIVIDADES).whereEqualTo(AUTOR_UID, uid)
-        if (query != "") collection.orderBy(orderBy).startAt(query)
         return collection.whereEqualTo("estaActivo", true)
     }
 
@@ -78,8 +80,14 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     fun eliminarNombre(actividadId: String): Task<Void> =
         firestoreDB.collection(NOMBRES_ACTIVIDADES).document(actividadId).delete()
 
-    fun getNombresActividad(): CollectionReference =
+    fun getNombresActividad(categoriaActividad: String): Query =
         firestoreDB.collection(NOMBRES_ACTIVIDADES)
+            .whereEqualTo("categoriaActividad", categoriaActividad)
 
+    fun getNombresActividadByAutorUid(uidAutor: String): Query =
+        firestoreDB.collection(NOMBRES_ACTIVIDADES).whereEqualTo("uidAutor", uidAutor)
+
+    fun cambiarNombreActividadFirestore(nombre: String, actividadId: String) =
+        firestoreDB.collection(NOMBRES_ACTIVIDADES).document(actividadId).update("nombre", nombre)
 
 }

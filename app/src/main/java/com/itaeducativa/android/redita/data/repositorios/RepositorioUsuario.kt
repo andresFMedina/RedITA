@@ -8,7 +8,9 @@ import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Usuario
 
-class RepositorioUsuario (private val firebase: FirebaseSource) {
+private const val NOMBRES_USUARIOS = "nombresUsuarios"
+
+class RepositorioUsuario(private val firebase: FirebaseSource) {
 
     private val firestoreDB by lazy { firebase.firestoreDB }
     private val USUARIOS = "usuarios"
@@ -27,8 +29,11 @@ class RepositorioUsuario (private val firebase: FirebaseSource) {
     fun getUsuarioByUid(uid: String): DocumentReference =
         firestoreDB.collection(USUARIOS).document(uid)
 
-    fun getUsuarios(query: String = ""): Query =
-        firestoreDB.collection(USUARIOS).orderBy("nombreCompleto").startAt(query)
+    fun getUsuarios(query: String = ""): Query {
+        val q = firestoreDB.collection(USUARIOS)
+        if(query.isNotBlank()) return q.whereEqualTo("nombreCompleto", query)
+        return q.orderBy("nombreCompleto")
+    }
 
     fun cambiarUrlImagenPerfil(url: String, uid: String): Task<Void> =
         firestoreDB.collection(USUARIOS).document(uid).update("imagenPerfilUrl", url)
@@ -38,5 +43,19 @@ class RepositorioUsuario (private val firebase: FirebaseSource) {
 
     fun restarInteraccion(interaccion: String, uid: String): Task<Void> =
         firestoreDB.collection(USUARIOS).document(uid).update(interaccion, FieldValue.increment(-1))
+
+    fun getNombresUsuarios(): CollectionReference =
+        firestoreDB.collection(NOMBRES_USUARIOS)
+
+    fun guardarNombreUsuarioFirestore(
+        nombre: String,
+        usuarioUid: String
+    ): Task<Void> {
+        val data = hashMapOf(
+            "nombre" to nombre
+        )
+        return firestoreDB.collection(NOMBRES_USUARIOS).document(usuarioUid).set(data)
+    }
+
 
 }

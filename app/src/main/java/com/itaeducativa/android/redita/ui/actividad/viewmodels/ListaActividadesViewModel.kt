@@ -1,18 +1,19 @@
 package com.itaeducativa.android.redita.ui.actividad.viewmodels
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.itaeducativa.android.redita.data.modelos.Actividad
-import com.itaeducativa.android.redita.data.repositorios.*
+import com.itaeducativa.android.redita.data.repositorios.RepositorioActividad
+import com.itaeducativa.android.redita.data.repositorios.RepositorioAutenticacion
+import com.itaeducativa.android.redita.data.repositorios.RepositorioReaccion
+import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.adapters.ListaActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.adapters.MisActividadesAdapter
-import com.itaeducativa.android.redita.ui.actividad.adapters.NombresActividadesAdapter
 import com.itaeducativa.android.redita.ui.actividad.adapters.NombresAdapter
 import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 
@@ -35,9 +36,8 @@ class ListaActividadesViewModel(
         )
     }
 
-    val misActividadesAdapter: MisActividadesAdapter by lazy {
-        MisActividadesAdapter(this)
-    }
+    val misActividadesAdapter = MisActividadesAdapter(this)
+
 
     var nombresActividadesAdapter: NombresAdapter? = null
 
@@ -47,7 +47,12 @@ class ListaActividadesViewModel(
         repositorioActividad.guardarActividadEnFirestore(actividad).addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }.addOnSuccessListener {
-            repositorioActividad.guardarNombreActividadFirestore(actividad.nombre, actividad.id)
+            repositorioActividad.guardarNombreActividadFirestore(
+                actividad.nombre,
+                actividad.id,
+                actividad.categoria,
+                actividad.autorUid!!
+            )
             requestListener?.onSuccessRequest(actividad)
 
         }
@@ -124,21 +129,22 @@ class ListaActividadesViewModel(
         }
     }
 
-    fun getNombresActividades(context: Context) {
+    fun getNombresActividades(context: Context, categoria: String) {
         requestListener?.onStartRequest()
-        repositorioActividad.getNombresActividad().addSnapshotListener { value, exception ->
-            if (exception != null) {
-                requestListener?.onFailureRequest(exception.message!!)
-                return@addSnapshotListener
+        repositorioActividad.getNombresActividad(categoria)
+            .addSnapshotListener { value, exception ->
+                if (exception != null) {
+                    requestListener?.onFailureRequest(exception.message!!)
+                    return@addSnapshotListener
+                }
+                val nombres: MutableList<String> = mutableListOf()
+                for (doc in value!!) {
+                    val nombre = doc.getString("nombre")
+                    nombres.add(nombre!!)
+                }
+                nombresActividadesAdapter = NombresAdapter(context, nombres)
+                requestListener?.onSuccessRequest(nombres.toList())
             }
-            val nombres: MutableList<String> = mutableListOf()
-            for (doc in value!!) {
-                val nombre = doc.getString("nombre")
-                nombres.add(nombre!!)
-            }
-            nombresActividadesAdapter = NombresAdapter(context, nombres)
-            requestListener?.onSuccessRequest(nombres.toList())
-        }
     }
 
 
