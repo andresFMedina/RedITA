@@ -10,6 +10,7 @@ import com.itaeducativa.android.redita.data.repositorios.RepositorioStorage
 import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.ImageUploadListener
+import com.itaeducativa.android.redita.ui.actividad.adapters.NombresAdapter
 import com.itaeducativa.android.redita.util.getExtension
 
 class ListaUsuarioViewModel(
@@ -34,6 +35,8 @@ class ListaUsuarioViewModel(
 
     var requestListener: RequestListener? = null
     var imageUploadListener: ImageUploadListener? = null
+
+    var nombresUsuariosAdapter: NombresAdapter? = null
 
     fun bindUsuario(usuario: Usuario) {
         this.usuario.value = usuario
@@ -63,6 +66,7 @@ class ListaUsuarioViewModel(
 
         requestListener?.onStartRequest()
         repositorioUsuario.guardarUsuario(usuario.value!!).addOnSuccessListener {
+            repositorioUsuario.guardarNombreUsuarioFirestore(nombreCompleto.value!!, uid)
             requestListener?.onSuccessRequest(usuario.value)
         }.addOnFailureListener { exception ->
             requestListener?.onFailureRequest(exception.message!!)
@@ -127,6 +131,23 @@ class ListaUsuarioViewModel(
             imageUploadListener?.onSuccessUploadImage(url)
         }.addOnFailureListener {
             imageUploadListener?.onFailureUploadImage(it.message!!)
+        }
+    }
+
+    fun getNombresUsuarios(context: Context) {
+        requestListener?.onStartRequest()
+        repositorioUsuario.getNombresUsuarios().addSnapshotListener { value, exception ->
+            if (exception != null) {
+                requestListener?.onFailureRequest(exception.message!!)
+                return@addSnapshotListener
+            }
+            val nombres: MutableList<String> = mutableListOf()
+            for (doc in value!!) {
+                val nombre = doc.getString("nombre")
+                nombres.add(nombre!!)
+            }
+            nombresUsuariosAdapter = NombresAdapter(context, nombres)
+            requestListener?.onSuccessRequest(nombres.toList())
         }
     }
 

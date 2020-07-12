@@ -6,11 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.SearchView
-
-import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.databinding.FragmentMisActividadesBinding
@@ -20,16 +18,14 @@ import com.itaeducativa.android.redita.ui.actividad.viewmodels.ListaActividadesV
 import com.itaeducativa.android.redita.util.showInputMethod
 import com.itaeducativa.android.redita.util.startFormularioActividadActivity
 import org.kodein.di.Kodein
-import org.kodein.di.android.x.kodein
 import org.kodein.di.KodeinAware
+import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
-import java.net.CacheResponse
 
 
 private const val ARG_USUARIO = "usuario"
 
 class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
-    // TODO: Rename and change types of parameters
     private var usuario: Usuario? = null
     override val kodein: Kodein by kodein()
 
@@ -74,7 +70,6 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
          * @param usuario Parameter 1.
          * @return A new instance of fragment MisActividadesFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(usuario: Usuario) =
             MisActividadesFragment()
@@ -90,7 +85,6 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener {
     }
 
     override fun onSuccessRequest(response: Any?) {
-
     }
 
     override fun onFailureRequest(message: String) {

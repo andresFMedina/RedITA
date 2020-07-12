@@ -1,7 +1,6 @@
 package com.itaeducativa.android.redita.ui.actividad.ui
 
 import android.annotation.SuppressLint
-import android.app.DownloadManager
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -9,6 +8,7 @@ import android.view.View.OnFocusChangeListener
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
-import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.modelos.Publicacion
 import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.databinding.FragmentListaActividadesBinding
@@ -59,7 +58,6 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
     private lateinit var autenticacionViewModel: AutenticacionViewModel
     private lateinit var autocomplete: SearchView.SearchAutoComplete
 
-    private var seConsultaronArchivos = false
     private lateinit var tipo: String
     private lateinit var usuarioUid: String
 
@@ -115,19 +113,14 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-        listaActividadViewModel.getNombresActividades(context!!)
-    }
-
     override fun onResume() {
         super.onResume()
         listaActividadViewModel.requestListener = this
         listaActividadViewModel.getListaActividades(
             tipo = tipo
         )
+        listaActividadViewModel.getNombresActividades(context!!, tipo)
     }
-
 
 
     companion object {
@@ -154,9 +147,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         when (response) {
             is List<*> -> {
                 if (response.isNotEmpty()) {
-                    val primerItem = response[0]
-
-                    when (primerItem) {
+                    when (response[0]) {
                         is Actividad -> {
                             obtenerObjetosActividad()
                         }
@@ -223,6 +214,11 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
 
             searchView.setOnCloseListener(this)
 
+            searchView.findViewById<AppCompatImageView>(R.id.search_close_btn).setOnClickListener {
+                autocomplete.setText("")
+                this.context!!.hideKeyboard(activity!!)
+                listaActividadViewModel.getListaActividades(tipo = tipo)
+            }
 
 
             searchView.isIconfiedByDefault
@@ -235,6 +231,8 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         }
         super.onCreateOptionsMenu(menu, inflater)
     }
+
+
 
     override fun onReaccion(
         reaccionNueva: Reaccion,
@@ -281,11 +279,11 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         val item = parent!!.getItemAtPosition(position) as String
         when (item) {
             MAS_ANTIGUO -> listaActividadViewModel.getListaActividades(
-                direccion = Query.Direction.DESCENDING,
+                direccion = Query.Direction.ASCENDING,
                 tipo = tipo
             )
             MAS_RECIENTE -> listaActividadViewModel.getListaActividades(
-                direccion = Query.Direction.ASCENDING,
+                direccion = Query.Direction.DESCENDING,
                 tipo = tipo
             )
         }
