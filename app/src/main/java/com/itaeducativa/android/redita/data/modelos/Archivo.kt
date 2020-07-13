@@ -13,4 +13,10 @@ data class Archivo(
 
 ): Publicacion(), Serializable {
     constructor() : this("", "", "", "", "")
+
+    override fun toString(): String {
+        return "Archivo(id='$id', timestamp='$timestamp', url='$url', tipo='$tipo', actividadId='$actividadId', urlImagen='$urlImagen')"
+    }
+
+
 }

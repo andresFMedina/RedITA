@@ -22,10 +22,7 @@ import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.firebase.Timestamp
 import com.itaeducativa.android.redita.R
-import com.itaeducativa.android.redita.data.modelos.Archivo
-import com.itaeducativa.android.redita.data.modelos.Comentario
-import com.itaeducativa.android.redita.data.modelos.Publicacion
-import com.itaeducativa.android.redita.data.modelos.Reaccion
+import com.itaeducativa.android.redita.data.modelos.*
 import com.itaeducativa.android.redita.databinding.ActivityArchivoDetalladoBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.VideoListener
@@ -38,7 +35,9 @@ import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModel
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModelFactory
 import com.itaeducativa.android.redita.util.hideKeyboard
+import kotlinx.android.synthetic.main.activity_actividad.*
 import kotlinx.android.synthetic.main.activity_archivo_detallado.*
+import kotlinx.android.synthetic.main.linearlayout_reacciones.view.*
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
@@ -98,8 +97,8 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
         binding.archivoViewModel = archivoViewModel
         binding.listaComentarioViewModel = listaComentariosViewModel
 
-        imageMeGusta = binding.layoutReacciones.imageButtonMeGusta
-        imageNoMeGusta = binding.layoutReacciones.imageButtonNoMeGusta
+        imageMeGusta = binding.layoutReaccionesArchivos.imageButtonMeGusta
+        imageNoMeGusta = binding.layoutReaccionesArchivos.imageButtonNoMeGusta
         playerView = binding.videoView
 
         archivoViewModel.bind(archivo)
@@ -142,7 +141,7 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
         imageMeGusta.setOnClickListener {
             val reaccion = Reaccion(
                 timestamp = Timestamp.now().seconds.toString(),
-                tipoPublicacion = "actividades",
+                tipoPublicacion = "archivos",
                 usuarioUid = autenticacionViewModel.usuario!!.uid,
                 tipoReaccion = "meGusta",
                 publicacionId = archivo.id
@@ -154,7 +153,7 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
         imageNoMeGusta.setOnClickListener {
             val reaccion = Reaccion(
                 timestamp = Timestamp.now().seconds.toString(),
-                tipoPublicacion = "actividades",
+                tipoPublicacion = "archivos",
                 usuarioUid = autenticacionViewModel.usuario!!.uid,
                 tipoReaccion = "noMeGusta",
                 publicacionId = archivo.id
@@ -180,6 +179,14 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
     override fun onSuccessRequest(response: Any?) {
         when (response) {
             is Reaccion? -> getReaccion(response)
+            is Archivo -> {
+                layoutReaccionesArchivos.textViewCantidadMeGustaPublicacion.text =
+                    archivo.meGusta.toString()
+                layoutReaccionesArchivos.textViewCantidadNoMeGustaPublicacion.text =
+                    archivo.noMeGusta.toString()
+                layoutReaccionesArchivos.textViewCantidadComentariosPublicacion.text =
+                    archivo.comentarios.toString()
+            }
         }
     }
 
@@ -220,6 +227,8 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
     ) {
         if (reaccionVieja != null) {
             reaccionViewModel.eliminarReaccion(reaccionVieja, publicacion)
+            imageMeGusta.setImageResource(R.drawable.ic_thumb_up_black_24dp)
+            imageNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_24dp)
             if (reaccionNueva.tipoReaccion != reaccionVieja.tipoReaccion) reaccionViewModel.crearReaccion(
                 reaccionNueva,
                 publicacion
