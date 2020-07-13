@@ -251,7 +251,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
         if (vista == null) {
             val vistaNueva = Vista(
                 usuarioUid = autenticacionViewModel.usuario!!.uid,
-                actividadId = actividad.fechaCreacionTimeStamp,
+                actividadId = actividad.id,
                 timestamp = Timestamp.now().seconds.toString(),
                 vecesVisto = 1
             )

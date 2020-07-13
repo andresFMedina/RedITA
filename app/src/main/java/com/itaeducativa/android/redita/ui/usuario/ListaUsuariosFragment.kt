@@ -12,9 +12,11 @@ import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.RecyclerView
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Reaccion
+import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.databinding.FragmentListaUsuariosBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.util.hideKeyboard
@@ -33,6 +35,7 @@ class ListaUsuariosFragment : Fragment(), KodeinAware, RequestListener,
     private lateinit var viewModel: ListaUsuarioViewModel
 
     private lateinit var autocomplete: SearchView.SearchAutoComplete
+    private lateinit var recyclerViewUsuarios: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +57,8 @@ class ListaUsuariosFragment : Fragment(), KodeinAware, RequestListener,
         viewModel = ViewModelProviders.of(this, factory).get(ListaUsuarioViewModel::class.java)
         viewModel.requestListener = this
         binding.viewModel = viewModel
+
+        recyclerViewUsuarios = binding.recyclerViewUsuarios
 
         viewModel.getUsuarios()
 
@@ -82,6 +87,13 @@ class ListaUsuariosFragment : Fragment(), KodeinAware, RequestListener,
             is List<*> -> {
                 if (response.isNotEmpty()) {
                     when (response[0]) {
+                        is Usuario -> {
+                            recyclerViewUsuarios.addOnScrollListener(viewModel.onScrollListener)
+                            Log.d(
+                                "Lista General",
+                                viewModel.listaUsuarios.value?.size.toString()
+                            )
+                        }
                         is String -> autocomplete.setAdapter(
                             viewModel.nombresUsuariosAdapter
                         )

@@ -1,10 +1,7 @@
 package com.itaeducativa.android.redita.data.repositorios
 
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Actividad
 
@@ -45,11 +42,27 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         direccion: Query.Direction,
         query: String = "",
         categoria: String
-    ): Query {
+        ): Query {
         val collection = firestoreDB.collection(ACTIVIDADES).orderBy(ordenCampo, direccion)
         var q = collection.whereEqualTo("estaActivo", true)
-        if (query.isNotBlank()) q = collection.whereEqualTo("nombre", query)
+        if (query.isNotBlank())
+            q = collection.whereEqualTo("nombre", query)
         return q.whereEqualTo("categoria", categoria)
+            .limit(4)
+    }
+
+    fun getActividadesNextPage(
+        ordenCampo: String,
+        direccion: Query.Direction,
+        lastVisible: DocumentSnapshot,
+        nombreQuery: String,
+        query: String
+    ): Query {
+        val collection = firestoreDB.collection(ACTIVIDADES).orderBy(ordenCampo, direccion)
+        val q = collection.whereEqualTo("estaActivo", true)
+        return q.whereEqualTo(nombreQuery, query)
+            .startAfter(lastVisible)
+            .limit(4)
     }
 
     fun getActividadesById(id: String): DocumentReference =
@@ -60,9 +73,10 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
         orderBy: String = FECHA_CREACION,
         query: String = ""
     ): Query {
-        val collection =
-            firestoreDB.collection(ACTIVIDADES).whereEqualTo(AUTOR_UID, uid)
-        return collection.whereEqualTo("estaActivo", true)
+        var collection = firestoreDB.collection(ACTIVIDADES).orderBy(orderBy)
+        collection = collection.whereEqualTo(AUTOR_UID, uid)
+        if (query.isNotBlank()) collection.whereEqualTo("nombre", query)
+        return collection.whereEqualTo("estaActivo", true).limit(4)
     }
 
 

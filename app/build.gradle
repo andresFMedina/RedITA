@@ -31,6 +31,10 @@ android {
         enabled = true
     }
 
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
 }
 
 dependencies {
@@ -68,6 +72,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-storage:4.3.2'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
+
+    // ExoPlayer
+    implementation "com.google.android.exoplayer:exoplayer:2.8.4"
 
     //JustifiedTextView
     implementation 'com.codesgood:justifiedtextview:1.1.0'
