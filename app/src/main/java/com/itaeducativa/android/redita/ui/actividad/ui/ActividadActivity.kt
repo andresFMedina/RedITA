@@ -65,6 +65,8 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
     private lateinit var imageMeGusta: ImageButton
     private lateinit var imageNoMeGusta: ImageButton
 
+    private lateinit var viewModelActividad: ActividadViewModel
+
 
     private var textoComentario: String = ""
 
@@ -80,7 +82,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
         val binding: ActivityActividadBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_actividad)
 
-        val viewModelActividad = ViewModelProviders.of(this).get(ActividadViewModel::class.java)
+        viewModelActividad = ViewModelProviders.of(this).get(ActividadViewModel::class.java)
         viewModelActividad.bind(actividad)
 
         setupViewModels()
@@ -186,6 +188,8 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
     ) {
         if (reaccionVieja != null) {
             reaccionViewModel.eliminarReaccion(reaccionVieja, publicacion)
+            imageMeGusta.setImageResource(R.drawable.ic_thumb_up_black_24dp)
+            imageNoMeGusta.setImageResource(R.drawable.ic_thumb_down_black_24dp)
             if (reaccionNueva.tipoReaccion != reaccionVieja.tipoReaccion) reaccionViewModel.crearReaccion(
                 reaccionNueva,
                 publicacion
@@ -229,10 +233,19 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
     }
 
     override fun onSuccessRequest(response: Any?) {
-        when(response){
+        when (response) {
             is Vista? -> contabilizarVista(response)
             is Reaccion? -> getReaccion(response)
+            is Actividad -> {
+                layoutReacciones.textViewCantidadMeGustaPublicacion.text =
+                    actividad.meGusta.toString()
+                layoutReacciones.textViewCantidadNoMeGustaPublicacion.text =
+                    actividad.noMeGusta.toString()
+                layoutReacciones.textViewCantidadComentariosPublicacion.text =
+                    actividad.comentarios.toString()
+            }
         }
+
     }
 
     private fun getReaccion(reaccion: Reaccion?) {

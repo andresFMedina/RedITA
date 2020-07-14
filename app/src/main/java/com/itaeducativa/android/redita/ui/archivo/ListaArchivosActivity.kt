@@ -26,9 +26,6 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
 
-
-private const val URL_IMAGE = "https://s3.ca-central-1.amazonaws.com/codingwithmitch/media/VideoPlayerRecyclerView/Sending+Data+to+a+New+Activity+with+Intent+Extras.png"
-
 class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener, ReaccionListener {
     override val kodein: Kodein by kodein()
 
@@ -87,38 +84,44 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        listaArchivoViewModel.requestListener = this
+        listaArchivoViewModel.getArchivosByActividadId(actividad)
+    }
+
     override fun onSuccessRequest(response: Any?) {
         when (response) {
             is List<*> -> {
-                val primerItem = response[0]
-                when (primerItem) {
-                    is Archivo -> {
-                        //progressBarListaActividades.visibility = View.GONE
-                        obtenerObjetosArchivo()
-                        //initRecyclerView()
+                if (response.isNotEmpty()) {
+                    when (response[0]) {
+                        is Archivo -> {
+                            obtenerObjetosArchivo()
+                        }
                     }
                 }
             }
             is Reaccion? -> reaccionConsultada(response)
         }
-
+        Log.d("Lista", listaArchivoViewModel.listaArchivos.toString())
     }
 
     private fun obtenerObjetosArchivo() {
         val listaArchivos = listaArchivoViewModel.listaArchivos.value
         if (listaArchivos != null && !seConsultoReaccion) {
-            for (actividad in listaArchivos) {
+            for (archivo in listaArchivos) {
                 reaccionViewModel.getReaccionByPublicacionIdYUsuarioUid(
-                    actividad.id,
-                    actividad,
+                    archivo.id,
+                    archivo,
                     autenticacionViewModel.usuario!!.uid
                 )
             }
             seConsultoReaccion = true
             listaArchivoViewModel.listaArchivoAdapter.notifyDataSetChanged()
         }
-        Log.d("Lista", listaArchivos.toString())
+
     }
+
     fun reaccionConsultada(reaccion: Reaccion?) {
         if (reaccion != null) {
             val listaArchivos = listaArchivoViewModel.listaArchivos.value
@@ -157,34 +160,5 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
         }
         reaccionViewModel.crearReaccion(reaccionNueva, publicacion)
     }
-
-    /*private fun initRecyclerView() {
-        val archivos: List<Archivo> =  listaArchivoViewModel.listaArchivos.value!!
-        val layoutManager = LinearLayoutManager(this)
-        mRecyclerView.setLayoutManager(layoutManager)
-        val itemDecorator = VerticalSpacingItemDecorator(10)
-        mRecyclerView.addItemDecoration(itemDecorator)
-        val mediaObjects: MutableList<MediaObject> = mutableListOf()
-        for(archivo in archivos){
-            if(archivo.tipo == "video"){
-                val mediaObject = MediaObject("", archivo.url, URL_IMAGE, "")
-                mediaObjects.add(mediaObject)
-            }
-        }
-
-
-        mRecyclerView.setMediaObjects(mediaObjects)
-        val adapter =
-            VideoPlayerRecyclerAdapter(mediaObjects, initGlide()!!)
-        mRecyclerView.setAdapter(adapter)
-    }
-
-    private fun initGlide(): RequestManager? {
-        val options: RequestOptions = RequestOptions()
-            .placeholder(R.drawable.white_background)
-            .error(R.drawable.white_background)
-        return Glide.with(this)
-            .setDefaultRequestOptions(options)
-    }*/
 
 }

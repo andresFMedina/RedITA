@@ -134,23 +134,25 @@ class ListaActividadesViewModel(
 
                 listaActividades.value = actividades
                 misActividadesAdapter.actualizarActividades(actividades)
-                if (!value.isEmpty) lastVisible = value.documents.get(value.size() - 1)
+                if (!value.isEmpty) {
+                    lastVisible = value.documents.get(value.size() - 1)
 
-                initScrollListener(
-                    repositorioActividad.getActividadesNextPage(
+                    initScrollListener(
+                        repositorioActividad.getActividadesNextPage(
+                            orderBy,
+                            Query.Direction.ASCENDING,
+                            lastVisible!!,
+                            "autorUid",
+                            uid
+                        ),
+                        misActividadesAdapter,
                         orderBy,
                         Query.Direction.ASCENDING,
-                        lastVisible!!,
                         "autorUid",
                         uid
-                    ),
-                    misActividadesAdapter,
-                    orderBy,
-                    Query.Direction.ASCENDING,
-                    "autorUid",
-                    uid
 
-                )
+                    )
+                }
                 requestListener?.onSuccessRequest(actividades)
 
             }
