@@ -2,9 +2,12 @@ package com.itaeducativa.android.redita.ui.archivo
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -20,10 +23,12 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Timestamp
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.*
 import com.itaeducativa.android.redita.databinding.ActivityArchivoDetalladoBinding
+import com.itaeducativa.android.redita.databinding.DialogImagenDetalladaBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.VideoListener
 import com.itaeducativa.android.redita.ui.actividad.viewmodels.StorageViewModel
@@ -66,6 +71,8 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
     private var player: SimpleExoPlayer? = null
     private var playerView: PlayerView? = null
 
+    private lateinit var imageView: ImageView
+
     private var playWhenReady = true
     private var currentWindow = 0
     private var playbackPosition: Long = 0
@@ -100,6 +107,7 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
         imageMeGusta = binding.layoutReaccionesArchivos.imageButtonMeGusta
         imageNoMeGusta = binding.layoutReaccionesArchivos.imageButtonNoMeGusta
         playerView = binding.videoView
+        imageView = binding.imageViewImagen
 
         archivoViewModel.bind(archivo)
 
@@ -160,6 +168,27 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
 
             )
             onReaccion(reaccion, archivo.reaccion, archivo)
+        }
+
+        imageView.setOnClickListener {
+            //MaterialAlertDialogBuilder(it.context!!).show()
+            val builder = AlertDialog.Builder(it.context)
+            val binding: DialogImagenDetalladaBinding =
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(it.context),
+                    R.layout.dialog_imagen_detallada,
+                    null,
+                    false
+                )
+            val view = binding.root
+            builder.setView(view)
+            binding.url = archivo.url
+
+            val dialog = builder.create()
+            binding.imageButtonCerrarDialogoImagen.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
         }
 
         if(archivo.tipo == "video"){
