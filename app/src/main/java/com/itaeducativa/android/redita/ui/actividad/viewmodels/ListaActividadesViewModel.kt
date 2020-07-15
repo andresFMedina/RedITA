@@ -72,7 +72,8 @@ class ListaActividadesViewModel(
         ordenCampo: String = "fechaCreacionTimeStamp",
         direccion: Query.Direction = Query.Direction.DESCENDING,
         query: String = "",
-        tipo: String
+        tipo: String,
+        cambioOrden: Boolean = false
     ) {
         requestListener?.onStartRequest()
         repositorioActividad.getActividades(ordenCampo, direccion, query, tipo)
@@ -92,22 +93,26 @@ class ListaActividadesViewModel(
                 }
                 listaActividades.value = actividades
                 listaActividadesAdapter.actualizarActividades(listaActividades.value as MutableList<Actividad>)
-                if (!value.isEmpty) lastVisible = value.documents.get(value.size() - 1)
-                initScrollListener(
-                    repositorioActividad.getActividadesNextPage(
+                if (!value.isEmpty) {
+                    lastVisible = value.documents.get(value.size() - 1)
+                    if (cambioOrden) isLastItemReached = false
+
+                    initScrollListener(
+                        repositorioActividad.getActividadesNextPage(
+                            ordenCampo,
+                            direccion,
+                            lastVisible!!,
+                            "categoria",
+                            tipo
+                        ),
+                        listaActividadesAdapter,
                         ordenCampo,
                         direccion,
-                        lastVisible!!,
                         "categoria",
                         tipo
-                    ),
-                    listaActividadesAdapter,
-                    ordenCampo,
-                    direccion,
-                    "categoria",
-                    tipo
 
-                )
+                    )
+                }
                 requestListener?.onSuccessRequest(actividades)
             }
     }

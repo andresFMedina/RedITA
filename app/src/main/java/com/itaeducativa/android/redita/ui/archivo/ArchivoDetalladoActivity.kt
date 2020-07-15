@@ -17,16 +17,16 @@ import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.dash.DashMediaSource
-import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Timestamp
 import com.itaeducativa.android.redita.R
-import com.itaeducativa.android.redita.data.modelos.*
+import com.itaeducativa.android.redita.data.modelos.Archivo
+import com.itaeducativa.android.redita.data.modelos.Comentario
+import com.itaeducativa.android.redita.data.modelos.Publicacion
+import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.databinding.ActivityArchivoDetalladoBinding
 import com.itaeducativa.android.redita.databinding.DialogImagenDetalladaBinding
 import com.itaeducativa.android.redita.network.RequestListener
@@ -40,7 +40,6 @@ import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModel
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModelFactory
 import com.itaeducativa.android.redita.util.hideKeyboard
-import kotlinx.android.synthetic.main.activity_actividad.*
 import kotlinx.android.synthetic.main.activity_archivo_detallado.*
 import kotlinx.android.synthetic.main.linearlayout_reacciones.view.*
 import org.kodein.di.Kodein
@@ -146,6 +145,19 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
             autenticacionViewModel.usuario!!.uid
         )
 
+        setupListeners()
+
+        if(archivo.tipo == "video"){
+            binding.imageViewImagen.visibility = View.GONE
+            binding.videoView.visibility = View.VISIBLE
+
+            storageViewModel.getVideoUri(archivo.url)
+        }
+
+
+    }
+
+    private fun setupListeners() {
         imageMeGusta.setOnClickListener {
             val reaccion = Reaccion(
                 timestamp = Timestamp.now().seconds.toString(),
@@ -190,15 +202,6 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
             }
             dialog.show()
         }
-
-        if(archivo.tipo == "video"){
-            binding.imageViewImagen.visibility = View.GONE
-            binding.videoView.visibility = View.VISIBLE
-
-            storageViewModel.getVideoUri(archivo.url)
-        }
-
-
     }
 
     override fun onStartRequest() {

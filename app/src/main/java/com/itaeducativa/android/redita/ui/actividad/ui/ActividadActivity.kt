@@ -90,8 +90,6 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
         imageMeGusta = layoutReacciones.imageButtonMeGusta
         imageNoMeGusta = layoutReacciones.imageButtonNoMeGusta
 
-        //if (actividad.video != null) storageViewModel.getVideoUri(actividad.video!!)
-        videoActividad.visibility = View.GONE
 
         binding.viewModelActividad = viewModelActividad
         binding.viewModelComentario = viewModelComentario

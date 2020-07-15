@@ -129,6 +129,11 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         (inputCategoriaActividad.editText as? AutoCompleteTextView)?.setAdapter(adapter)
     }
 
+    override fun onResume() {
+        listaActividadesViewModel.requestListener = this
+        super.onResume()
+    }
+
     override fun onStartRequest() {
         buttonCrearActividad.isEnabled = false
         buttonCrearActividad.text = getString(R.string.creando)
