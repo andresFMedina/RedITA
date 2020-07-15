@@ -47,7 +47,6 @@ class ListaArchivoAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val archivo = listaArchivos[position]
         holder.bind(archivo)
-
     }
 
     fun actualizarArchivos(archivos: List<Archivo>){
