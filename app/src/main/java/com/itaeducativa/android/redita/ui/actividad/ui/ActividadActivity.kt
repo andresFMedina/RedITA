@@ -90,8 +90,6 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
         imageMeGusta = layoutReacciones.imageButtonMeGusta
         imageNoMeGusta = layoutReacciones.imageButtonNoMeGusta
 
-        //if (actividad.video != null) storageViewModel.getVideoUri(actividad.video!!)
-        videoActividad.visibility = View.GONE
 
         binding.viewModelActividad = viewModelActividad
         binding.viewModelComentario = viewModelComentario
@@ -261,22 +259,26 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
 
     private fun contabilizarVista(vista: Vista?) {
 
-        if (vista == null) {
-            val vistaNueva = Vista(
-                usuarioUid = autenticacionViewModel.usuario!!.uid,
-                actividadId = actividad.id,
-                timestamp = Timestamp.now().seconds.toString(),
-                vecesVisto = 1
-            )
-            vistaViewModel.guardarVistaEnFirestore(vistaNueva)
-            viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
-            vistaViewModel.vista.value = vistaNueva
-            return
-        }
+        if (!yaVisto) {
+            if (vista == null) {
+                val vistaNueva = Vista(
+                    usuarioUid = autenticacionViewModel.usuario!!.uid,
+                    actividadId = actividad.id,
+                    timestamp = Timestamp.now().seconds.toString(),
+                    vecesVisto = 1
+                )
+                vistaViewModel.guardarVistaEnFirestore(vistaNueva)
+                viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
+                vistaViewModel.vista.value = vistaNueva
+                yaVisto = true
+                return
+            }
 
-        vistaViewModel.vista.value
-        vistaViewModel.agregarVista(vista)
-        viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
+            vistaViewModel.vista.value
+            vistaViewModel.agregarVista(vista)
+            yaVisto = true
+            viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
+        }
     }
 
 

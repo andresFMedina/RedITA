@@ -23,10 +23,6 @@ class ListaArchivoAdapter(
         RecyclerView.ViewHolder(binding.root) {
         val viewModel = ArchivoViewModel()
 
-        val imageButtonMeGusta: ImageButton = binding.layoutReacciones.imageButtonMeGusta
-        val imageButtonNoMeGusta: ImageButton = binding.layoutReacciones.imageButtonNoMeGusta
-        val imageButtonComentarios: ImageButton = binding.layoutReacciones.imageButtonComentarios
-
         fun bind(archivo: Archivo) {
             viewModel.bind(archivo)
             binding.viewModel = viewModel
@@ -52,22 +48,6 @@ class ListaArchivoAdapter(
         val archivo = listaArchivos[position]
         holder.bind(archivo)
 
-        val reaccion = archivo.reaccion
-        reaccionHandler(
-            publicacionId = archivo.id,
-            publicacion = archivo,
-            tipoPublicacion = "archivos",
-            usuarioUid = uidUsuarioActual,
-            reaccion = reaccion,
-            imageButtonMeGusta = holder.imageButtonMeGusta,
-            imageButtonNoMeGusta = holder.imageButtonNoMeGusta,
-            reaccionListener = reaccionListener
-        )
-        holder.imageButtonComentarios.setOnClickListener {
-            it.context.startArchivoDetalladoActivity(
-                archivo
-            )
-        }
     }
 
     fun actualizarArchivos(archivos: List<Archivo>){

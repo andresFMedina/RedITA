@@ -2,9 +2,12 @@ package com.itaeducativa.android.redita.ui.archivo
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
@@ -14,16 +17,18 @@ import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.source.ExtractorMediaSource
 import com.google.android.exoplayer2.source.MediaSource
-import com.google.android.exoplayer2.source.dash.DashMediaSource
-import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.firebase.Timestamp
 import com.itaeducativa.android.redita.R
-import com.itaeducativa.android.redita.data.modelos.*
+import com.itaeducativa.android.redita.data.modelos.Archivo
+import com.itaeducativa.android.redita.data.modelos.Comentario
+import com.itaeducativa.android.redita.data.modelos.Publicacion
+import com.itaeducativa.android.redita.data.modelos.Reaccion
 import com.itaeducativa.android.redita.databinding.ActivityArchivoDetalladoBinding
+import com.itaeducativa.android.redita.databinding.DialogImagenDetalladaBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.VideoListener
 import com.itaeducativa.android.redita.ui.actividad.viewmodels.StorageViewModel
@@ -35,7 +40,6 @@ import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModel
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModelFactory
 import com.itaeducativa.android.redita.util.hideKeyboard
-import kotlinx.android.synthetic.main.activity_actividad.*
 import kotlinx.android.synthetic.main.activity_archivo_detallado.*
 import kotlinx.android.synthetic.main.linearlayout_reacciones.view.*
 import org.kodein.di.Kodein
@@ -65,6 +69,8 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
 
     private var player: SimpleExoPlayer? = null
     private var playerView: PlayerView? = null
+
+    private lateinit var imageView: ImageView
 
     private var playWhenReady = true
     private var currentWindow = 0
@@ -100,6 +106,7 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
         imageMeGusta = binding.layoutReaccionesArchivos.imageButtonMeGusta
         imageNoMeGusta = binding.layoutReaccionesArchivos.imageButtonNoMeGusta
         playerView = binding.videoView
+        imageView = binding.imageViewImagen
 
         archivoViewModel.bind(archivo)
 
@@ -138,6 +145,19 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
             autenticacionViewModel.usuario!!.uid
         )
 
+        setupListeners()
+
+        if(archivo.tipo == "video"){
+            binding.imageViewImagen.visibility = View.GONE
+            binding.videoView.visibility = View.VISIBLE
+
+            storageViewModel.getVideoUri(archivo.url)
+        }
+
+
+    }
+
+    private fun setupListeners() {
         imageMeGusta.setOnClickListener {
             val reaccion = Reaccion(
                 timestamp = Timestamp.now().seconds.toString(),
@@ -162,14 +182,26 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
             onReaccion(reaccion, archivo.reaccion, archivo)
         }
 
-        if(archivo.tipo == "video"){
-            binding.imageViewImagen.visibility = View.GONE
-            binding.videoView.visibility = View.VISIBLE
+        imageView.setOnClickListener {
+            //MaterialAlertDialogBuilder(it.context!!).show()
+            val builder = AlertDialog.Builder(it.context)
+            val binding: DialogImagenDetalladaBinding =
+                DataBindingUtil.inflate(
+                    LayoutInflater.from(it.context),
+                    R.layout.dialog_imagen_detallada,
+                    null,
+                    false
+                )
+            val view = binding.root
+            builder.setView(view)
+            binding.url = archivo.url
 
-            storageViewModel.getVideoUri(archivo.url)
+            val dialog = builder.create()
+            binding.imageButtonCerrarDialogoImagen.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
         }
-
-
     }
 
     override fun onStartRequest() {

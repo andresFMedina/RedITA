@@ -12,8 +12,8 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:layout_marginBottom="@dimen/margin_bottom_menu_principal">
+        android:layout_height="350dp"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,24 +33,6 @@
                 app:imageUrl="@{viewModel.archivo.urlImagen}"
                 android:onClick="@{(v) -> viewModel.verArchivoDetalladoActivity(v)}"
                 />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/imageViewImagen"
-                android:background="@android:color/white">
-
-                <include
-                    android:id="@+id/layoutReacciones"
-                    bind:comentarios="@{viewModel.comentarios}"
-                    bind:meGusta="@{viewModel.meGusta}"
-                    bind:noMeGusta="@{viewModel.noMeGusta}"
-                    layout="@layout/linearlayout_reacciones"
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="10dp"
-                    />
-            </LinearLayout>
 
         </RelativeLayout>
 
