@@ -2,9 +2,15 @@ package com.itaeducativa.android.redita.ui.usuario
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
+import android.widget.AbsListView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.data.repositorios.RepositorioStorage
 import com.itaeducativa.android.redita.data.repositorios.RepositorioUsuario
@@ -30,13 +36,14 @@ class ListaUsuarioViewModel(
     val nombreEstudiante = MutableLiveData<String>("")
     val gradoEstudiante = MutableLiveData<String>()
 
-    val listaUsuarios = MutableLiveData<List<Usuario>>()
+    val listaUsuarios = MutableLiveData<MutableList<Usuario>>()
     val listaUsuariosAdapter = UsuarioAdapter(this)
 
     var requestListener: RequestListener? = null
     var imageUploadListener: ImageUploadListener? = null
 
     var nombresUsuariosAdapter: NombresAdapter? = null
+
 
     fun bindUsuario(usuario: Usuario) {
         this.usuario.value = usuario
@@ -49,6 +56,13 @@ class ListaUsuarioViewModel(
         cantidadNoMeGusta.value = usuario.noMeGusta.toString()
         cantidadComentarios.value = usuario.comentarios.toString()
     }
+
+    private var isLastItemReached: Boolean = false
+    private var isScrolling: Boolean = false
+
+    lateinit var onScrollListener: RecyclerView.OnScrollListener
+
+    var lastVisible: DocumentSnapshot? = null
 
     fun guardarUsuario(email: String, uid: String, urlImagen: String?) {
         val imagen = urlImagen ?: "gs://redita.appspot.com/img_profile.png"
@@ -103,6 +117,8 @@ class ListaUsuarioViewModel(
             }
             listaUsuarios.value = usuarios
             listaUsuariosAdapter.actualizarUsuarios(usuarios)
+            if (!value.isEmpty) lastVisible = value.documents.get(value.size() - 1)
+            initScrollListener(repositorioUsuario.getUsuariosNextPage(lastVisible!!))
             requestListener?.onSuccessRequest(usuarios)
         }
     }
@@ -149,6 +165,62 @@ class ListaUsuarioViewModel(
             nombresUsuariosAdapter = NombresAdapter(context, nombres)
             requestListener?.onSuccessRequest(nombres.toList())
         }
+    }
+
+    fun initScrollListener(
+        query: Query
+    ) {
+        onScrollListener =
+            object : RecyclerView.OnScrollListener() {
+                override fun onScrollStateChanged(
+                    recyclerView: RecyclerView,
+                    newState: Int
+                ) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+                        isScrolling = true
+                    }
+                }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val linearLayoutManager =
+                        recyclerView.layoutManager as LinearLayoutManager?
+                    val firstVisibleItemPosition =
+                        linearLayoutManager!!.findFirstVisibleItemPosition()
+                    val visibleItemCount = linearLayoutManager.childCount
+                    val totalItemCount = linearLayoutManager.itemCount
+                    if (isScrolling && firstVisibleItemPosition + visibleItemCount == totalItemCount && !isLastItemReached) {
+                        isScrolling = false
+                        requestListener?.onStartRequest()
+                        query.addSnapshotListener { value, e ->
+                            if (e != null) {
+                                listaUsuarios.value = null
+                                requestListener?.onFailureRequest(e.message!!)
+                                return@addSnapshotListener
+                            }
+                            val usuarios: MutableList<Usuario> = mutableListOf()
+                            for (v in value!!) {
+                                val usuario = v.toObject(Usuario::class.java)
+                                usuarios.add(usuario)
+                            }
+
+                            listaUsuarios.value!!.addAll(usuarios)
+                            lastVisible = value.documents.get(value.size() - 1)
+                            if (value.size() < 6) {
+                                isLastItemReached = true
+                            }
+                            Log.d("Pagina cargada", lastVisible.toString())
+
+                            listaUsuariosAdapter.actualizarUsuarios(listaUsuarios.value!!)
+                            val nextQuery = repositorioUsuario.getUsuariosNextPage(lastVisible!!)
+                            initScrollListener(nextQuery)
+                            requestListener?.onSuccessRequest(usuarios)
+
+                        }
+                    }
+                }
+            }
     }
 
 }

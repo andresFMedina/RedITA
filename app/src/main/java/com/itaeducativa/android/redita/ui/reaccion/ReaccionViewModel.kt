@@ -31,22 +31,27 @@ class ReaccionViewModel(
                 when (reaccion.tipoReaccion) {
                     "noMeGusta" -> publicacion.noMeGusta++
                     "meGusta" -> publicacion.meGusta++
+
                 }
+                requestListener?.onSuccessRequest(publicacion)
             }
             publicacion.reaccion = reaccion
             repositorioUsuario.sumarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
 
-            val historial = Historial(
-                usuarioUid = reaccion.usuarioUid,
-                actividadId = reaccion.publicacionId,
-                accion = when (reaccion.tipoReaccion) {
-                    "noMeGusta" -> "No le gustó"
-                    "meGusta" -> "Le gustó"
-                    else -> ""
-                },
-                timestampAccion = reaccion.timestamp
-            )
-            repositorioHistorial.guardarHistorialFirestore(historial)
+
+            if (reaccion.tipoPublicacion == "actividades") {
+                val historial = Historial(
+                    usuarioUid = reaccion.usuarioUid,
+                    actividadId = reaccion.publicacionId,
+                    accion = when (reaccion.tipoReaccion) {
+                        "noMeGusta" -> "No le gustó"
+                        "meGusta" -> "Le gustó"
+                        else -> ""
+                    },
+                    timestampAccion = reaccion.timestamp
+                )
+                repositorioHistorial.guardarHistorialFirestore(historial)
+            }
             val r: Reaccion? = reaccion
             requestListener?.onSuccessRequest(r)
         }.addOnFailureListener {
@@ -66,12 +71,12 @@ class ReaccionViewModel(
                     "noMeGusta" -> publicacion.noMeGusta--
                     "meGusta" -> publicacion.meGusta--
                 }
-                //requestListener?.onSuccessRequest()
+                requestListener?.onSuccessRequest(publicacion)
             }
             repositorioUsuario.restarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
-            repositorioHistorial.eliminarHistorial(reaccion.timestamp)
+            if (reaccion.tipoPublicacion == "actividades")repositorioHistorial.eliminarHistorial(reaccion.timestamp)
 
-            //requestListener?.onSuccessRequest()
+
         }.addOnFailureListener {
             requestListener?.onFailureRequest(it.message!!)
         }

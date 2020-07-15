@@ -1,10 +1,7 @@
 package com.itaeducativa.android.redita.data.repositorios
 
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.*
 import com.itaeducativa.android.redita.data.firebase.FirebaseSource
 import com.itaeducativa.android.redita.data.modelos.Usuario
 
@@ -31,8 +28,8 @@ class RepositorioUsuario(private val firebase: FirebaseSource) {
 
     fun getUsuarios(query: String = ""): Query {
         val q = firestoreDB.collection(USUARIOS)
-        if(query.isNotBlank()) return q.whereEqualTo("nombreCompleto", query)
-        return q.orderBy("nombreCompleto")
+        if (query.isNotBlank()) return q.whereEqualTo("nombreCompleto", query)
+        return q.orderBy("nombreCompleto").limit(6)
     }
 
     fun cambiarUrlImagenPerfil(url: String, uid: String): Task<Void> =
@@ -56,6 +53,11 @@ class RepositorioUsuario(private val firebase: FirebaseSource) {
         )
         return firestoreDB.collection(NOMBRES_USUARIOS).document(usuarioUid).set(data)
     }
+
+    fun getUsuariosNextPage(lastVisible: DocumentSnapshot): Query =
+        firestoreDB.collection(USUARIOS).orderBy("nombreCompleto")
+            .startAfter(lastVisible)
+            .limit(6)
 
 
 }

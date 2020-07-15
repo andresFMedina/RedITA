@@ -14,6 +14,8 @@ import androidx.core.view.MenuItemCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
@@ -61,6 +63,9 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
     private lateinit var tipo: String
     private lateinit var usuarioUid: String
 
+    private lateinit var recyclerViewActividades: RecyclerView
+    private lateinit var linearLayoutManager: LinearLayoutManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -91,6 +96,8 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
 
         binding.viewModel = listaActividadViewModel
 
+        initRecyclerView(binding)
+
 
         listaActividadViewModel.requestListener = this
         listaArchivosViewModel.requestListener = this
@@ -113,13 +120,19 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         return binding.root
     }
 
+    private fun initRecyclerView(binding: FragmentListaActividadesBinding) {
+        recyclerViewActividades = binding.recyclerViewActividades
+        linearLayoutManager = LinearLayoutManager(context!!)
+        recyclerViewActividades.layoutManager = linearLayoutManager
+    }
+
     override fun onResume() {
         super.onResume()
         listaActividadViewModel.requestListener = this
         listaActividadViewModel.getListaActividades(
             tipo = tipo
         )
-        listaActividadViewModel.getNombresActividades(context!!, tipo)
+        listaActividadViewModel.getNombresActividadesByCategoria(context!!, tipo)
     }
 
 
@@ -150,6 +163,8 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
                     when (response[0]) {
                         is Actividad -> {
                             obtenerObjetosActividad()
+                            recyclerViewActividades.addOnScrollListener(listaActividadViewModel.onScrollListener)
+                            Log.d("Lista General", listaActividadViewModel.listaActividades.value?.size.toString())
                         }
                         is String -> autocomplete.setAdapter(
                             listaActividadViewModel.nombresActividadesAdapter
@@ -231,7 +246,6 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         }
         super.onCreateOptionsMenu(menu, inflater)
     }
-
 
 
     override fun onReaccion(
