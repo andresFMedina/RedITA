@@ -6,6 +6,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -23,9 +25,10 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
-import java.net.CacheResponse
 
 private const val ACTION_RESULT_GET_IMAGES = 0
+private const val GRADO_CUARTO = "4to"
+private const val GRADO_QUINTO = "5to"
 
 class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListener,
     ImageUploadListener, KodeinAware {
@@ -76,6 +79,10 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
                 inputConfirmarPasswordSignup
             )
         )
+
+        val items = listOf(GRADO_CUARTO, GRADO_QUINTO)
+        val adapter = ArrayAdapter(this, R.layout.list_item, items)
+        (inputGradoEstudiante.editText as? AutoCompleteTextView)?.setAdapter(adapter)
 
         autenticacionViewModel.singUp()
     }
