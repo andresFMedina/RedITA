@@ -34,7 +34,7 @@ class ListaUsuarioViewModel(
     val cantidadNoMeGusta = MutableLiveData<String>()
     val cantidadComentarios = MutableLiveData<String>()
     val nombreEstudiante = MutableLiveData<String>("")
-    val gradoEstudiante = MutableLiveData<String>("4B")
+    val gradoEstudiante = MutableLiveData<String>()
 
     val listaUsuarios = MutableLiveData<MutableList<Usuario>>()
     val listaUsuariosAdapter = UsuarioAdapter(this)

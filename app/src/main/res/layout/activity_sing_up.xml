@@ -113,16 +113,21 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/inputGradoEstudiante"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/fab_margin"
+                    android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"
                     app:errorEnabled="true">
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <android.widget.AutoCompleteTextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="false"
                         android:hint="@string/grado_del_estudiante"
-                        android:inputType="phone"
+                        android:inputType="none"
                         android:text="@={usuarioViewModel.gradoEstudiante}" />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
