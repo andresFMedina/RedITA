@@ -10,4 +10,8 @@ class NotificacionViewModel(
     fun getToken() {
         repositorioNotificacion.getToken()
     }
+
+    fun subscribeToActividades(){
+        repositorioNotificacion.subscribeToActividades()
+    }
 }

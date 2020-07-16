@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity(), KodeinAware {
         notificacionViewModel =
             ViewModelProviders.of(this, notificacionFactory).get(NotificacionViewModel::class.java)
         notificacionViewModel.getToken()
+        notificacionViewModel.subscribeToActividades()
 
         bottomBarMenuPrincipal.menu.findItem(R.id.menuMisActividades).isVisible = usuario.rol == "Docente"
         bottomBarMenuPrincipal.menu.findItem(R.id.menuUsuarios).isVisible = usuario.rol == "Docente"
