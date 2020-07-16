@@ -103,6 +103,8 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
         binding.archivoViewModel = archivoViewModel
         binding.listaComentarioViewModel = listaComentariosViewModel
 
+        listaComentariosViewModel.listaComentariosAdapter.publicacion = archivo
+
         imageMeGusta = binding.layoutReaccionesArchivos.imageButtonMeGusta
         imageNoMeGusta = binding.layoutReaccionesArchivos.imageButtonNoMeGusta
         playerView = binding.videoView

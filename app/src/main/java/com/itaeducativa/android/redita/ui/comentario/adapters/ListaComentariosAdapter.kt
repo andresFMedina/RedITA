@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Comentario
+import com.itaeducativa.android.redita.data.modelos.Publicacion
 import com.itaeducativa.android.redita.databinding.CardviewComentarioBinding
 import com.itaeducativa.android.redita.ui.comentario.viewmodels.ComentarioViewModel
 import com.itaeducativa.android.redita.ui.comentario.viewmodels.ListaComentariosViewModel
@@ -17,6 +18,8 @@ class ListaComentariosAdapter(
     private val listaComentariosViewModel: ListaComentariosViewModel
 ) : RecyclerView.Adapter<ListaComentariosAdapter.ViewHolder>() {
     private lateinit var listaComentarios: List<Comentario>
+
+    lateinit var publicacion: Publicacion
 
     class ViewHolder(
         private val binding: CardviewComentarioBinding
@@ -67,7 +70,7 @@ class ListaComentariosAdapter(
                     }
                     .setPositiveButton(it.resources.getString(R.string.aceptar_dialogo)) { _, _ ->
                         listaComentariosViewModel
-                            .eliminarComentario(comentario)
+                            .eliminarComentario(comentario, publicacion)
                     }
                     .show()
             }

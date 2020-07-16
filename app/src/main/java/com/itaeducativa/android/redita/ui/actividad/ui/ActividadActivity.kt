@@ -96,6 +96,8 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
         binding.textoComentario = textoComentario
         binding.viewModelArchivo = listaArchivoViewModel
 
+        viewModelComentario.listaComentariosAdapter.publicacion = actividad
+
         if (!actividad.archivos.isNullOrEmpty())
             listaArchivoViewModel.listaArchivoAdapter.actualizarArchivos(actividad.archivos!!)
 

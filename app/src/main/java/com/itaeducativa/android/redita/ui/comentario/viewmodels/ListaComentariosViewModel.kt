@@ -27,7 +27,10 @@ class ListaComentariosViewModel(
 
     var requestListener: RequestListener? = null
 
-    fun agregarComentariosEnFirestorePorPublicacion(comentario: Comentario, publicacion: Publicacion) {
+    fun agregarComentariosEnFirestorePorPublicacion(
+        comentario: Comentario,
+        publicacion: Publicacion
+    ) {
         requestListener?.onStartRequest()
         repositorioComentario.agregarComentarioEnFirestorePorPublicacion(comentario)
             .addOnFailureListener {
@@ -50,6 +53,7 @@ class ListaComentariosViewModel(
                     "comentarios"
                 ).addOnSuccessListener {
                     publicacion.comentarios++
+                    requestListener?.onSuccessRequest(publicacion)
                 }.addOnFailureListener {
                     requestListener?.onFailureRequest(it.message!!)
                 }
@@ -84,7 +88,24 @@ class ListaComentariosViewModel(
             })
     }
 
-    fun eliminarComentario(comentario: Comentario){
-        repositorioComentario.eliminarComentario(comentario)
+    fun eliminarComentario(comentario: Comentario, publicacion: Publicacion) {
+        repositorioComentario.eliminarComentario(comentario).addOnSuccessListener {
+            repositorioPublicacion.disminuirInteraccion(
+                comentario.tipoPublicacion,
+                comentario.publicacionId,
+                "comentarios"
+            ).addOnSuccessListener {
+                publicacion.comentarios--
+                requestListener?.onSuccessRequest(publicacion)
+            }.addOnFailureListener {
+                requestListener?.onFailureRequest(it.message!!)
+            }
+            if (comentario.tipoPublicacion == "actividades")
+                repositorioHistorial.eliminarHistorial(comentario.fecha)
+            repositorioUsuario.restarInteraccion("comentarios", comentario.usuarioUid)
+                .addOnFailureListener {
+                    requestListener?.onFailureRequest(it.message!!)
+                }
+        }
     }
 }

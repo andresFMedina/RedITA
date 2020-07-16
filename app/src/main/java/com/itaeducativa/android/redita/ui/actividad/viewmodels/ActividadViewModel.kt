@@ -82,6 +82,7 @@ class ActividadViewModel : ViewModel() {
     }
 
     fun verActividad(view: View) {
+        actividad.value!!.referenciaAutor = null
         view.context.startActividadActivity(actividad.value!!)
     }
 

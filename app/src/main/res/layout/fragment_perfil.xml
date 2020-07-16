@@ -84,6 +84,7 @@
                 tools:ignore="PrivateResource">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputTelefonoPerfil"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@={usuarioViewModel.telefono}" />
@@ -112,10 +113,11 @@
                     android:textSize="@dimen/textsize_mi_actividad" />
 
                 <TextView
+                    android:id="@+id/textViewCantidadMeGustaUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margintop_textview_actividad"
-                    android:layout_toEndOf="@id/textViewCantidadMeGustaPerfil"
+                    android:layout_toEndOf="@+id/textViewCantidadMeGustaPerfil"
                     android:text="@={usuarioViewModel.cantidadMeGusta}"
                     android:textSize="@dimen/textsize_mi_actividad" />
 
@@ -136,6 +138,7 @@
                     android:textSize="@dimen/textsize_mi_actividad" />
 
                 <TextView
+                    android:id="@+id/textViewCantidadNoMeGustaUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margintop_textview_actividad"
@@ -159,6 +162,7 @@
                     android:textSize="@dimen/textsize_mi_actividad" />
 
                 <TextView
+                    android:id="@+id/textViewCantidadComentariosUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margintop_textview_actividad"
