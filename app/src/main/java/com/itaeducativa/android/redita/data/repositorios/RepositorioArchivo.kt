@@ -23,5 +23,8 @@ class RepositorioArchivo(
     fun getArchivosByActividadId(actividadId: String, limit: Long): Query =
         firestoreDB.collection(ARCHIVOS).whereEqualTo("actividadId", actividadId).limit(limit)
 
+    fun eliminarArchivo(archivo: Archivo) =
+        firestoreDB.collection(ARCHIVOS).document(archivo.id).delete()
+
 
 }

@@ -206,7 +206,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         val listaActividades = listaActividadViewModel.listaActividades.value
         if (listaActividades != null) {
             for (actividad in listaActividades) {
-                listaArchivosViewModel.getArchivosByActividadId(actividad)
+                listaArchivosViewModel.getArchivosByActividadId(actividad, esAutor = false)
                 reaccionViewModel.getReaccionByPublicacionIdYUsuarioUid(
                     actividad.id,
                     actividad,

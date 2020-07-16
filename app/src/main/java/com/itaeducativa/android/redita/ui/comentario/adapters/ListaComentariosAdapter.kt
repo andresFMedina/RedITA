@@ -3,6 +3,7 @@ package com.itaeducativa.android.redita.ui.comentario.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -62,7 +63,7 @@ class ListaComentariosAdapter(
             holder.buttonEliminarComentario.visibility = View.VISIBLE
 
             holder.buttonEliminarComentario.setOnClickListener {
-                MaterialAlertDialogBuilder(it.context, R.style.ThemeOverlay_App_MaterialAlertDialog)
+                AlertDialog.Builder(it.context)
                     .setTitle(it.resources.getString(R.string.titulo_dialogo_comentario))
                     .setMessage(it.resources.getString(R.string.descripcion_dialogo_comentario))
                     .setNegativeButton(it.resources.getString(R.string.cancelar_dialogo)) { dialog, _ ->

@@ -18,6 +18,7 @@ import com.itaeducativa.android.redita.databinding.ActivityActividadBinding
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.VideoListener
 import com.itaeducativa.android.redita.ui.actividad.viewmodels.*
+import com.itaeducativa.android.redita.ui.archivo.ListaArchivoAdapter
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModel
 import com.itaeducativa.android.redita.ui.archivo.ListaArchivoViewModelFactory
 import com.itaeducativa.android.redita.ui.comentario.viewmodels.ListaComentariosViewModel
@@ -98,10 +99,15 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
 
         viewModelComentario.listaComentariosAdapter.publicacion = actividad
 
-        if (!actividad.archivos.isNullOrEmpty())
-            listaArchivoViewModel.listaArchivoAdapter.actualizarArchivos(actividad.archivos!!)
-
         esAutor = autenticacionViewModel.usuario!!.uid == actividad.autorUid
+
+        if (!actividad.archivos.isNullOrEmpty()) {
+            listaArchivoViewModel.listaArchivoAdapter =
+                ListaArchivoAdapter(listaArchivoViewModel, esAutor)
+            listaArchivoViewModel.listaArchivoAdapter.actualizarArchivos(actividad.archivos!!)
+        }
+
+
 
         if (esAutor) {
             vistaViewModel.requestListener = null

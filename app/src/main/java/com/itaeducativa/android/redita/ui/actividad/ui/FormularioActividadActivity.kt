@@ -269,7 +269,8 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 }
                 if (data.data != null) {
                     imagenesUri.add(data.data!!)
-                    textViewEstadoImagenes.text = getString(R.string.se_ha_agregado_una_imagen)
+                    abrirSeleccionarImagenesDialog(imagenesUri)
+                    //textViewEstadoImagenes.text = getString(R.string.se_ha_agregado_una_imagen)
                 }
             }
         }

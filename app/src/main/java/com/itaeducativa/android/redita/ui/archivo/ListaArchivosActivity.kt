@@ -38,6 +38,7 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
     private lateinit var autenticacionViewModel: AutenticacionViewModel
 
     private lateinit var actividad: Actividad
+    private var esAutor: Boolean = false
 
     private var seConsultoReaccion: Boolean = false
 
@@ -72,7 +73,9 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
 
         binding.archivoViewModel = listaArchivoViewModel
 
-        listaArchivoViewModel.getArchivosByActividadId(actividad)
+        esAutor = actividad.autorUid == autenticacionViewModel.usuario?.uid
+
+        listaArchivoViewModel.getArchivosByActividadId(actividad, esAutor = esAutor)
 
         listaArchivoViewModel.listaArchivoAdapter.reaccionListener = this
 
@@ -87,7 +90,7 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
     override fun onResume() {
         super.onResume()
         listaArchivoViewModel.requestListener = this
-        listaArchivoViewModel.getArchivosByActividadId(actividad)
+        listaArchivoViewModel.getArchivosByActividadId(actividad, esAutor = esAutor)
     }
 
     override fun onSuccessRequest(response: Any?) {

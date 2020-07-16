@@ -14,6 +14,8 @@ class ArchivoViewModel : ViewModel() {
     val comentarios = MutableLiveData<String>()
     val reaccion = MutableLiveData<Reaccion>()
 
+
+
     fun bind(archivo: Archivo) {
         this.archivo.value = archivo
         if (archivo.tipo == "imagen") {

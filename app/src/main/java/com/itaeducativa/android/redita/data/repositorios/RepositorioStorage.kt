@@ -19,6 +19,9 @@ class RepositorioStorage() {
     fun getReferenciaVideoDeUrl(url: String): Task<Uri> =
         storage.getReferenceFromUrl(url).downloadUrl
 
+    fun eliminarArchivoStorage(reference: String) =
+        storage.getReferenceFromUrl(reference).delete()
+
     companion object DataBindingAdapter {
         private val storage: FirebaseStorage = FirebaseStorage.getInstance()
 
