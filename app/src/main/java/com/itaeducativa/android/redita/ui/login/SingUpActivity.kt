@@ -124,6 +124,12 @@ class SingUpActivity : AppCompatActivity(), AutenticacionListener, RequestListen
         autenticacionViewModel.singUp()
     }
 
+    override fun onResume() {
+        autenticacionViewModel.autenticacionListener = this
+        listaUsuarioViewModel.requestListener = this
+        super.onResume()
+    }
+
     override fun onStarted() {
         buttonRegistarse.isEnabled = false
         progressBarSingUp.visibility = View.VISIBLE

@@ -21,10 +21,7 @@ class ComentarioViewModel : ViewModel() {
         this.comentario.value = comentario.comentario
         fecha.value = getFechaTimestamp(comentario.fecha)
         objetoComentario.value = comentario
-        if (comentario.usuarioReference != null) {
-            bindUsuario(comentario.usuarioReference)
-            imagenPerfilUrl.value = "gs://redita.appspot.com/img_profile.png"
-        } else {
+        if (comentario.usuario != null) {
             usuario.value = comentario.usuario!!.nombreCompleto
             imagenPerfilUrl.value = comentario.usuario!!.imagenPerfilUrl
         }

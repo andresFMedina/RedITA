@@ -257,7 +257,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 if (data.clipData != null) {
                     val cantidadImagenes = data.clipData!!.itemCount
                     var indexActual = 0
-                    val imagenesUri: MutableList<Uri> = mutableListOf()
+                    //val imagenesUri: MutableList<Uri> = mutableListOf()
 
                     while (indexActual < cantidadImagenes) {
                         val uriImagen: Uri = data.clipData!!.getItemAt(indexActual).uri
