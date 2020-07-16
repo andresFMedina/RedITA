@@ -27,14 +27,14 @@
                 android:layout_gravity="center"
                 android:orientation="vertical"
                 android:paddingStart="@dimen/padding_horizontal_form"
-                android:paddingEnd="@dimen/padding_horizontal_form"
-                >
+                android:paddingEnd="@dimen/padding_horizontal_form">
 
                 <TextView
                     android:id="@+id/textViewEstadoImagenes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/height_width_image_circle_comentario"
                     android:text="@string/no_se_han_seleccionado_imagenes" />
 
                 <Button
@@ -44,7 +44,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
                     android:layout_marginBottom="@dimen/margin_top_multimedia_layout"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@drawable/corners"
                     android:onClick="elegirImagenes"
                     android:text="@string/subir_imagenes"
                     android:textColor="@android:color/white" />
@@ -63,7 +63,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
                     android:layout_marginBottom="@dimen/margin_top_multimedia_layout"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@drawable/corners"
                     android:onClick="elegirVideo"
                     android:text="@string/subir_video"
                     android:textColor="@android:color/white" />
@@ -82,8 +82,8 @@
                         android:layout_height="wrap_content"
                         android:focusable="false"
                         android:hint="@string/categoria"
-                        android:text="@={viewModel.categoria}"
-                        android:inputType="none" />
+                        android:inputType="none"
+                        android:text="@={viewModel.categoria}" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -175,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@drawable/corners"
                     android:onClick="guardarActividad"
                     android:text="@string/crear_nueva_activivdad"
                     android:textColor="@android:color/white" />

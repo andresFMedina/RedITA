@@ -1,7 +1,12 @@
 package com.itaeducativa.android.redita.ui.archivo
 
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
@@ -9,6 +14,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.exoplayer2.DefaultLoadControl
@@ -46,6 +53,9 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 
 class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListener, VideoListener {
 
@@ -149,7 +159,7 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
 
         setupListeners()
 
-        if(archivo.tipo == "video"){
+        if (archivo.tipo == "video") {
             binding.imageViewImagen.visibility = View.GONE
             binding.videoView.visibility = View.VISIBLE
 
@@ -202,7 +212,75 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
             binding.imageButtonCerrarDialogoImagen.setOnClickListener {
                 dialog.dismiss()
             }
+
+            binding.imageButtonGuardarImagenDialogo.setOnClickListener {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ContextCompat.checkSelfPermission(
+                            it.context,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                            100
+                        )
+                    } else {
+                        saveImageToStorage(binding.imageViewImagen);
+                    }
+                } else {
+                    saveImageToStorage(binding.imageViewImagen);
+                }
+            }
+
             dialog.show()
+        }
+    }
+
+    private fun saveImageToStorage(imageViewImagen: ImageView) {
+        val externalStorageState = Environment.getExternalStorageState()
+        if (externalStorageState.equals(Environment.MEDIA_MOUNTED)) {
+            val storageDirectory = Environment.getExternalStorageDirectory().toString()
+            val folder = File(storageDirectory, "RedITA")
+            if (!folder.exists()) {
+                folder.mkdirs()
+            }
+
+            val path = Environment.getExternalStorageDirectory()
+                .toString() + File.separator + "RedITA" + File.separator + String.format(
+                "%d.jpg",
+                System.currentTimeMillis()
+            )
+            val file = File(path)
+            try {
+                val stream: OutputStream = FileOutputStream(file)
+                val draw: BitmapDrawable = imageViewImagen.getDrawable() as BitmapDrawable
+                val bitmap: Bitmap = draw.getBitmap()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                stream.flush()
+                stream.close()
+                Toast.makeText(this, "Foto guardada en este dispositivo", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        } else {
+            Toast.makeText(
+                this,
+                "No se puede acceder al almacenamiento interno del dispositivo",
+                Toast.LENGTH_SHORT
+            ).show();
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == 100) {
+            if (grantResults.isNotEmpty() && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permiso denegado", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

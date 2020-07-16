@@ -49,7 +49,7 @@
                 android:layout_marginStart="@dimen/margin_end_imagen_perfil"
                 android:layout_toStartOf="@id/textViewFotoUsuarios"
                 android:layout_toEndOf="@id/textViewFotoUsuarios"
-                android:background="@color/colorPrimaryDark"
+                android:background="@drawable/corners"
                 android:paddingStart="@dimen/padding_horizontal_cardview"
                 android:paddingEnd="@dimen/padding_horizontal_cardview"
                 android:text="@string/ver_historial"
@@ -68,11 +68,10 @@
                 android:id="@+id/textViewAcudienteDe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toEndOf="@id/imageViewFotoUsuarios"
                 android:layout_below="@id/checkboxRolUsuario"
+                android:layout_toEndOf="@id/imageViewFotoUsuarios"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
-                />
+                android:textSize="16sp" />
 
         </RelativeLayout>
 
