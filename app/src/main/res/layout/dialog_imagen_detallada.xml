@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="url"
             type="String" />
@@ -14,19 +15,27 @@
 
         <ImageView
             android:id="@+id/imageViewImagen"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:imageUrl="@{url}"
-            android:contentDescription="@string/imagen_actividad" />
+            android:layout_gravity="center"
+            android:contentDescription="@string/imagen_actividad"
+            app:imageUrl="@{url}" />
 
         <ImageButton
             android:id="@+id/imageButtonCerrarDialogoImagen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_cancel_24px"
             android:layout_gravity="end|top"
-            android:contentDescription="@string/cerrar" />
+            android:contentDescription="@string/cerrar"
+            android:src="@drawable/ic_cancel_24px" />
+
+        <ImageButton
+            android:id="@+id/imageButtonGuardarImagenDialogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:contentDescription="@string/cerrar"
+            android:src="@drawable/ic_save_black_24dp" />
 
 
     </FrameLayout>

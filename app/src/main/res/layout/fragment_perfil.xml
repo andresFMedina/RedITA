@@ -66,7 +66,7 @@
                     android:layout_below="@id/textViewRolPerfil"
                     android:layout_marginTop="10dp"
                     android:layout_toEndOf="@id/imagenPerfil"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@drawable/corners"
                     android:text="@string/cambiar_foto"
                     android:textColor="@android:color/white" />
             </RelativeLayout>
@@ -99,8 +99,7 @@
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                >
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/textViewCantidadMeGustaPerfil"
@@ -179,11 +178,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/margin_bottom_menu_principal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:setAdapter="@{historialViewModel.listaHistorialAdapter}"
-                tools:listitem="@layout/cardview_historial_usuario"
-                android:layout_marginBottom="@dimen/margin_bottom_menu_principal"
-                />
+                tools:listitem="@layout/cardview_historial_usuario" />
 
 
         </LinearLayout>
