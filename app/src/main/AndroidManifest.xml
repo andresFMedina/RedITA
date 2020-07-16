@@ -9,12 +9,12 @@
         android:name=".FirebaseApplication"
         android:allowBackup="true"
         android:fullBackupContent="false"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".ui.archivo.ArchivoDetalladoActivity"
@@ -55,7 +55,7 @@
         -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_event_black_24dp" />
+            android:resource="@drawable/ic_launcher_round" />
         <!--
  Set color used with incoming notification messages. This is used when no color is set for the incoming
              notification message. See README(https://goo.gl/6BKBk7) for more.

@@ -48,13 +48,6 @@
                     android:layout_marginBottom="10dp"
                     bind:viewModel="@{viewModelActividad}" />
 
-                <VideoView
-                    android:id="@+id/videoActividad"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-
-                    />
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="280dp"

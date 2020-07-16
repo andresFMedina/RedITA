@@ -127,7 +127,9 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
             val listaArchivos = listaArchivoViewModel.listaArchivos.value
             val index =
                 listaArchivos?.indexOfFirst { archivo -> archivo.id == reaccion.publicacionId }
-            listaArchivoViewModel.listaArchivoAdapter.notifyItemChanged(index!!)
+
+            listaArchivos!![index!!].reaccion = reaccion
+            listaArchivoViewModel.listaArchivoAdapter.notifyItemChanged(index)
         }
     }
 

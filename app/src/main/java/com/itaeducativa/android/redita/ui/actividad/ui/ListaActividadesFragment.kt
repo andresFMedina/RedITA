@@ -7,6 +7,7 @@ import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.SearchView
@@ -66,6 +67,8 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
     private lateinit var recyclerViewActividades: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
 
+    private lateinit var progressBarListaActividades: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -95,6 +98,8 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         listaActividadViewModel.listaActividadesAdapter.reaccionListener = this
 
         binding.viewModel = listaActividadViewModel
+
+        progressBarListaActividades = binding.progressBarListaActividades
 
         initRecyclerView(binding)
 
@@ -164,11 +169,15 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
                         is Actividad -> {
                             obtenerObjetosActividad()
                             recyclerViewActividades.addOnScrollListener(listaActividadViewModel.onScrollListener)
-                            Log.d("Lista General", listaActividadViewModel.listaActividades.value?.size.toString())
+                            Log.d(
+                                "Lista General",
+                                listaActividadViewModel.listaActividades.value?.size.toString()
+                            )
                         }
-                        is String -> autocomplete.setAdapter(
-                            listaActividadViewModel.nombresActividadesAdapter
-                        )
+                        is String ->
+                            if (::autocomplete.isInitialized) autocomplete.setAdapter(
+                                listaActividadViewModel.nombresActividadesAdapter
+                            )
                     }
                 }
             }
@@ -180,7 +189,7 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
 
 
     override fun onFailureRequest(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        if(context != null) Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         Log.e("Error", message)
     }
 
@@ -294,11 +303,13 @@ class ListaActividadesFragment : Fragment(), KodeinAware, RequestListener, Reacc
         when (item) {
             MAS_ANTIGUO -> listaActividadViewModel.getListaActividades(
                 direccion = Query.Direction.ASCENDING,
-                tipo = tipo
+                tipo = tipo,
+                cambioOrden = true
             )
             MAS_RECIENTE -> listaActividadViewModel.getListaActividades(
                 direccion = Query.Direction.DESCENDING,
-                tipo = tipo
+                tipo = tipo,
+                cambioOrden = true
             )
         }
 

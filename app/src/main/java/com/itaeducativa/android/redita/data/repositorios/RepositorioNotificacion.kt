@@ -7,4 +7,6 @@ class RepositorioNotificacion(
 ) {
 
     fun getToken() = firebase.firebaseInstanceId.instanceId
+
+    fun subscribeToActividades() = firebase.firebaseMessaging.subscribeToTopic("actividades")
 }
