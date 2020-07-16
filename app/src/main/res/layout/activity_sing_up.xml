@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
                     android:layout_marginBottom="@dimen/margin_top_multimedia_layout"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@drawable/corners"
                     android:onClick="elegirImagen"
                     android:text="@string/foto_de_perfil"
                     android:textColor="@android:color/white" />
@@ -168,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@drawable/corners"
                     android:onClick="signup"
                     android:text="@string/registrarse"
                     android:textColor="@android:color/white" />
@@ -178,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_top_multimedia_layout"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@drawable/corners"
                     android:onClick="goToLoginActivity"
                     android:text="@string/volver"
                     android:textColor="@android:color/white" />
