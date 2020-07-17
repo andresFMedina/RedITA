@@ -23,7 +23,6 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.kodein
 import org.kodein.di.generic.instance
-import org.kodein.di.newInstance
 
 private const val ACTIVIDAD = "Actividad"
 private const val RETO = "Reto"

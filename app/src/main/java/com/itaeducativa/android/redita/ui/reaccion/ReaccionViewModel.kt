@@ -2,6 +2,7 @@ package com.itaeducativa.android.redita.ui.reaccion
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.modelos.Historial
 import com.itaeducativa.android.redita.data.modelos.Publicacion
 import com.itaeducativa.android.redita.data.modelos.Reaccion
@@ -39,7 +40,6 @@ class ReaccionViewModel(
             publicacion.reaccion = reaccion
             repositorioUsuario.sumarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
 
-
             if (reaccion.tipoPublicacion == "actividades") {
                 val historial = Historial(
                     usuarioUid = reaccion.usuarioUid,
@@ -53,6 +53,23 @@ class ReaccionViewModel(
                 )
                 repositorioHistorial.guardarHistorialFirestore(historial)
             }
+
+            if (reaccion.tipoPublicacion == "archivos") {
+                val archivo = publicacion as Archivo
+                val historial = Historial(
+                    usuarioUid = reaccion.usuarioUid,
+                    actividadId = archivo.actividadId,
+                    accion = when (reaccion.tipoReaccion) {
+                        "noMeGusta" ->
+                            if (archivo.tipo == "imagen") "No le gustó una imagen de" else "No le gustó un video de"
+                        "meGusta" -> if (archivo.tipo == "imagen") "Le gustó una imagen de" else "Le gustó un video de"
+                        else -> ""
+                    },
+                    timestampAccion = reaccion.timestamp
+                )
+                repositorioHistorial.guardarHistorialFirestore(historial)
+            }
+
             val r: Reaccion? = reaccion
             requestListener?.onSuccessRequest(r)
         }.addOnFailureListener {
@@ -74,12 +91,13 @@ class ReaccionViewModel(
                 }
                 requestListener?.onSuccessRequest(publicacion)
             }
-            repositorioUsuario.restarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid).addOnSuccessListener {
-                Log.d("Restando", "OK")
-            }.addOnFailureListener {
-                Log.d("Error", it.message!!)
-            }
-            if (reaccion.tipoPublicacion == "actividades")repositorioHistorial.eliminarHistorial(reaccion.timestamp)
+            repositorioUsuario.restarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
+                .addOnSuccessListener {
+                    Log.d("Restando", "OK")
+                }.addOnFailureListener {
+                    Log.d("Error", it.message!!)
+                }
+            repositorioHistorial.eliminarHistorial(reaccion.timestamp)
 
 
         }.addOnFailureListener {

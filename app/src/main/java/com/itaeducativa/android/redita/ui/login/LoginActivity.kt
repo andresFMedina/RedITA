@@ -67,6 +67,12 @@ class LoginActivity : AppCompatActivity(),
         autenticacionViewModel.login()
     }
 
+    override fun onResume() {
+        super.onResume()
+        autenticacionViewModel.autenticacionListener = this
+        listaUsuarioViewModel.requestListener = this
+    }
+
     override fun onStarted() {
         layoutEstadoLogin.visibility = View.VISIBLE
         textViewEstadoLogin.text = getString(R.string.autenticando)

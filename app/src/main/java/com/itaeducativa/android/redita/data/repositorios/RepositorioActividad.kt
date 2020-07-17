@@ -78,7 +78,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     ): Query {
         var collection = firestoreDB.collection(ACTIVIDADES).orderBy(orderBy)
         collection = collection.whereEqualTo(AUTOR_UID, uid)
-        if (query.isNotBlank()) collection.whereEqualTo("nombre", query)
+        if (query.isNotBlank())collection = collection.whereEqualTo("nombre", query)
         return collection.whereEqualTo("estaActivo", true).limit(4)
     }
 
