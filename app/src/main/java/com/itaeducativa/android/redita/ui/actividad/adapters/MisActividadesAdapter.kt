@@ -7,7 +7,6 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.databinding.CardviewMisActividadesBinding
@@ -56,7 +55,7 @@ class MisActividadesAdapter(private val listaActividadesViewModel: ListaActivida
             it.context.startFormularioActividadActivity(listaActividades[position])
         }
         holder.imageButtonEliminar.setOnClickListener {
-            AlertDialog.Builder(it.context, R.style.ThemeOverlay_App_MaterialAlertDialog)
+            AlertDialog.Builder(it.context)
                 .setTitle(it.resources.getString(R.string.titulo_dialogo_actividad))
                 .setMessage(it.resources.getString(R.string.descripcion_dialogo_actividad))
                 .setNegativeButton(it.resources.getString(R.string.cancelar_dialogo)) { dialog, which ->
