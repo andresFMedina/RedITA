@@ -74,6 +74,8 @@
     <string name="descripcion_dialogo_actividad">¿Deseas eliminar esta actividad? esto eliminará todos sus comentarios y reacciones</string>
     <string name="titulo_dialogo_comentario">Eliminar comentario</string>
     <string name="descripcion_dialogo_comentario">¿Deseas eliminar esta comentario? </string>
+    <string name="titulo_dialogo_archivo">Eliminar Archivo</string>
+    <string name="descripcion_dialogo_archivo">¿Deseas eliminar este archivo? </string>
     <string name="aceptar_dialogo">Eliminar</string>
     <string name="cancelar_dialogo">Cancelar</string>
     <string name="ver_todas_las_imagenes">Ver todas las imagenes</string>

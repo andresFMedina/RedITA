@@ -7,6 +7,7 @@ import com.google.firebase.firestore.EventListener
 import com.itaeducativa.android.redita.data.modelos.Comentario
 import com.itaeducativa.android.redita.data.modelos.Historial
 import com.itaeducativa.android.redita.data.modelos.Publicacion
+import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.comentario.adapters.ListaComentariosAdapter
@@ -27,7 +28,10 @@ class ListaComentariosViewModel(
 
     var requestListener: RequestListener? = null
 
-    fun agregarComentariosEnFirestorePorPublicacion(comentario: Comentario, publicacion: Publicacion) {
+    fun agregarComentariosEnFirestorePorPublicacion(
+        comentario: Comentario,
+        publicacion: Publicacion
+    ) {
         requestListener?.onStartRequest()
         repositorioComentario.agregarComentarioEnFirestorePorPublicacion(comentario)
             .addOnFailureListener {
@@ -50,6 +54,7 @@ class ListaComentariosViewModel(
                     "comentarios"
                 ).addOnSuccessListener {
                     publicacion.comentarios++
+                    requestListener?.onSuccessRequest(publicacion)
                 }.addOnFailureListener {
                     requestListener?.onFailureRequest(it.message!!)
                 }
@@ -73,18 +78,44 @@ class ListaComentariosViewModel(
                 val comentarios: MutableList<Comentario> = mutableListOf()
                 for (doc in value!!) {
                     val comentario = doc.toObject(Comentario::class.java)
-                    comentario.usuarioReference =
-                        repositorioUsuario.getUsuarioByUid(comentario.usuarioUid)
+                    repositorioUsuario.getUsuarioByUid(comentario.usuarioUid)
+                        .addSnapshotListener { snapshot, exception ->
+                            if (exception != null) {
+                                comentario.usuario = null
+                                requestListener?.onFailureRequest(exception.message!!)
+                                return@addSnapshotListener
+                            }
+                            val usuario = snapshot!!.toObject(Usuario::class.java)
+                            comentario.usuario = usuario
+                            listaComentarios.value = comentarios
+                            requestListener?.onSuccessRequest(comentarios)
+                            listaComentariosAdapter.actualizarComentarios(listaComentarios.value as MutableList<Comentario>)
+                        }
                     Log.d("Comentario", comentario.toString())
                     comentarios.add(comentario)
                 }
-                listaComentarios.value = comentarios
-                requestListener?.onSuccessRequest(comentarios)
-                listaComentariosAdapter.actualizarComentarios(listaComentarios.value as MutableList<Comentario>)
+
             })
     }
 
-    fun eliminarComentario(comentario: Comentario){
-        repositorioComentario.eliminarComentario(comentario)
+    fun eliminarComentario(comentario: Comentario, publicacion: Publicacion) {
+        repositorioComentario.eliminarComentario(comentario).addOnSuccessListener {
+            repositorioPublicacion.disminuirInteraccion(
+                comentario.tipoPublicacion,
+                comentario.publicacionId,
+                "comentarios"
+            ).addOnSuccessListener {
+                publicacion.comentarios--
+                requestListener?.onSuccessRequest(publicacion)
+            }.addOnFailureListener {
+                requestListener?.onFailureRequest(it.message!!)
+            }
+            if (comentario.tipoPublicacion == "actividades")
+                repositorioHistorial.eliminarHistorial(comentario.fecha)
+            repositorioUsuario.restarInteraccion("comentarios", comentario.usuarioUid)
+                .addOnFailureListener {
+                    requestListener?.onFailureRequest(it.message!!)
+                }
+        }
     }
 }

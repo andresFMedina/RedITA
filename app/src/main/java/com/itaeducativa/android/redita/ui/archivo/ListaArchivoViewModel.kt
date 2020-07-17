@@ -17,7 +17,7 @@ class ListaArchivoViewModel(
 ) : ViewModel() {
 
     val listaArchivos = MutableLiveData<List<Archivo>>()
-    val listaArchivoAdapter = ListaArchivoAdapter(repositorioAutenticacion.currentUser()!!.uid)
+    var listaArchivoAdapter = ListaArchivoAdapter(this, false)
     var requestListener: RequestListener? = null
 
     fun guardarArchivoFirestore(archivo: Archivo, ruta: String, uri: Uri) {
@@ -30,7 +30,8 @@ class ListaArchivoViewModel(
         }
     }
 
-    fun getArchivosByActividadId(actividad: Actividad, limit: Long = 10) {
+    fun getArchivosByActividadId(actividad: Actividad, limit: Long = 10, esAutor: Boolean) {
+        listaArchivoAdapter = ListaArchivoAdapter(this, esAutor)
         repositorioArchivo.getArchivosByActividadId(actividad.id, limit)
             .addSnapshotListener { value, exception ->
                 requestListener?.onStartRequest()
@@ -55,6 +56,12 @@ class ListaArchivoViewModel(
             val urlImagen = "gs://redita.appspot.com${it.storage.path}"
             //it.storage.child(it.storage.path).downloadUrl.
             repositorioArchivo.guardarUrlArchivoFirestore(archivoId, urlImagen)
+        }
+    }
+
+    fun eliminarArchivo(archivo: Archivo) {
+        repositorioArchivo.eliminarArchivo(archivo).addOnSuccessListener {
+            repositorioStorage.eliminarArchivoStorage(archivo.url)
         }
     }
 

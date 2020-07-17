@@ -8,12 +8,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.databinding.FragmentPerfilBinding
+import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.historial.ListaHistorialViewModel
 import com.itaeducativa.android.redita.ui.historial.ListaHistorialViewModelFactory
 import com.itaeducativa.android.redita.util.fileChooser
@@ -33,7 +36,7 @@ private const val ACTION_RESULT_GET_IMAGES = 0
  * Use the [PerfilFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PerfilFragment : Fragment(), KodeinAware {
+class PerfilFragment : Fragment(), KodeinAware, RequestListener {
     override val kodein: Kodein by kodein()
     private val listaUsuarioFactory: ListaUsuarioViewModelFactory by instance()
     private val historialFactory: ListaHistorialViewModelFactory by instance()
@@ -42,6 +45,8 @@ class PerfilFragment : Fragment(), KodeinAware {
     private lateinit var listaHistoriaViewModel: ListaHistorialViewModel
 
     private lateinit var usuario: Usuario
+
+    private lateinit var  textInputTelefono: EditText
 
     private var uriImagen: Uri? = null
 
@@ -58,8 +63,10 @@ class PerfilFragment : Fragment(), KodeinAware {
     ): View? {
         val binding: FragmentPerfilBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_perfil, container, false)
-        listaUsuarioViewModel = ViewModelProviders.of(this, listaUsuarioFactory).get(ListaUsuarioViewModel::class.java)
-        listaHistoriaViewModel = ViewModelProviders.of(this, historialFactory).get(ListaHistorialViewModel::class.java)
+        listaUsuarioViewModel =
+            ViewModelProviders.of(this, listaUsuarioFactory).get(ListaUsuarioViewModel::class.java)
+        listaHistoriaViewModel =
+            ViewModelProviders.of(this, historialFactory).get(ListaHistorialViewModel::class.java)
 
         binding.usuarioViewModel = listaUsuarioViewModel
         listaUsuarioViewModel.bindUsuario(usuario)
@@ -76,13 +83,20 @@ class PerfilFragment : Fragment(), KodeinAware {
         binding.buttonCambiarImagenPerfil.setOnClickListener {
             context!!.fileChooser(this)
         }
+        listaUsuarioViewModel.requestListener = this
+
+        textInputTelefono = binding.inputTelefonoPerfil
 
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        listaUsuarioViewModel.getUsuarioByUid(usuario.uid)
+    }
 
 
-   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == ACTION_RESULT_GET_IMAGES && resultCode == Activity.RESULT_OK &&
             data != null && data.data != null
@@ -115,5 +129,26 @@ class PerfilFragment : Fragment(), KodeinAware {
                     putSerializable(USUARIO, usuario)
                 }
             }
+    }
+
+    override fun onStartRequest() {
+
+    }
+
+    override fun onSuccessRequest(response: Any?) {
+        when (response) {
+            is Usuario -> {
+                usuario = response
+                listaUsuarioViewModel.bindUsuario(usuario)
+                textViewCantidadMeGustaUsuario.text = response.meGusta.toString()
+                textViewCantidadNoMeGustaUsuario.text = response.noMeGusta.toString()
+                textViewCantidadComentariosUsuario.text = response.comentarios.toString()
+                textInputTelefono.setText(response.telefono)
+            }
+        }
+    }
+
+    override fun onFailureRequest(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
     }
 }

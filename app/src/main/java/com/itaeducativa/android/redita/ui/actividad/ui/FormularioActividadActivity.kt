@@ -257,7 +257,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 if (data.clipData != null) {
                     val cantidadImagenes = data.clipData!!.itemCount
                     var indexActual = 0
-                    val imagenesUri: MutableList<Uri> = mutableListOf()
+                    //val imagenesUri: MutableList<Uri> = mutableListOf()
 
                     while (indexActual < cantidadImagenes) {
                         val uriImagen: Uri = data.clipData!!.getItemAt(indexActual).uri
@@ -269,7 +269,8 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
                 }
                 if (data.data != null) {
                     imagenesUri.add(data.data!!)
-                    textViewEstadoImagenes.text = getString(R.string.se_ha_agregado_una_imagen)
+                    abrirSeleccionarImagenesDialog(imagenesUri)
+                    //textViewEstadoImagenes.text = getString(R.string.se_ha_agregado_una_imagen)
                 }
             }
         }

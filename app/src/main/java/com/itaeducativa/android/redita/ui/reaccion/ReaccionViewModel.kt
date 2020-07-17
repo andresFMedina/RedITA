@@ -1,5 +1,6 @@
 package com.itaeducativa.android.redita.ui.reaccion
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.itaeducativa.android.redita.data.modelos.Historial
 import com.itaeducativa.android.redita.data.modelos.Publicacion
@@ -73,7 +74,11 @@ class ReaccionViewModel(
                 }
                 requestListener?.onSuccessRequest(publicacion)
             }
-            repositorioUsuario.restarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid)
+            repositorioUsuario.restarInteraccion(reaccion.tipoReaccion, reaccion.usuarioUid).addOnSuccessListener {
+                Log.d("Restando", "OK")
+            }.addOnFailureListener {
+                Log.d("Error", it.message!!)
+            }
             if (reaccion.tipoPublicacion == "actividades")repositorioHistorial.eliminarHistorial(reaccion.timestamp)
 
 
