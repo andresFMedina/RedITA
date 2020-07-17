@@ -145,7 +145,7 @@ class MisActividadesFragment : Fragment(), KodeinAware, RequestListener,
             autocomplete.setDropDownBackgroundResource(R.color.colorWhite)
             autocomplete.threshold = 1
 
-            autocomplete.setOnItemClickListener(this)
+            autocomplete.onItemClickListener = this
             //searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
 
             searchView.findViewById<AppCompatImageView>(R.id.search_close_btn).setOnClickListener {

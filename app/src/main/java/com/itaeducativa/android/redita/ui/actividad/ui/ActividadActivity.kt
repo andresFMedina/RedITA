@@ -103,7 +103,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
 
         if (!actividad.archivos.isNullOrEmpty()) {
             listaArchivoViewModel.listaArchivoAdapter =
-                ListaArchivoAdapter(listaArchivoViewModel, esAutor)
+                ListaArchivoAdapter(listaArchivoViewModel, false)
             listaArchivoViewModel.listaArchivoAdapter.actualizarArchivos(actividad.archivos!!)
         }
 
@@ -146,7 +146,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
         if (!esAutor)
             vistaViewModel.getVistasByUsuarioYActividad(
                 autenticacionViewModel.usuario!!.uid,
-                actividad.fechaCreacionTimeStamp
+                actividad.id
             )
         else viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)
 

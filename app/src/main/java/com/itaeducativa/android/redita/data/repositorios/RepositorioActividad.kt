@@ -75,7 +75,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     ): Query {
         var collection = firestoreDB.collection(ACTIVIDADES).orderBy(orderBy)
         collection = collection.whereEqualTo(AUTOR_UID, uid)
-        if (query.isNotBlank()) collection.whereEqualTo("nombre", query)
+        if (query.isNotBlank())collection = collection.whereEqualTo("nombre", query)
         return collection.whereEqualTo("estaActivo", true).limit(4)
     }
 
@@ -88,7 +88,7 @@ class RepositorioActividad(private val firebase: FirebaseSource) {
     }
 
     fun desactivarActividad(actividad: Actividad): Task<Void> =
-        firestoreDB.collection(ACTIVIDADES).document(actividad.fechaCreacionTimeStamp)
+        firestoreDB.collection(ACTIVIDADES).document(actividad.id)
             .update("estaActivo", false)
 
     fun eliminarNombre(actividadId: String): Task<Void> =

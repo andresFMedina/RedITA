@@ -16,7 +16,7 @@ class ListaArchivoViewModel(
     private val repositorioAutenticacion: RepositorioAutenticacion
 ) : ViewModel() {
 
-    val listaArchivos = MutableLiveData<List<Archivo>>()
+    val listaArchivos = MutableLiveData<MutableList<Archivo>>()
     var listaArchivoAdapter = ListaArchivoAdapter(this, false)
     var requestListener: RequestListener? = null
 
@@ -62,6 +62,11 @@ class ListaArchivoViewModel(
     fun eliminarArchivo(archivo: Archivo) {
         repositorioArchivo.eliminarArchivo(archivo).addOnSuccessListener {
             repositorioStorage.eliminarArchivoStorage(archivo.url)
+            listaArchivos.value?.remove(archivo)
+            if (listaArchivos.value != null) {
+                listaArchivoAdapter.actualizarArchivos(listaArchivos.value!!)
+                requestListener?.onSuccessRequest(listaArchivos.value!!)
+            }
         }
     }
 

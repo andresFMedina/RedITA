@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.EventListener
-import com.itaeducativa.android.redita.data.modelos.Comentario
-import com.itaeducativa.android.redita.data.modelos.Historial
-import com.itaeducativa.android.redita.data.modelos.Publicacion
-import com.itaeducativa.android.redita.data.modelos.Usuario
+import com.itaeducativa.android.redita.data.modelos.*
 import com.itaeducativa.android.redita.data.repositorios.*
 import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.comentario.adapters.ListaComentariosAdapter
@@ -21,7 +18,7 @@ class ListaComentariosViewModel(
 ) :
     ViewModel() {
 
-    private val listaComentarios = MutableLiveData<List<Comentario>>()
+    private val listaComentarios = MutableLiveData<MutableList<Comentario>>()
 
     val listaComentariosAdapter: ListaComentariosAdapter =
         ListaComentariosAdapter(repositorioAutenticacion.currentUser()!!.uid, this)
@@ -45,6 +42,17 @@ class ListaComentariosViewModel(
                         timestampAccion = comentario.fecha
                     )
 
+                    repositorioHistorial.guardarHistorialFirestore(historial)
+                    requestListener?.onSuccessRequest(comentario)
+                }
+                if (comentario.tipoPublicacion == "archivos") {
+                    val archivo = publicacion as Archivo
+                    val historial = Historial(
+                        usuarioUid = comentario.usuarioUid,
+                        actividadId = archivo.actividadId,
+                        accion = if (archivo.tipo == "imagen") "Comentó una imagen de" else "Comentó un video de",
+                        timestampAccion = comentario.fecha
+                    )
                     repositorioHistorial.guardarHistorialFirestore(historial)
                     requestListener?.onSuccessRequest(comentario)
                 }
@@ -116,6 +124,8 @@ class ListaComentariosViewModel(
                 .addOnFailureListener {
                     requestListener?.onFailureRequest(it.message!!)
                 }
+            listaComentarios.value!!.remove(comentario)
+            listaComentariosAdapter.actualizarComentarios(listaComentarios.value!!)
         }
     }
 }

@@ -149,7 +149,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
     fun actividadCreada(){
         buttonCrearActividad.isEnabled = true
         buttonCrearActividad.text = getText(R.string.crear_nueva_activivdad)
-        var mensaje = "Se ha creado la actividad."
+        var mensaje = "Se ha guardado la actividad."
         if(imagenesUri.isEmpty()) mensaje += " Las imagenes se están subiendo."
         showSnackbar(
             mensaje,
