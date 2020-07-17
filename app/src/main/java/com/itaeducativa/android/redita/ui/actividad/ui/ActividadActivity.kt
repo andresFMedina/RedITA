@@ -282,7 +282,7 @@ class ActividadActivity : AppCompatActivity(), RequestListener, KodeinAware {
                 return
             }
 
-            vistaViewModel.vista.value
+            vistaViewModel.vista.value = vista
             vistaViewModel.agregarVista(vista)
             yaVisto = true
             viewModelComentario.getComentariosEnFirestorePorPublicacion(actividad.id)

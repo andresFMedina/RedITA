@@ -118,8 +118,7 @@ class ListaComentariosViewModel(
             }.addOnFailureListener {
                 requestListener?.onFailureRequest(it.message!!)
             }
-            if (comentario.tipoPublicacion == "actividades")
-                repositorioHistorial.eliminarHistorial(comentario.fecha)
+            repositorioHistorial.eliminarHistorial(comentario.fecha)
             repositorioUsuario.restarInteraccion("comentarios", comentario.usuarioUid)
                 .addOnFailureListener {
                     requestListener?.onFailureRequest(it.message!!)
