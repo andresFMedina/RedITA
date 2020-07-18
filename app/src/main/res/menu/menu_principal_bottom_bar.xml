@@ -21,7 +21,7 @@
         android:id="@+id/menuMisRetos"
         android:enabled="true"
         android:icon="@drawable/ic_poll"
-        android:title="@string/mis_retos" />
+        android:title="@string/retos" />
 
     <item
         android:id="@+id/menuUsuarios"
