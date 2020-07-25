@@ -262,7 +262,7 @@ class ListaActividadesViewModel(
                                 actividades.add(actividad)
                             }
                             listaActividades.value!!.addAll(actividades)
-                            lastVisible = value.documents.get(value.size() - 1)
+                            if(!value.documents.isEmpty()) lastVisible = value.documents.get(value.size() - 1)
                             if (value.size() < 4) {
                                 isLastItemReached = true;
                             }
