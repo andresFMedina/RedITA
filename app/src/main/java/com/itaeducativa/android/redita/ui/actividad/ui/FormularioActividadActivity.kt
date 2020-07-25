@@ -155,6 +155,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             mensaje,
             coordinatorCrearActividad
         )
+        finish()
     }
 
     override fun onFailureRequest(message: String) {
