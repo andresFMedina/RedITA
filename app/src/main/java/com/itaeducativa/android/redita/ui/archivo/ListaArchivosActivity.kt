@@ -75,7 +75,7 @@ class ListaArchivosActivity : AppCompatActivity(), KodeinAware, RequestListener,
 
         esAutor = actividad.autorUid == autenticacionViewModel.usuario?.uid
 
-        listaArchivoViewModel.getArchivosByActividadId(actividad, esAutor = esAutor)
+        listaArchivoViewModel.getArchivosByActividadId(actividad, esAutor = esAutor, limit = 50)
 
         listaArchivoViewModel.listaArchivoAdapter.reaccionListener = this
 
