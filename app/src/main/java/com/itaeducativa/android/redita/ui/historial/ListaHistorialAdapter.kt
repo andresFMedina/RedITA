@@ -60,4 +60,8 @@ class ListaHistorialAdapter : RecyclerView.Adapter<ListaHistorialAdapter.ViewHol
         listaHistorial = historiales
         notifyDataSetChanged()
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 }

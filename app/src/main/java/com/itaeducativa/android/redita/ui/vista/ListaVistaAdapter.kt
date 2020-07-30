@@ -55,4 +55,8 @@ class ListaVistaAdapter : RecyclerView.Adapter<ListaVistaAdapter.ViewHolder>() {
         listaVistas = vistas
         notifyDataSetChanged()
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 }

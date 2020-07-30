@@ -73,5 +73,9 @@ class MisActividadesAdapter(private val listaActividadesViewModel: ListaActivida
         notifyDataSetChanged()
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
 
 }

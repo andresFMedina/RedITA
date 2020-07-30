@@ -75,4 +75,8 @@ class ListaArchivoAdapter(
         listaArchivos = archivos
         notifyDataSetChanged()
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 }

@@ -72,4 +72,8 @@ class UsuarioAdapter(
         listaUsuarios = usuarios
         notifyDataSetChanged()
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 }

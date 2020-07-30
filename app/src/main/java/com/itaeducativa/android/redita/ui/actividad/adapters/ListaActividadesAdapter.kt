@@ -21,8 +21,7 @@ import com.itaeducativa.android.redita.util.startActividadActivity
 
 class ListaActividadesAdapter(
     private val uidUsuarioActual: String
-) : RecyclerView.Adapter<ListaActividadesAdapter.ViewHolder>()
-     {
+) : RecyclerView.Adapter<ListaActividadesAdapter.ViewHolder>() {
     private lateinit var listaActividades: List<Actividad>
 
     var reaccionListener: ReaccionListener? = null
@@ -110,6 +109,10 @@ class ListaActividadesAdapter(
     fun actualizarActividades(actividades: List<Actividad>) {
         this.listaActividades = actividades
         notifyDataSetChanged()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
 }
