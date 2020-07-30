@@ -42,15 +42,6 @@
                     layout="@layout/relative_layout_actividad"
                     bind:viewModel="@{viewModelActividad}" />
 
-                <ImageView
-                    android:id="@+id/imagenActividad"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="10dp"
-                    android:contentDescription="@string/imagen_actividad"
-                    android:maxHeight="700dp"
-                    app:imageUrl="@{viewModelActividad.primeraImagen}" />
             </LinearLayout>
 
             <include

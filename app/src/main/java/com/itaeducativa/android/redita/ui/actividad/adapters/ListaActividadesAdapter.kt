@@ -1,18 +1,15 @@
 package com.itaeducativa.android.redita.ui.actividad.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.databinding.CardviewActividadBinding
-import com.itaeducativa.android.redita.network.RequestListener
 import com.itaeducativa.android.redita.ui.actividad.viewmodels.ActividadViewModel
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionListener
 import com.itaeducativa.android.redita.util.reaccionHandler
@@ -28,9 +25,7 @@ class ListaActividadesAdapter(
 
 
     class ViewHolder(
-        private val binding: CardviewActividadBinding,
-        private val adapter: ListaActividadesAdapter
-
+        private val binding: CardviewActividadBinding
     ) :
         RecyclerView.ViewHolder(binding.root) {
         val viewModelActividad =
@@ -40,16 +35,10 @@ class ListaActividadesAdapter(
         val imageButtonNoMeGusta: ImageButton = binding.layoutReacciones.imageButtonNoMeGusta
         val imageButtonComentarios: ImageButton = binding.layoutReacciones.imageButtonComentarios
         val textViewFechaYHora: TextView = binding.layoutActividad.textViewFechaYHoraActividad
-        private val imageViewActividad: ImageView = binding.imagenActividad
 
 
         fun bind(actividad: Actividad) {
-            if (actividad.archivos.isNullOrEmpty())
-                imageViewActividad.visibility = View.GONE
-            else
-                imageViewActividad.visibility = View.VISIBLE
             viewModelActividad.bind(actividad)
-
             binding.viewModelActividad = viewModelActividad
         }
 
@@ -62,10 +51,7 @@ class ListaActividadesAdapter(
             parent,
             false
         )
-        return ViewHolder(
-            binding,
-            this
-        )
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int {

@@ -4,7 +4,6 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.Query
 import com.itaeducativa.android.redita.data.modelos.Actividad
 import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.modelos.Reaccion
@@ -17,7 +16,7 @@ class ActividadViewModel : ViewModel() {
     val nombre = MutableLiveData<String>()
     val descripcion = MutableLiveData<String>()
     val autor = MutableLiveData<String>()
-    val fechaCreacionTimeStamp = MutableLiveData<String>()
+    private val fechaCreacionTimeStamp = MutableLiveData<String>()
     val tipoActividad = MutableLiveData<String>()
     val actividad = MutableLiveData<Actividad>()
     val meGusta = MutableLiveData<String>()
@@ -26,11 +25,10 @@ class ActividadViewModel : ViewModel() {
     val imagenPerfilUrl = MutableLiveData<String>()
     val imagenes = MutableLiveData<List<String>>()
     val reaccion = MutableLiveData<Reaccion>()
-    private var fueConsultado = false
     val horaInicio = MutableLiveData<String>()
     val fechaInicio = MutableLiveData<String>()
-    val listaArchivos = MutableLiveData<List<Archivo>>()
-    val primeraImagen = MutableLiveData<String>()
+    private val listaArchivos = MutableLiveData<List<Archivo>>()
+
 
     var requestListener: RequestListener? = null
 
@@ -61,12 +59,10 @@ class ActividadViewModel : ViewModel() {
             imagenPerfilUrl.value = actividad.autor!!.imagenPerfilUrl
         }
 
-        if (!listaArchivos.value.isNullOrEmpty()) primeraImagen.value =
-            listaArchivos.value?.get(0)?.url
         if(reaccion.value != null) this.actividad.value!!.reaccion
     }
 
-    fun bindAutor(referenciaAutor: DocumentReference?) {
+    private fun bindAutor(referenciaAutor: DocumentReference?) {
         referenciaAutor?.addSnapshotListener { value, exception ->
             requestListener?.onStartRequest()
             if (exception != null) {

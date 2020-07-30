@@ -1,6 +1,7 @@
 package com.itaeducativa.android.redita.data.repositorios
 
 import android.net.Uri
+import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.google.android.gms.tasks.Task
