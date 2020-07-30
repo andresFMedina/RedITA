@@ -30,7 +30,7 @@ class ListaArchivoViewModel(
         }
     }
 
-    fun getArchivosByActividadId(actividad: Actividad, limit: Long = 20, esAutor: Boolean) {
+    fun getArchivosByActividadId(actividad: Actividad, limit: Long = 50, esAutor: Boolean) {
         listaArchivoAdapter = ListaArchivoAdapter(this, esAutor)
         repositorioArchivo.getArchivosByActividadId(actividad.id, limit)
             .addSnapshotListener { value, exception ->
