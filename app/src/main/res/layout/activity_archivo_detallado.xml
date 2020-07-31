@@ -35,6 +35,14 @@
                 android:paddingTop="@dimen/padding_horizontal_cardview"
                 android:paddingEnd="@dimen/padding_horizontal_cardview">
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/btnDescargar"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@color/backgroun_card"
+                    android:src="@drawable/ic_file_download"
+                    android:visibility="gone" />
+
                 <RelativeLayout
                     android:id="@+id/layoutMultimedia"
                     android:layout_width="match_parent"

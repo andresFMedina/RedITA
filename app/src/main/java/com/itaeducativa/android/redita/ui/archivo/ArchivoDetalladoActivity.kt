@@ -1,5 +1,7 @@
 package com.itaeducativa.android.redita.ui.archivo
 
+import android.app.DownloadManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -28,7 +30,9 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.Timestamp
+import com.google.firebase.storage.FirebaseStorage
 import com.itaeducativa.android.redita.R
 import com.itaeducativa.android.redita.data.modelos.Archivo
 import com.itaeducativa.android.redita.data.modelos.Comentario
@@ -47,6 +51,7 @@ import com.itaeducativa.android.redita.ui.login.AutenticacionViewModelFactory
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModel
 import com.itaeducativa.android.redita.ui.reaccion.ReaccionViewModelFactory
 import com.itaeducativa.android.redita.util.hideKeyboard
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_archivo_detallado.*
 import kotlinx.android.synthetic.main.linearlayout_reacciones.view.*
 import org.kodein.di.Kodein
@@ -81,6 +86,7 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
     private var playerView: PlayerView? = null
 
     private lateinit var imageView: ImageView
+    private var descargar: CircleImageView? = null
 
     private var playWhenReady = true
     private var currentWindow = 0
@@ -119,6 +125,7 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
         imageNoMeGusta = binding.layoutReaccionesArchivos.imageButtonNoMeGusta
         playerView = binding.videoView
         imageView = binding.imageViewImagen
+        descargar = binding.btnDescargar
 
         archivoViewModel.bind(archivo)
 
@@ -162,6 +169,7 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
         if (archivo.tipo == "video") {
             binding.imageViewImagen.visibility = View.GONE
             binding.videoView.visibility = View.VISIBLE
+            binding.btnDescargar.visibility = View.VISIBLE
 
             storageViewModel.getVideoUri(archivo.url)
         }
@@ -235,6 +243,49 @@ class ArchivoDetalladoActivity : AppCompatActivity(), KodeinAware, RequestListen
 
             dialog.show()
         }
+
+        descargar!!.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (ContextCompat.checkSelfPermission(
+                        it.context,
+                        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        100
+                    )
+                } else {
+                    startDownloading();
+                }
+            } else {
+                startDownloading();
+            }
+        }
+    }
+
+    private fun startDownloading() {
+        val storage: FirebaseStorage = FirebaseStorage.getInstance()
+        val gsReference = storage.getReferenceFromUrl(archivo.url)
+        val valores = archivo.url.split("/")
+        gsReference.downloadUrl
+            .addOnSuccessListener(OnSuccessListener<Uri?> { uri ->
+                uri.toString()
+                val request = DownloadManager.Request(Uri.parse(uri.toString()))
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+                request.setTitle(valores[3])
+                request.setDescription("El archivo se está descargando")
+                request.allowScanningByMediaScanner()
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                request.setDestinationInExternalPublicDir(
+                    Environment.DIRECTORY_DOWNLOADS,
+                    valores[3]
+                )
+
+                val manager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+                manager.enqueue(request)
+            })
     }
 
     private fun saveImageToStorage(imageViewImagen: ImageView) {
