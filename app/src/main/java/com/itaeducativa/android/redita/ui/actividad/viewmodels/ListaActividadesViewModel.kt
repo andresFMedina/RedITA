@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.itaeducativa.android.redita.data.modelos.Actividad
+import com.itaeducativa.android.redita.data.modelos.Usuario
 import com.itaeducativa.android.redita.data.repositorios.RepositorioActividad
 import com.itaeducativa.android.redita.data.repositorios.RepositorioAutenticacion
 import com.itaeducativa.android.redita.data.repositorios.RepositorioReaccion
@@ -34,6 +35,8 @@ class ListaActividadesViewModel(
     private var isLastItemReached: Boolean = false
     private var isScrolling: Boolean = false
     val listaActividades: MutableLiveData<MutableList<Actividad>> = MutableLiveData()
+
+    private val autores: MutableMap<String, Usuario> = mutableMapOf()
 
     var requestListener: RequestListener? = null
     val listaActividadesAdapter by lazy {
@@ -87,8 +90,21 @@ class ListaActividadesViewModel(
                 val actividades: MutableList<Actividad> = mutableListOf()
                 for (doc in value!!) {
                     val actividad = crearActividadByDocumentReference(doc)
-                    val referenciaAutor = repositorioUsuario.getUsuarioByUid(actividad.autorUid!!)
-                    actividad.referenciaAutor = referenciaAutor
+                    if (autores[actividad.autorUid!!] == null) {
+                        repositorioUsuario.getUsuarioByUid(actividad.autorUid!!)
+                            .addSnapshotListener { snapshot, exception ->
+                                if (exception != null) {
+                                    return@addSnapshotListener
+                                }
+
+                                actividad.autor = snapshot?.toObject(Usuario::class.java)
+                                autores.put(actividad.autorUid!!, actividad.autor!!)
+                                Log.i("Autores",autores.toString())
+                            }
+                    } else {
+                        actividad.autor = autores[actividad.autorUid!!]
+                    }
+
                     actividades.add(actividad)
                 }
                 listaActividades.value = actividades
@@ -256,13 +272,24 @@ class ListaActividadesViewModel(
                             val actividades: MutableList<Actividad> = mutableListOf()
                             for (doc in value!!) {
                                 val actividad = crearActividadByDocumentReference(doc)
-                                val referenciaAutor =
+                                if (autores[actividad.autorUid!!] == null) {
                                     repositorioUsuario.getUsuarioByUid(actividad.autorUid!!)
-                                actividad.referenciaAutor = referenciaAutor
+                                        .addSnapshotListener { snapshot, exception ->
+                                            if (exception != null) {
+                                                return@addSnapshotListener
+                                            }
+
+                                            actividad.autor = snapshot?.toObject(Usuario::class.java)
+                                            autores.put(actividad.autorUid!!, actividad.autor!!)
+                                        }
+                                } else {
+                                    actividad.autor = autores[actividad.autorUid!!]
+                                }
                                 actividades.add(actividad)
                             }
                             listaActividades.value!!.addAll(actividades)
-                            if(!value.documents.isEmpty()) lastVisible = value.documents.get(value.size() - 1)
+                            if (!value.documents.isEmpty()) lastVisible =
+                                value.documents.get(value.size() - 1)
                             if (value.size() < 4) {
                                 isLastItemReached = true;
                             }

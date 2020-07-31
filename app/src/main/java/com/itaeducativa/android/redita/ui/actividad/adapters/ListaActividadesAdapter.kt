@@ -63,8 +63,8 @@ class ListaActividadesAdapter(
         holder.bind(actividad)
 
         if (!actividad.fechaInicio.isNullOrBlank()) {
-            val formatoFecha =
-                "${actividad.fechaInicio} a las ${actividad.horaInicio}"
+            var formatoFecha = "${actividad.fechaInicio} "
+            if (!actividad.horaInicio.isNullOrBlank()) formatoFecha += "a las ${actividad.horaInicio}"
 
             holder.textViewFechaYHora.text = formatoFecha
         } else {

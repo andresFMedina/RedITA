@@ -66,7 +66,7 @@
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/corners"
                     android:onClick="verImagenes"
-                    android:text="@string/ver_todas_las_imagenes"
+                    android:text="@string/ver_todo"
                     android:textColor="@android:color/white" />
 
                 <include

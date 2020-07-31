@@ -69,7 +69,6 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
             ViewModelProviders.of(this, listaArchivoViewModelFactory)
                 .get(ListaArchivoViewModel::class.java)
 
-
         binding.viewModel = actividadViewModel
 
         if (this.actividad != null) {
@@ -77,7 +76,7 @@ class CrearActividadActivity : AppCompatActivity(), RequestListener, KodeinAware
         }
 
         listaActividadesViewModel.requestListener = this
-        if (actividad == null) supportActionBar?.title = "Crear actividad"
+        if (actividad == null) supportActionBar?.title = "Crear"
         else supportActionBar?.title = actividad!!.nombre
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 

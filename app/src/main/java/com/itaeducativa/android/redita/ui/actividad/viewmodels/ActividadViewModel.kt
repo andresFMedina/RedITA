@@ -50,31 +50,14 @@ class ActividadViewModel : ViewModel() {
         fechaInicio.value = actividad.fechaInicio
         listaArchivos.value = actividad.archivos
         reaccion.value = actividad.reaccion
-        if (actividad.autor == null) {
-            bindAutor(actividad.referenciaAutor)
-            imagenPerfilUrl.value = "gs://redita.appspot.com/img_profile.png"
-        } else {
+
+        if (actividad.autor != null) {
             autor.value = actividad.autor!!.nombreCompleto
 
             imagenPerfilUrl.value = actividad.autor!!.imagenPerfilUrl
         }
 
-        if(reaccion.value != null) this.actividad.value!!.reaccion
-    }
-
-    private fun bindAutor(referenciaAutor: DocumentReference?) {
-        referenciaAutor?.addSnapshotListener { value, exception ->
-            requestListener?.onStartRequest()
-            if (exception != null) {
-                requestListener?.onFailureRequest(exception.message!!)
-                return@addSnapshotListener
-            }
-            actividad.value!!.autor = value?.toObject(Usuario::class.java)!!
-            autor.value = actividad.value!!.autor!!.nombreCompleto
-            actividad.value!!.referenciaAutor = null
-            imagenPerfilUrl.value = actividad.value!!.autor!!.imagenPerfilUrl
-            requestListener?.onSuccessRequest(actividad.value!!.autor)
-        }
+        if (reaccion.value != null) this.actividad.value!!.reaccion
     }
 
     fun verActividad(view: View) {
