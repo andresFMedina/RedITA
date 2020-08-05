@@ -206,7 +206,8 @@ class ListaUsuarioViewModel(
                             }
 
                             listaUsuarios.value!!.addAll(usuarios)
-                            if(!value.documents.isEmpty()) lastVisible = value.documents.get(value.size() - 1)
+                            if (!value.documents.isEmpty()) lastVisible =
+                                value.documents.get(value.size() - 1)
                             if (value.size() < 6) {
                                 isLastItemReached = true
                             }
